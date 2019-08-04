@@ -10,15 +10,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import blue from '@material-ui/core/colors/blue'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 
 
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 0,
+        color: "white"
     },
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(1),
     },
     title: {
         flexGrow: 1,
@@ -34,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: blue[900] },
+        primary: { main: blue[600] },
         secondary: { main: '#11cb5f' }, // This is just green.A700 as hex.
     },
     typography: { color: 'white' },
@@ -44,21 +46,7 @@ const theme = createMuiTheme({
 
 export default function MenuAppBar() {
     const classes = useStyles();
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-
-    function handleChange(event) {
-        setAuth(event.target.checked);
-    }
-
-    function handleMenu(event) {
-        setAnchorEl(event.currentTarget);
-    }
-
-    function handleClose() {
-        setAnchorEl(null);
-    }
+    
 
     return (
         <div className={classes.root}>
@@ -71,37 +59,27 @@ export default function MenuAppBar() {
                     <Typography variant="h6" className={classes.title}>
                         Phzbo
           </Typography>
-                    {auth && (
-                        <div>
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
-                            </Menu>
-                        </div>
-                    )}
+                        <Button variant="h6" className={classes.root} >
+                            Home
+          </Button>
+                        <Button variant="h6" className={classes.root}>
+                            Services
+          </Button> 
+                        <Button variant="h6" className={classes.root}>
+                            Properties
+          </Button> 
+                        <Button variant="h6" className={classes.root}>
+                            Services
+          </Button> 
+                        <IconButton
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            // onClick={}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
                 </Toolbar>
             </AppBar>
             </MuiThemeProvider>

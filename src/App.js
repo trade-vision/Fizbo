@@ -1,11 +1,10 @@
 import React from 'react';
 import './App.css';
-
+import MenuAppBar from './components/Nav.js'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
+      <MenuAppBar />
     </div>
   );
 }

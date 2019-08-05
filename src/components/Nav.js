@@ -69,7 +69,7 @@ export default function MenuAppBar() {
                             Properties
           </Button> 
                         <Button variant="h6" className={classes.root}>
-                            Services
+                            Contact Us
           </Button> 
                         <IconButton
                             aria-label="account of current user"

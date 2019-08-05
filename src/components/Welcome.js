@@ -57,7 +57,7 @@ export default function WelcomeHeader() {
         Put your city and zip code below to see properties near you!</p>
                     <TextField
                         id="standard-select-currency"
-                        paddingTop={6}
+                        // paddingTop={theme.spacing[0]}
                         select
                         label="Select"
                         className={classes.textField}

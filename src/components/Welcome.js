@@ -5,7 +5,11 @@ import Container from "@material-ui/core/Container";
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
+import { spacing } from '@material-ui/system';
 
+const theme = {
+    spacing: [0, 2, 3, 5, 8],
+}
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -13,10 +17,10 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
     },
     textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-        align: 'center'
+        paddingTop: theme.spacing(6),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        width: 300,
     },
     dense: {
         marginTop: 19,
@@ -45,7 +49,7 @@ export default function WelcomeHeader() {
             <Container maxWidth="sm">
                 <Typography
                     component="div"
-                    style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
+                    style={{ backgroundColor: "white", height: "50vh" }}
                 >
                     <h1 align="center">Welcome to  Phzbo!</h1>
                     <p align="center">The intermediary between real-estate wholesalers and property investors.
@@ -53,6 +57,7 @@ export default function WelcomeHeader() {
         Put your city and zip code below to see properties near you!</p>
                     <TextField
                         id="standard-select-currency"
+                        paddingTop={6}
                         select
                         label="Select"
                         className={classes.textField}

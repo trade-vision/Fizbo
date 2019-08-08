@@ -59,9 +59,11 @@ export default function MenuAppBar() {
                     <Typography variant="h6" className={classes.title}>
                         Phzbo
           </Typography>
+                        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}> 
                         <Button variant="h6" className={classes.root} >
                             Home
           </Button>
+          </Link>
                         <Button variant="h6" className={classes.root}>
                             Services
           </Button> 

@@ -3,6 +3,10 @@ import './App.css';
 import MenuAppBar from './components/Nav.js'
 import Welcome from './components/Welcome.js'
 import PropertyList from './components/PropertyList.js'
+import SignInView from './components/SignIn.js'
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 
 
 function App() {
@@ -10,9 +14,10 @@ function App() {
     <div className="App">
       <MenuAppBar />
       <Welcome />
-      <PropertyList />
+      <PropertyList />    
     </div>
   );
 }
+
 
 export default App;

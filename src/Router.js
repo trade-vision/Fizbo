@@ -1,9 +1,7 @@
 import React from 'react';
 import App from './App.js';
-import MenuAppBar from './components/Nav.js'
-import Welcome from './components/Welcome.js'
-import PropertyList from './components/PropertyList.js'
 import SignInView from './components/SignIn.js'
+import SignUpView from './components/SignUp.js'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 function Router() {
@@ -13,6 +11,7 @@ function Router() {
                 <Switch>
                     <Route path="/" render={() => <App />} exact />
                     <Route exact path="/signIn" render={() => <SignInView />} />
+                    <Route exact path="/signUp" render={() => <SignUpView />} />
                 </ Switch>
 
             </BrowserRouter>

@@ -6,6 +6,8 @@ WORKDIR /usr/Phzbo
 COPY package*.json /usr/Phzbo/
 RUN npm install
 
+EXPOSE 8080
+
 COPY . .
 CMD ["npm", "start"]
 

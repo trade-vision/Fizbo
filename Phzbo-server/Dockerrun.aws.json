@@ -1,0 +1,18 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Ports": [
+        {
+            "ContainerPort": "3000"
+        }
+    ],
+    "Authentication": {
+        "Bucket": "phzbo-S3",
+        "Key": "config.json"
+    },
+    "Image": {
+        "Name": "ejeric23/phzbo",
+        "Update": "true"
+    },
+    "Volumes": [],
+    "Logging": "/var/log/nginx"
+}

@@ -110,3 +110,9 @@ $RECYCLE.BIN/
 # Others
 lib/
 data/
+SrcZip.zip
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

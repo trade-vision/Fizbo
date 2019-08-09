@@ -11,7 +11,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import blue from '@material-ui/core/colors/blue'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-
+import { Link, Redirect } from 'react-router-dom'; 
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,9 +59,11 @@ export default function MenuAppBar() {
                     <Typography variant="h6" className={classes.title}>
                         Phzbo
           </Typography>
+                        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}> 
                         <Button variant="h6" className={classes.root} >
                             Home
           </Button>
+          </Link>
                         <Button variant="h6" className={classes.root}>
                             Services
           </Button> 
@@ -71,6 +73,7 @@ export default function MenuAppBar() {
                         <Button variant="h6" className={classes.root}>
                             Contact Us
           </Button> 
+                        <Link to="/signIn" style={{ color: 'white', textDecoration: 'none' }}> 
                         <IconButton
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
@@ -80,6 +83,7 @@ export default function MenuAppBar() {
                         >
                             <AccountCircle />
                         </IconButton>
+                        </Link>
                 </Toolbar>
             </AppBar>
             </MuiThemeProvider>

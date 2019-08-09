@@ -8,7 +8,5 @@
     "Image": {
         "Name": "ejeric23/phzbo",
         "Update": "true"
-    },
-    "Volumes": [],
-    "Logging": "/var/log/nginx"
+    }
 }

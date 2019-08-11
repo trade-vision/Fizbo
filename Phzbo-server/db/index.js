@@ -7,21 +7,21 @@ const sequelize = new Sequelize('postgres', process.env.DB_USER, process.env.DB_
   dialect: 'postgres',
 });
 
-// const models = [
-// 'User',
-// 'Listing',a
+const models = [
+  'User',
+// 'Listing',
 // 'Image'
-// ];
+];
 
-// models.forEach((model) => {
-//   db[model] = sequelize.import(`${__dirname}/${model}`);
-// });
+models.forEach((model) => {
+  db[model] = sequelize.import(`${__dirname}/models/${model}`);
+});
 
-// models.forEach((modelName) => {
-//   if (db[modelName].associate) {
-//     db[modelName].associate(db);
-//   }
-// });
+models.forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

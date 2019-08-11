@@ -9,7 +9,7 @@ const sequelize = new Sequelize('postgres', process.env.DB_USER, process.env.DB_
 
 // const models = [
 // 'User',
-// 'Listing',
+// 'Listing',a
 // 'Image'
 // ];
 

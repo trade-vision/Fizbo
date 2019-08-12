@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import Dropdown from 'react-bootstrap/Dropdown'
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { spacing } from '@material-ui/system';
+import blue from '@material-ui/core/colors/blue'
+
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
 }
+
+const inputProps = {
+    step: 300,
+    textAlign: 'center'
+};
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -17,10 +25,10 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
     },
     textField: {
-        paddingTop: theme.spacing(6),
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
+        align: "center",
         width: 300,
+        marginLeft: theme.spacing(83),
+        marginTop: theme.spacing(5),
     },
     dense: {
         marginTop: 19,
@@ -43,49 +51,57 @@ export default function WelcomeHeader() {
         setValues({ ...values, [name]: event.target.value });
     };
 
+    const [index, setIndex] = useState(0);
+    const [direction, setDirection] = useState(null);
+
+    const handleSelect = (selectedIndex, e) => {
+        setIndex(selectedIndex);
+        setDirection(e.direction);
+    };
+
     return (
         <React.Fragment>
             <CssBaseline />
-            <Container maxWidth="sm">
-                <Typography
-                    component="div"
-                    style={{ backgroundColor: "white", height: "50vh" }}
-                >
-                    <h1 align="center">Welcome to  Phzbo!</h1>
-                    <p align="center">The intermediary between real-estate wholesalers and property investors.
-                    We have a variety of off market properties located all over Southeast Louisiana.
-        Put your city and zip code below to see properties near you!</p>
-                    <TextField
-                        id="standard-select-currency"
-                        // paddingTop={theme.spacing[0]}
-                        select
-                        label="Select"
-                        className={classes.textField}
-                        value={values.currency}
-                        onChange={handleChange('currency')}
-                        SelectProps={{
-                            MenuProps: {
-                                className: classes.menu,
-                            },
+            <Jumbotron>
+                <h1 align="center">Welcome to  Phzbo!</h1>
+                <h6 align="center">The intermediary between real-estate wholesalers and property investors.</h6>
+                <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                <h6 align="center">    Put your city and zip code below to see properties near you!</h6>
+                <p>
+                    <Dropdown
+                        classes={{
+                            input: classes.inputCenter
                         }}
+                        align="center"
+                        label="Select"
+                        // className={classes.textField}
+                        // onChange={handleChange('currency')}
                         helperText="Please select your city"
-                        margin="normal"
+                        margin="dense"
                     >
+                        <Dropdown.Toggle variant="success" id="dropdown-basic" align={'center'}>
+                        Choose your city
+  </Dropdown.Toggle>
+                        <Dropdown.Menu>
                         {cities.map(city => (
-                            <MenuItem key={city} value={city}>
+                            <Dropdown.Item key={city} value={city}>
                                 {city}
-                            </MenuItem>
+                            </Dropdown.Item>
                         ))}
-                    </TextField>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <TextField
-                        id="standard-with-placeholder"
+                        inputProps={inputProps}
                         label="Enter zip code"
                         placeholder="Zip Code"
                         className={classes.textField}
-                        margin="normal"
-                    />
-                </Typography>
-            </Container>
+                        margin="auto"
+                        color={blue[400]}
+                />
+                </p>
+            </Jumbotron>
+            
         </React.Fragment>
+        
     );
 }

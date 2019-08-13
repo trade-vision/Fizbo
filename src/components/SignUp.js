@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,20 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import { Link, Redirect } from 'react-router-dom'; 
 
-// function MadeWithLove() {
-//     return (
-//         <Typography variant="body2" color="textSecondary" align="center">
-//             {'Built with love by the '}
-//             <Link color="inherit" href="https://material-ui.com/">
-//                 Material-UI
-//       </Link>
-//             {' team.'}
-//         </Typography>
-//     );
-// }
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,6 +46,46 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
     const classes = useStyles();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [location, setLocation] = useState('');
+    const [company, setCompany] = useState('');
+    const [signedUp, setSignedUp] = useState(false);
+
+    const handleFirstName = (event) => {
+        const name = event.target.value;
+        setFirstName(name); 
+    }
+
+    const handleLastName = (event) => {
+        const name = event.target.value;
+        setLastName(name);
+    }
+
+    const handlePassword = (event) => {
+        const pass = event.target.value;
+        setLastName(pass);
+    }
+
+      const handleEmail = (event) => {
+        const email = event.target.value;
+          setFirstName(email); 
+    }
+
+    const handlePhoneNumber = (event) => {
+        const number = event.target.value;
+        setFirstName(number);
+    }
+
+    const handleCompany = (event) => {
+        const company = event.target.value;
+        setFirstName(company);
+    }
+
+  
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -76,6 +104,7 @@ export default function SignUp() {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
+                                onChange={handleFirstName}
                                 name="firstName"
                                 variant="outlined"
                                 required
@@ -83,42 +112,71 @@ export default function SignUp() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                error={firstName.length === 0 ? true : false}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
+                                onChange={handleLastName}
                                 required
                                 fullWidth
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                error={lastName.length === 0 ? true : false}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
+                                onChange={handleEmail}
                                 required
                                 fullWidth
                                 id="email"
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                error={email.length === 0 ? true : false}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
+                                onChange={handlePassword}
                                 required
                                 fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
                                 id="password"
+                                error={password.length === 0 ? true : false}
                                 autoComplete="current-password"
                             />
                         </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    variant="outlined"
+                                    onChange={handlePhoneNumber}
+                                    fullWidth
+                                    name="Phone Number"
+                                    label="Phone Number"
+                                    id="phoneNumber"
+                                    error={phoneNumber.length === 0 ? true : false}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    onChange={handleCompany}
+                                    fullWidth
+                                    name="Company"
+                                    label="Company (optional)"
+                                    id="company"
+                                />
+                            </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -127,7 +185,7 @@ export default function SignUp() {
                         </Grid>
                     </Grid>
                     <Button
-                        type="submit"
+                        // type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"

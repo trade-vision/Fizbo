@@ -13,6 +13,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
+import { Spin } from 'antd';
+import '../App.css'
 
 
 const useStyles = makeStyles(theme => ({
@@ -67,35 +69,47 @@ export default function SignUp() {
 
     const handlePassword = (event) => {
         const pass = event.target.value;
-        setLastName(pass);
+        setPassword(pass);
     }
 
       const handleEmail = (event) => {
         const email = event.target.value;
-          setFirstName(email); 
+          setEmail(email); 
     }
 
     const handlePhoneNumber = (event) => {
         const number = event.target.value;
-        setFirstName(number);
+        setPhoneNumber(number);
     }
 
     const handleCompany = (event) => {
         const company = event.target.value;
-        setFirstName(company);
+        setCompany(company);
+    }
+
+    const formValidator = () => {
+        // if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
+            setSignedUp(!signedUp);
+        // }
     }
 
   
 
     return (
+        
         <Grid container component="main" className={classes.root}>
+          
+
             <CssBaseline />
             <Grid item xs={false} sm={4} md={7} className={classes.image} />
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
             <div className={classes.paper}>
+                   
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
+                    <Spin spinning={signedUp} size="large"></Spin>
+
                 <Typography component="h1" variant="h5">
                     Sign up
         </Typography>
@@ -186,6 +200,7 @@ export default function SignUp() {
                     </Grid>
                     <Button
                         // type="submit"
+                        onClick={formValidator}
                         fullWidth
                         variant="contained"
                         color="primary"

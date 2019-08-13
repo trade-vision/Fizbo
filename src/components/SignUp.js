@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import MaterialButton from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -13,9 +13,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
-import { Spin } from 'antd';
+import { Spin, Upload, message, Button, Icon } from 'antd';
 import '../App.css'
+import axios from 'axios';
 
+const theme = {
+    spacing: [0, 2, 3, 5, 8],
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,6 +50,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const props = {
+    name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+        authorization: "authorization-text"
+    },
+    onChange(info) {
+        if (info.file.status !== "uploading") {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === "done") {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === "error") {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    }
+};
+
 export default function SignUp() {
     const classes = useStyles();
     const [firstName, setFirstName] = useState('');
@@ -56,6 +78,7 @@ export default function SignUp() {
     const [location, setLocation] = useState('');
     const [company, setCompany] = useState('');
     const [signedUp, setSignedUp] = useState(false);
+    const [profilePic, setProfilePic] = useState(false);
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -87,10 +110,24 @@ export default function SignUp() {
         setCompany(company);
     }
 
+    const handleProfilePic = (info) => {
+        const picture = info.fileList;
+        setProfilePic(picture);
+        console.log(picture);
+    }
+
     const formValidator = async () => {
+        let creationCredentials = { name: `${firstName} ${lastName}`, 
+                                    email: email, 
+                                    phone_number: phoneNumber, 
+                                    profile_pic: '', 
+                                    company: company,
+                                    location: '',
+                                    password: password}
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
-            
+
+            let userCreationResponse = await axios.post('/user', creationCredentials);
         }
 
     }
@@ -193,14 +230,25 @@ export default function SignUp() {
                                     id="company"
                                 />
                             </Grid>
+                            <Grid item xs={12} >
+                            <Typography marginTop={5} component="h6" variant="h7">
+                                Upload profile picture:
+                            </Typography>
+                                <Upload {...props}>
+                                    <Button>
+                                        <Icon type="upload" /> Click to Upload
+                            </Button>
+                                </Upload>
+                            </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                                 label="I want to receive inspiration, marketing promotions and updates via email."
                             />
                         </Grid>
+                            
                     </Grid>
-                    <Button
+                    <MaterialButton
                         // type="submit"
                         onClick={formValidator}
                         fullWidth
@@ -209,7 +257,7 @@ export default function SignUp() {
                         className={classes.submit}
                     >
                         Sign Up
-          </Button>
+          </MaterialButton>
                     <Grid container justify="flex-end">
                         <Grid item>
                                 <Link to="/signIn" style={{ color: 'white', textDecoration: 'none' }}>

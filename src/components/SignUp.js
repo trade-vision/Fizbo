@@ -87,10 +87,12 @@ export default function SignUp() {
         setCompany(company);
     }
 
-    const formValidator = () => {
-        // if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
-            setSignedUp(!signedUp);
-        // }
+    const formValidator = async () => {
+        if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
+            setSignedUp(true);
+            
+        }
+
     }
 
   

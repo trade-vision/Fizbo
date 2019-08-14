@@ -120,11 +120,13 @@ export default function SignUp() {
         
         if (info.file.status === 'done') {
             // Get this url from response in real world.
-            getBase64(info.file.originFileObj, (imageUrl) => {
+
+            setProfilePic(JSON.stringify(info.file));
+            // getBase64(info.file.originFileObj, (imageUrl) => {
                
-                setProfilePic(imageUrl)
                 
-            });
+                
+            // });
         }
         
     }
@@ -137,9 +139,9 @@ export default function SignUp() {
                                     phone_number: phoneNumber, 
                                     profile_pic: profilePic, 
                                     company: company,
-                                    location: '',
+                                    location: 'a',
                                     password: password}
-        // console.log(creationCredentials)
+        console.log(creationCredentials)
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
 

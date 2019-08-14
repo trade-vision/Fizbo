@@ -21,7 +21,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Nav />
+      <Nav user={user}/>
       <Welcome />
       <PropertyList />    
     </div>

@@ -13,9 +13,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
-import { Spin, Upload, message, Button, Icon } from 'antd';
+import { Spin, Upload, message, Button, Icon, Result } from 'antd';
 import '../App.css'
 import axios from 'axios';
+
+
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
@@ -78,6 +80,7 @@ export default function SignUp() {
     const [location, setLocation] = useState('');
     const [company, setCompany] = useState('');
     const [signedUp, setSignedUp] = useState(false);
+    const [isSuccessful, setisSuccessful] = useState(false);
     const [profilePic, setProfilePic] = useState('');
 
     const handleFirstName = (event) => {
@@ -123,7 +126,7 @@ export default function SignUp() {
 
             setProfilePic(JSON.stringify(info.file));
             // getBase64(info.file.originFileObj, (imageUrl) => {
-               
+            
                 
                 
             // });
@@ -146,6 +149,11 @@ export default function SignUp() {
             setSignedUp(true);
 
             let userCreationResponse = await axios.post('/user', creationCredentials);
+            // console.log(userCreationResponse);
+            if(userCreationResponse.status === 201){
+            setSignedUp(false);
+            setisSuccessful(true)
+            }
         }
 
     }
@@ -166,7 +174,18 @@ export default function SignUp() {
                     <LockOutlinedIcon />
                 </Avatar>
                     <Spin spinning={signedUp} size="large"></Spin>
-
+                    {isSuccessful ?  <Result
+                                    status="success"
+                                    title="Successfully Signed Up!"
+                                     subTitle="Return Home to view properties in your area"
+                                    extra={[
+                                        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}> 
+                                <Button type="primary" key="console">
+                                     Go to your profile
+                                </Button>,
+                                </Link>
+                                        ]}
+                                /> : null}
                 <Typography component="h1" variant="h5">
                     Sign up
         </Typography>

@@ -72,7 +72,6 @@ export default function MenuAppBar(props) {
     useEffect(() => {
         // code to run on component mount
         handleUserPrivledges();
-        // console.log(isSignedIn)
     })
 
     return (

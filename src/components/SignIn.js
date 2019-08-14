@@ -14,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
 import axios from 'axios';
+import Nav from './Nav.js'
+import App from '../App.js'
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,6 +52,7 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const handlePassword = (event) => {
     const pass = event.target.value;
@@ -63,17 +67,25 @@ export default function SignIn() {
   const sendSignInCredentials = async () => {
     let credentials = {email: email, password: password}
     let user = await axios.get('/user', credentials);
-    console.log(user);
+    setUserData(user.data.data[0]);
     if(user.status ===  200){
       setIsSignedIn(true)
     }
   }
 
   if(isSignedIn){
-    return <Redirect to="/" />;
+    return <Redirect 
+      component={App}
+      to={{
+      pathname: "/",
+      state: userData
+    }}/>;
   } else {
     return (
+      <div>
+        <Nav />
       <Grid container component="main" className={classes.root}>
+        
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -114,7 +126,7 @@ export default function SignIn() {
                 label="Remember me"
               />
               <Button
-                type="submit"
+                // type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -143,6 +155,7 @@ export default function SignIn() {
           </div>
         </Grid>
       </Grid>
+      </div>
     );
   }
   

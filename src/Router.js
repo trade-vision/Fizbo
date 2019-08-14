@@ -10,7 +10,7 @@ function Router() {
         <div className="App">
             
             <BrowserRouter>
-                <Nav />
+                {/* <Nav /> */}
                 <Switch>
                     
                     <Route path="/" render={() => <App />} exact />

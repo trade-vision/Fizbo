@@ -16,6 +16,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Spin, Upload, message, Button, Icon, Result } from 'antd';
 import '../App.css'
 import axios from 'axios';
+import Nav from './Nav.js'
 
 
 
@@ -161,10 +162,11 @@ export default function SignUp() {
   
 
     return (
-        
+        <div>
+            <Nav />
         <Grid container component="main" className={classes.root}>
           
-
+           
             <CssBaseline />
             <Grid item xs={false} sm={4} md={7} className={classes.image} />
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -313,6 +315,6 @@ export default function SignUp() {
             </Box>
             </Grid>
         </Grid>
-        
+        </div>
     );
 }

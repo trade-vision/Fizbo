@@ -78,7 +78,7 @@ export default function SignUp() {
     const [location, setLocation] = useState('');
     const [company, setCompany] = useState('');
     const [signedUp, setSignedUp] = useState(false);
-    const [profilePic, setProfilePic] = useState(false);
+    const [profilePic, setProfilePic] = useState('');
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -110,20 +110,36 @@ export default function SignUp() {
         setCompany(company);
     }
 
-    const handleProfilePic = (info) => {
-        const picture = info.fileList;
-        setProfilePic(picture);
-        console.log(picture);
+    const getBase64 = (img, callback) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
     }
+
+    const handleProfilePic = (info) => {
+        
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, (imageUrl) => {
+               
+                setProfilePic(imageUrl)
+                
+            });
+        }
+        
+    }
+
+    
 
     const formValidator = async () => {
         let creationCredentials = { name: `${firstName} ${lastName}`, 
                                     email: email, 
                                     phone_number: phoneNumber, 
-                                    profile_pic: '', 
+                                    profile_pic: profilePic, 
                                     company: company,
                                     location: '',
                                     password: password}
+        // console.log(creationCredentials)
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
 
@@ -234,7 +250,9 @@ export default function SignUp() {
                             <Typography marginTop={5} component="h6" variant="h7">
                                 Upload profile picture:
                             </Typography>
-                                <Upload {...props}>
+                                <Upload {...props}
+                                onChange={handleProfilePic}
+                                >
                                     <Button>
                                         <Icon type="upload" /> Click to Upload
                             </Button>

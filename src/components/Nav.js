@@ -57,14 +57,11 @@ export default function MenuAppBar() {
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton>
+                        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}> 
                     <Typography variant="h6" className={classes.title}>
                         Phzbo
           </Typography>
-                        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}> 
-                        <Button variant="h6" className={classes.root} >
-                            Home
-          </Button>
-          </Link>
+                        </Link>
                         <Button variant="h6" className={classes.root}>
                             Services
           </Button> 

@@ -229,7 +229,7 @@ export default function SignUp() {
                                     company: company,
                                     location: `${city}, ${state} ${zipCode}`,
                                     password: password}
-        console.log(creationCredentials)
+        // console.log(creationCredentials)
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
 

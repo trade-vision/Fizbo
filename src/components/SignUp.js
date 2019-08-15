@@ -147,6 +147,7 @@ export default function SignUp() {
     const [profilePic, setProfilePic] = useState('');
     const [state, setUserState] = useState('');
     const [city, setCity] = useState('');
+    const [zipCode, setZip] = useState('');
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -201,9 +202,24 @@ export default function SignUp() {
 
     const handleState = event => {
         const userState = event.target.value
-        setUserState(userState);
-        console.log(state)
+        const error = 'Must be in Louisiana'
+        if (userState === 'Louisiana'){
+            setUserState(userState);
+        } else {
+            setUserState(error)
+        }
     };
+
+    const handleCity = event => {
+        const userCity = event.target.value
+        setCity(userCity);
+    };
+
+    const handleZip = event => {
+        const zip = event.target.value;
+        setZip(zip);
+    }
+
 
     const formValidator = async () => {
         let creationCredentials = { name: `${firstName} ${lastName}`, 
@@ -211,7 +227,7 @@ export default function SignUp() {
                                     phone_number: phoneNumber, 
                                     profile_pic: profilePic, 
                                     company: company,
-                                    location: 'a',
+                                    location: `${city}, ${state} ${zipCode}`,
                                     password: password}
         console.log(creationCredentials)
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
@@ -337,13 +353,13 @@ export default function SignUp() {
                                     id="company"
                                 />
                             </Grid>
-                            <Grid item xs={12} >
+                            <Grid item xs={12} sm={6}>
                                     <TextField
-                                        id="outlined-select-currency"
+                                        required
                                         select
                                         value={state}
                                         label="Select"
-                                        className={classes.textField}
+                                        fullWidth
                                         onChange={handleState}
                                         SelectProps={{
                                             MenuProps: {
@@ -351,7 +367,7 @@ export default function SignUp() {
                                             }
                                         }}
                                         helperText="Please select your state"
-                                        margin="normal"
+                                        // margin="normal"
                                         variant="outlined"
                                     >
                                         {states.map(state => (
@@ -360,8 +376,30 @@ export default function SignUp() {
                                             </MenuItem>
                                         ))}
                                     </TextField>
+                                   
                             </Grid>
-
+                                <Grid item xs={6} sm={6}>
+                                    <TextField
+                                        required
+                                        variant="outlined"
+                                        onChange={handleCity}
+                                        fullWidth
+                                        name="City"
+                                        label="City"
+                                        id="city"
+                                    />
+                                </Grid>
+                                <Grid item xs={6} sm={6}>
+                                    <TextField
+                                        required
+                                        variant="outlined"
+                                        onChange={handleZip}
+                                        fullWidth
+                                        name="Zip Code"
+                                        label="Enter your zip code"
+                                        id="zip"
+                                    />
+                                </Grid>
                             <Grid item xs={12} >
                             <Typography marginTop={5} component="h6" variant="h7">
                                 Upload profile picture:

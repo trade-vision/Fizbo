@@ -1,11 +1,8 @@
 import React, { useRef, useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
 import Dropdown from 'react-bootstrap/Dropdown'
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { spacing } from '@material-ui/system';
 import blue from '@material-ui/core/colors/blue'
 
 import Jumbotron from 'react-bootstrap/Jumbotron'

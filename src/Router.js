@@ -10,9 +10,7 @@ function Router() {
         <div className="App">
             
             <BrowserRouter>
-                {/* <Nav /> */}
-                <Switch>
-                    
+                <Switch>  
                     <Route path="/" render={() => <App />} exact />
                     <Route exact path="/signIn" render={() => <SignInView />} />
                     <Route exact path="/signUp" render={() => <SignUpView />} />

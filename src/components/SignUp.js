@@ -17,12 +17,74 @@ import { Spin, Upload, message, Button, Icon, Result } from 'antd';
 import '../App.css'
 import axios from 'axios';
 import Nav from './Nav.js'
-
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
 }
+
+const states = [
+    "Alabama",
+    "Alaska",
+    "American Samoa",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "District of Columbia",
+    "Federated States of Micronesia",
+    "Florida",
+    "Georgia",
+    "Guam",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Marshall Islands",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Northern Mariana Islands",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Palau",
+    "Pennsylvania",
+    "Puerto Rico",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virgin Island",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -83,6 +145,8 @@ export default function SignUp() {
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
     const [profilePic, setProfilePic] = useState('');
+    const [state, setUserState] = useState('');
+    const [city, setCity] = useState('');
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -135,7 +199,11 @@ export default function SignUp() {
         
     }
 
-    
+    const handleState = event => {
+        const userState = event.target.value
+        setUserState(userState);
+        console.log(state)
+    };
 
     const formValidator = async () => {
         let creationCredentials = { name: `${firstName} ${lastName}`, 
@@ -269,6 +337,31 @@ export default function SignUp() {
                                     id="company"
                                 />
                             </Grid>
+                            <Grid item xs={12} >
+                                    <TextField
+                                        id="outlined-select-currency"
+                                        select
+                                        value={state}
+                                        label="Select"
+                                        className={classes.textField}
+                                        onChange={handleState}
+                                        SelectProps={{
+                                            MenuProps: {
+                                                className: classes.menu
+                                            }
+                                        }}
+                                        helperText="Please select your state"
+                                        margin="normal"
+                                        variant="outlined"
+                                    >
+                                        {states.map(state => (
+                                            <MenuItem key={state} value={state}>
+                                                {state}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                            </Grid>
+
                             <Grid item xs={12} >
                             <Typography marginTop={5} component="h6" variant="h7">
                                 Upload profile picture:

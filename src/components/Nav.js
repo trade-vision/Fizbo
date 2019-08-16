@@ -121,7 +121,9 @@ export default function MenuAppBar(props) {
                                 open={open}
                                 onClose={handleClose}
                             >
+                                <Link to="/profile" style={{ color: 'black', textDecoration: 'none' }}> 
                                 <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                </Link>
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                             </Menu>
                         </div>

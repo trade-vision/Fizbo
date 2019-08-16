@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import { withRouter } from "react-router";
 import Welcome from './components/Welcome.js'
-import PropertyList from './components/PropertyList.js'
+import PropertyList from './components/property/PropertyList.js'
 import Nav from './components/Nav.js'
 
 

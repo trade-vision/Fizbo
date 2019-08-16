@@ -1,8 +1,10 @@
 import React from 'react';
 import App from './App.js';
 import Nav from './components/Nav.js'
-import SignInView from './components/SignIn.js'
-import SignUpView from './components/SignUp.js'
+import SignInView from './components/user/SignIn.js'
+import SignUpView from './components/user/SignUp.js'
+import UserProfile from './components/user/UserProfile.js'
+
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 function Router() {
@@ -14,6 +16,7 @@ function Router() {
                     <Route path="/" render={() => <App />} exact />
                     <Route exact path="/signIn" render={() => <SignInView />} />
                     <Route exact path="/signUp" render={() => <SignUpView />} />
+                    <Route exact path="/profile" render={() => <UserProfile />} />
                 </ Switch>
 
             </BrowserRouter>

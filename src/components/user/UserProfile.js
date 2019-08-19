@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
+import { withRouter } from "react-router";
+
 import '../../App.css'
 
 const { Meta } = Card;
@@ -17,11 +19,7 @@ const CardProfile = ({ loading, children }) => (
     </div>
 );
 
-const AvatarUser = () => (
-    <div className="avatar-user">
-        <Avatar src="http://dev.w4e.com.br/felipe/jhondoe.jpg" size={90} />
-    </div>
-);
+
 
 const BgUser = ({ children }) => (
     <div className="bg-user">{children}</div>
@@ -49,15 +47,39 @@ const ContactUser = () => (
         </div>
     </div>
 )
-
- export default function Profile(props) {
+function Profile(props) {
     const [loading, setLoading] = useState(true);
+
+    const userData = props.history.location.state;
+
+    
 
     useEffect(() => {
         setTimeout(() => {
-            setLoading(false);
+            setLoading(false);  
         }, 1500);
     });
+
+    const getBase64 = (img, callback) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
+    }
+
+    const handleProfilePic = (info) => {
+
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+
+            setProfilePic(JSON.stringify(info.file));
+            // getBase64(info.file.originFileObj, (imageUrl) => {
+
+
+
+            // });
+        }
+
+    }
 
     return (
         <CardProfile loading={loading}>
@@ -66,7 +88,9 @@ const ContactUser = () => (
                 description="Your user here"
             />
             <BgUser>
-                <AvatarUser />
+                <div className="avatar-user">
+                    <Avatar src="http://dev.w4e.com.br/felipe/jhondoe.jpg" size={90} />
+                </div>
             </BgUser>
             <Row type="flex" gutter={18}>
                 <Col span={6}>
@@ -81,3 +105,4 @@ const ContactUser = () => (
 };
 
 
+export default withRouter(Profile);

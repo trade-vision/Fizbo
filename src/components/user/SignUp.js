@@ -133,7 +133,7 @@ const props = {
     }
 };
 
-export default function SignUp() {
+export default function SignUp(props) {
     const classes = useStyles();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -148,6 +148,21 @@ export default function SignUp() {
     const [state, setUserState] = useState('');
     const [city, setCity] = useState('');
     const [zipCode, setZip] = useState('');
+
+    const checkUploadResult = (resultEvent) => {
+        if(resultEvent.event === 'success'){
+           setProfilePic(resultEvent.info.secure_url);
+        }
+    }
+
+    let widget = window.cloudinary.createUploadWidget({
+        cloudName: 'dxtgsafec',
+        uploadPreset: 'xpqy7emf'
+    }, (error, result) => checkUploadResult(result));
+
+    const showWidget = (widget) => {
+        widget.open();
+    }
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -190,12 +205,12 @@ export default function SignUp() {
         if (info.file.status === 'done') {
             // Get this url from response in real world.
 
-            setProfilePic(JSON.stringify(info.file));
-            // getBase64(info.file.originFileObj, (imageUrl) => {
             
+            getBase64(info.file.originFileObj, (imageUrl) => {
+            
+                setProfilePic(imageUrl);
                 
-                
-            // });
+            });
         }
         
     }
@@ -229,7 +244,7 @@ export default function SignUp() {
                                     company: company,
                                     location: `${city}, ${state} ${zipCode}`,
                                     password: password}
-        // console.log(creationCredentials)
+        // create better form validation
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
 
@@ -404,13 +419,7 @@ export default function SignUp() {
                             <Typography marginTop={5} component="h6" variant="h7">
                                 Upload profile picture:
                             </Typography>
-                                <Upload {...props}
-                                onChange={handleProfilePic}
-                                >
-                                    <Button>
-                                        <Icon type="upload" /> Click to Upload
-                            </Button>
-                                </Upload>
+                                <Button onClick={() => showWidget(widget)}>Upload</Button>
                             </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel

@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import blue from '@material-ui/core/colors/blue'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import UserProfile from './user/UserProfile.js'
 import { Link, Redirect } from 'react-router-dom'; 
 
 
@@ -121,7 +122,11 @@ export default function MenuAppBar(props) {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <Link to="/profile" style={{ color: 'black', textDecoration: 'none' }}> 
+                                <Link to={{
+                                    pathname: "/profile",
+                                    state: props.user
+                                }}
+                                > 
                                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                                 </Link>
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
@@ -129,7 +134,14 @@ export default function MenuAppBar(props) {
                         </div>
                         :
                         <div>
-                        <Link to="/signIn" style={{ color: 'white', textDecoration: 'none' }}>
+                        <Link   
+                                style={{ color: 'white', textDecoration: 'none' }}
+                                component={UserProfile}
+                                to={{
+                                    pathname: "/signIn",
+                                        state: props.user
+                                    }}
+                                >
                                 <IconButton
                                     aria-label="account of current user"
                                     aria-controls="menu-appbar"

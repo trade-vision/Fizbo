@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import { withRouter } from "react-router";
+import base64Img from 'base64-img';
 
 import '../../App.css'
 
@@ -31,27 +32,12 @@ const Description = () => (
   </div>
 );
 
-const ContactUser = () => (
-    <div className="contact">
-        <strong>Jhon Doe</strong>
-        <small>CEO</small>
-        <div className="mail"><Icon type="google" />jhon@gmail.com</div>
-        <div className="social">
-            <Icon className="facebook" type="facebook" />
-            <Divider type="left" />
-            <Icon className="twitter" type="twitter" />
-            <Divider type="left" />
-            <Icon className="instagram" type="instagram" />
-            <Divider type="left" />
-            <Icon className="linkedin" type="linkedin" />
-        </div>
-    </div>
-)
+// 
 function Profile(props) {
     const [loading, setLoading] = useState(true);
-
+    const [profilePic, setProfilePic] = useState('');
     const userData = props.history.location.state;
-
+    // console.log(props)
     
 
     useEffect(() => {
@@ -60,41 +46,35 @@ function Profile(props) {
         }, 1500);
     });
 
-    const getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    }
-
-    const handleProfilePic = (info) => {
-
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-
-            setProfilePic(JSON.stringify(info.file));
-            // getBase64(info.file.originFileObj, (imageUrl) => {
-
-
-
-            // });
-        }
-
-    }
+   
 
     return (
         <CardProfile loading={loading}>
             <Meta
-                title="Card Profile"
-                description="Your user here"
+                title="Profile"
+                description={userData.name}
             />
             <BgUser>
                 <div className="avatar-user">
-                    <Avatar src="http://dev.w4e.com.br/felipe/jhondoe.jpg" size={90} />
+                    <Avatar src={userData.profile_pic} size={150} />
                 </div>
             </BgUser>
             <Row type="flex" gutter={18}>
                 <Col span={6}>
-                    <ContactUser />
+                    <div className="contact">
+                        <strong>{userData.name}</strong>
+                        <small>{userData.company}</small>
+                        <div className="mail"><Icon type="google" />{userData.email}</div>
+                        <div className="social">
+                            <Icon className="facebook" type="facebook" />
+                            <Divider type="left" />
+                            <Icon className="twitter" type="twitter" />
+                            <Divider type="left" />
+                            <Icon className="instagram" type="instagram" />
+                            <Divider type="left" />
+                            <Icon className="linkedin" type="linkedin" />
+                        </div>
+                    </div>
                 </Col>
                 <Col span={18}>
                     <Description />

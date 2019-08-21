@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import App from './App.js';
-import Nav from './components/Nav.js'
 import SignInView from './components/user/SignIn.js'
 import SignUpView from './components/user/SignUp.js'
 import UserProfile from './components/user/UserProfile.js'
@@ -8,6 +7,7 @@ import UserProfile from './components/user/UserProfile.js'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 function Router() {
+    
     return (
         <div className="App">
             

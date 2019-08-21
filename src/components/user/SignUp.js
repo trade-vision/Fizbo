@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
 import { Spin, Upload, message, Button, Icon, Result } from 'antd';
-import '../../App.css'
+import '../../css/App.css'
 import axios from 'axios';
 import Nav from '../Nav.js'
 import MenuItem from '@material-ui/core/MenuItem';

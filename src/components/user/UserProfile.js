@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import Nav from '../Nav.js'
 
 
-import '../../App.css'
+import '../../css/App.css'
 
 const { Meta } = Card;
 

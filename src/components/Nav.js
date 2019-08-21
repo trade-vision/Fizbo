@@ -13,6 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import UserProfile from './user/UserProfile.js'
 import { Link, Redirect } from 'react-router-dom'; 
+import '../css/bootstrap-social.css'
 
 
 const useStyles = makeStyles(theme => ({
@@ -134,24 +135,9 @@ export default function MenuAppBar(props) {
                         </div>
                         :
                         <div>
-                        <Link   
-                                style={{ color: 'white', textDecoration: 'none' }}
-                                component={UserProfile}
-                                to={{
-                                    pathname: "/signIn",
-                                        state: props.user
-                                    }}
-                                >
-                                <IconButton
-                                    aria-label="account of current user"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    // onClick={}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            </Link>
+                                <a class="btn btn-block btn-social btn-google">
+                                    <span class="fa fa-google"></span> Sign in with Google
+                                </a>
                             </div>}
                 </Toolbar>
             </AppBar>

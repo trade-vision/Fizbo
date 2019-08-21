@@ -19,7 +19,7 @@ module.exports = function (app) {
   images.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    imagaes.belongsTo(models.listings);
+    images.belongsTo(models.listings);
   };
 
   return images;

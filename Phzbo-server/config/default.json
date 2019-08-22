@@ -2,6 +2,13 @@
   "host": "localhost",
   "port": 8080,
   "public": "../public/",
+  "authentication": {
+    "secret": "0b3ff0cc447ef7df72469774fdd52e6297b527808013e4bee90ac8c3663392c0c72046d880c62cf55f37c81f4a109ceec248d15d63d8eb69ec6d829f48d34a642799feedea0d6b122cc38eaff788a56e55512d0c2e77cdf583726cfa09202575023fdbbc06a7c1d56b13ed93c10f46e31eff1960f5ff869a9ce95b37751a4a2b55600403192ee8b665c5a7446a5d267455d186830832d1e0880fc9f496d0d1304cb7aef633b125d20fd17f26a664b999e82b52c6dc017e8617ca1ba5793b93d5f5de919e74b7539682026155c4dcd2fefece6de76db81f3ddd3325735a71ee75533e3712d128b72d74028b6c23d663df4363803fce62b3a1c84dba0dcd845c21",
+    "google": {
+      "clientID": "770950766923-7nsbhe8d5qvkvlthbkgg201nbe9tbns6.apps.googleusercontent.com",
+      "clientSecret": "Qt48gJNcWk9HhaynF476CEuo"
+    }
+  },
   "paginate": {
     "default": 10,
     "max": 50

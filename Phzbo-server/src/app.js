@@ -30,7 +30,7 @@ app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
-app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
+// app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 // app.use('/', express.static(path.join('public')));
 app.use('/', express.static(path.join(__dirname, '../../build'))); //  "public" off of current is root
@@ -56,18 +56,27 @@ app.use(express.errorHandler({ logger }));
 app.hooks(appHooks);
 
 
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
 
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
 
 passport.use(new GoogleStrategy({
-    clientID: "770950766923-7nsbhe8d5qvkvlthbkgg201nbe9tbns6.apps.googleusercontent.com",
-    clientSecret: "Qt48gJNcWk9HhaynF476CEuo",
-    callbackURL: "http://localhost:8080/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
+  clientID: '770950766923-7nsbhe8d5qvkvlthbkgg201nbe9tbns6.apps.googleusercontent.com',
+  clientSecret: 'Qt48gJNcWk9HhaynF476CEuo',
+  callbackURL: 'http://localhost:8080/auth/google/callback'
+},
+function(accessToken, refreshToken, profile, cb) {
+  app.services.user.find({ email: profile.emails[0].value })
+    .then((user)=> {
+      return cb(null, user);
+    }).catch((err)=> {
+      console.log(err);
     });
-  }
+}
 ));
 
 

@@ -14,8 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
 import axios from 'axios';
-import Nav from './Nav.js'
-import App from '../App.js'
+import Nav from '../Nav.js'
+import App from '../../App.js'
 
 
 const useStyles = makeStyles(theme => ({

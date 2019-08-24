@@ -11,7 +11,9 @@ import Menu from '@material-ui/core/Menu';
 import blue from '@material-ui/core/colors/blue'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import UserProfile from './user/UserProfile.js'
 import { Link, Redirect } from 'react-router-dom'; 
+import '../css/bootstrap-social.css'
 
 
 const useStyles = makeStyles(theme => ({
@@ -121,23 +123,21 @@ export default function MenuAppBar(props) {
                                 open={open}
                                 onClose={handleClose}
                             >
+                                <Link to={{
+                                    pathname: "/userProfile",
+                                    state: props.user
+                                }}
+                                > 
                                 <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                </Link>
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                             </Menu>
                         </div>
                         :
                         <div>
-                        <Link to="/signIn" style={{ color: 'white', textDecoration: 'none' }}>
-                                <IconButton
-                                    aria-label="account of current user"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    // onClick={}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            </Link>
+                                <a class="btn btn-block btn-social btn-google" href='auth/google'>
+                                    <span class="fa fa-google"></span> Sign in with Google
+                                </a>
                             </div>}
                 </Toolbar>
             </AppBar>

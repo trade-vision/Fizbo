@@ -14,15 +14,77 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom'; 
 import { Spin, Upload, message, Button, Icon, Result } from 'antd';
-import '../App.css'
+import '../../css/App.css'
 import axios from 'axios';
-import Nav from './Nav.js'
-
+import Nav from '../Nav.js'
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
 }
+
+const states = [
+    "Alabama",
+    "Alaska",
+    "American Samoa",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "District of Columbia",
+    "Federated States of Micronesia",
+    "Florida",
+    "Georgia",
+    "Guam",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Marshall Islands",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Northern Mariana Islands",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Palau",
+    "Pennsylvania",
+    "Puerto Rico",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virgin Island",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -71,7 +133,7 @@ const props = {
     }
 };
 
-export default function SignUp() {
+export default function SignUp(props) {
     const classes = useStyles();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -83,6 +145,24 @@ export default function SignUp() {
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
     const [profilePic, setProfilePic] = useState('');
+    const [state, setUserState] = useState('');
+    const [city, setCity] = useState('');
+    const [zipCode, setZip] = useState('');
+
+    const checkUploadResult = (resultEvent) => {
+        if(resultEvent.event === 'success'){
+           setProfilePic(resultEvent.info.secure_url);
+        }
+    }
+
+    let widget = window.cloudinary.createUploadWidget({
+        cloudName: 'dxtgsafec',
+        uploadPreset: 'xpqy7emf'
+    }, (error, result) => checkUploadResult(result));
+
+    const showWidget = (widget) => {
+        widget.open();
+    }
 
     const handleFirstName = (event) => {
         const name = event.target.value;
@@ -125,17 +205,36 @@ export default function SignUp() {
         if (info.file.status === 'done') {
             // Get this url from response in real world.
 
-            setProfilePic(JSON.stringify(info.file));
-            // getBase64(info.file.originFileObj, (imageUrl) => {
             
+            getBase64(info.file.originFileObj, (imageUrl) => {
+            
+                setProfilePic(imageUrl);
                 
-                
-            // });
+            });
         }
         
     }
 
-    
+    const handleState = event => {
+        const userState = event.target.value
+        const error = 'Must be in Louisiana'
+        if (userState === 'Louisiana'){
+            setUserState(userState);
+        } else {
+            setUserState(error)
+        }
+    };
+
+    const handleCity = event => {
+        const userCity = event.target.value
+        setCity(userCity);
+    };
+
+    const handleZip = event => {
+        const zip = event.target.value;
+        setZip(zip);
+    }
+
 
     const formValidator = async () => {
         let creationCredentials = { name: `${firstName} ${lastName}`, 
@@ -143,9 +242,9 @@ export default function SignUp() {
                                     phone_number: phoneNumber, 
                                     profile_pic: profilePic, 
                                     company: company,
-                                    location: 'a',
+                                    location: `${city}, ${state} ${zipCode}`,
                                     password: password}
-        console.log(creationCredentials)
+        // create better form validation
         if(firstName.length > 1 && lastName.length > 1 && password.length > 1 && email.length > 1 && phoneNumber.length >= 1){
             setSignedUp(true);
 
@@ -269,17 +368,58 @@ export default function SignUp() {
                                     id="company"
                                 />
                             </Grid>
+                            <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        select
+                                        value={state}
+                                        label="Select"
+                                        fullWidth
+                                        onChange={handleState}
+                                        SelectProps={{
+                                            MenuProps: {
+                                                className: classes.menu
+                                            }
+                                        }}
+                                        helperText="Please select your state"
+                                        // margin="normal"
+                                        variant="outlined"
+                                    >
+                                        {states.map(state => (
+                                            <MenuItem key={state} value={state}>
+                                                {state}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                   
+                            </Grid>
+                                <Grid item xs={6} sm={6}>
+                                    <TextField
+                                        required
+                                        variant="outlined"
+                                        onChange={handleCity}
+                                        fullWidth
+                                        name="City"
+                                        label="City"
+                                        id="city"
+                                    />
+                                </Grid>
+                                <Grid item xs={6} sm={6}>
+                                    <TextField
+                                        required
+                                        variant="outlined"
+                                        onChange={handleZip}
+                                        fullWidth
+                                        name="Zip Code"
+                                        label="Enter your zip code"
+                                        id="zip"
+                                    />
+                                </Grid>
                             <Grid item xs={12} >
                             <Typography marginTop={5} component="h6" variant="h7">
                                 Upload profile picture:
                             </Typography>
-                                <Upload {...props}
-                                onChange={handleProfilePic}
-                                >
-                                    <Button>
-                                        <Icon type="upload" /> Click to Upload
-                            </Button>
-                                </Upload>
+                                <Button onClick={() => showWidget(widget)}>Upload</Button>
                             </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel

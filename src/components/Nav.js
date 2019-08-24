@@ -135,7 +135,7 @@ export default function MenuAppBar(props) {
                         </div>
                         :
                         <div>
-                                <a class="btn btn-block btn-social btn-google">
+                                <a class="btn btn-block btn-social btn-google" href='auth/google'>
                                     <span class="fa fa-google"></span> Sign in with Google
                                 </a>
                             </div>}

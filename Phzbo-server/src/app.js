@@ -11,12 +11,12 @@ const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
-
+const session = require('express-session')
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
-
+const profile = require('./profileRoutes.js');
 const sequelize = require('./sequelize');
 
 const app = express(feathers());
@@ -29,7 +29,11 @@ app.use(cors());
 app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: 'anything' }));
 app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/profile', profile);
 // app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 // app.use('/', express.static(path.join('public')));

@@ -7,6 +7,7 @@ import Nav from './components/Nav.js'
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -23,10 +24,12 @@ function App(props) {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const classes = useStyles();
 
-  const handleUser = () => {
-    setUser(props.history.location.state);
-    if(user){
-      setIsSignedIn(true);
+  const handleUser = async () => {
+    try {
+    let user = await axios.get('/profile');
+    console.log(user.data);
+    } catch {
+      console.log('gotta login bro');
     }
   }
 

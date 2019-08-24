@@ -26,8 +26,10 @@ function App(props) {
 
   const handleUser = async () => {
     try {
-    let user = await axios.get('/profile');
-    console.log(user.data);
+    let response = await axios.get('/profile');
+    let userData = response.data;
+      setUser(userData)
+      setIsSignedIn(true);
     } catch {
       console.log('gotta login bro');
     }

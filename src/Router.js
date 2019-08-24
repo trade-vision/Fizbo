@@ -16,7 +16,7 @@ function Router() {
                     <Route path="/" render={() => <App />} exact />
                     <Route exact path="/signIn" render={() => <SignInView />} />
                     <Route exact path="/signUp" render={() => <SignUpView />} />
-                    <Route exact path="/profile" render={() => <UserProfile />} />
+                    <Route exact path="/profile#" render={() => <UserProfile />} />
                 </ Switch>
 
             </BrowserRouter>

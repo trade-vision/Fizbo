@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import { withRouter } from "react-router";
-import Nav from '../Nav.js'
 
 
 import '../../css/App.css'
@@ -51,7 +50,6 @@ function Profile(props) {
 
     return (
         <div>
-        <Nav />
         <CardProfile loading={loading}>
             <Meta
                 title="Profile"

@@ -20,34 +20,16 @@ const useStyles = makeStyles(theme => ({
 
 
 function App(props) {
-  const  [user, setUser] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false)
   const classes = useStyles();
-
-  const handleUser = async () => {
-    try {
-    let response = await axios.get('/profile');
-    let userData = response.data;
-      setUser(userData)
-      setIsSignedIn(true);
-    } catch {
-      console.log('gotta login bro');
-    }
-  }
-
-  useEffect(() => {
-    // code to run on component mount
-    handleUser();
-  })
+  
 
   return (
     <div className="App">
-      <Nav user={user}/>
       <Welcome />
       <PropertyList />
-      {isSignedIn ? <Fab color="secondary" aria-label="add" className={classes.fab}>
+      {/* {isSignedIn ? <Fab color="secondary" aria-label="add" className={classes.fab}>
         <AddIcon />
-      </Fab> : null}
+      </Fab> : null} */}
     </div>
   );
 }

@@ -21,15 +21,30 @@ const useStyles = makeStyles(theme => ({
 
 function App(props) {
   const classes = useStyles();
+
+  const [user, setUser] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const handleUser = () => {
+    if(props.user){
+      setUser(props.user);
+      setIsSignedIn(true);
+    }
+  }
+
+  useEffect(() => {
+    // code to run on component mount
+    handleUser();
+  });
   
 
   return (
     <div className="App">
       <Welcome />
       <PropertyList />
-      {/* {isSignedIn ? <Fab color="secondary" aria-label="add" className={classes.fab}>
+      {isSignedIn ? <Fab color="secondary" aria-label="add" className={classes.fab}>
         <AddIcon />
-      </Fab> : null} */}
+      </Fab> : null}
     </div>
   );
 }

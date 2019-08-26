@@ -9,7 +9,7 @@ const authCheck = (req, res, next) => {
 };
 
 router.get('/', authCheck, (req, res)=> {
-  res.send(req.user.data[0]);
+  res.send(req.user);
 });
 
 module.exports = router;

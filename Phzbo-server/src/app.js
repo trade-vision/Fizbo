@@ -4,7 +4,7 @@ const compress = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('./logger');
-
+require('dotenv').config();
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
@@ -18,9 +18,9 @@ const appHooks = require('./app.hooks');
 const channels = require('./channels');
 const profile = require('./profileRoutes.js');
 const sequelize = require('./sequelize');
-
+const db = require('../db/');
 const app = express(feathers());
-
+const models = sequelize.models;
 // Load app configuration
 app.configure(configuration());
 // Enable security, CORS, compression, favicon and body parsing
@@ -74,16 +74,16 @@ passport.use(new GoogleStrategy({
   callbackURL: 'http://localhost:8080/auth/google/callback'
 },
 function(accessToken, refreshToken, profile, cb) {
-  app.services.user.find({ email: profile.emails[0].value })
-    .then((user)=> {
+  // app.services.user.find({ email: profile.emails[0].value })
+  // User.find({ where: { email: profile.emails[0].value } })
+  db.User.findOne({ where: { email: profile.emails[0].value } })
+  .then((user)=> {
       return cb(null, user);
     }).catch((err)=> {
       console.log(err);
     });
 }
 ));
-
-
 
 
 

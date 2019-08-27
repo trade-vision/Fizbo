@@ -7,8 +7,7 @@ import Nav from './components/Nav.js'
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import axios from 'axios';
-
+import AddProperty from './components/property/AddProperty'
 const useStyles = makeStyles(theme => ({
   fab: {
     // margin: theme.spacing(195),
@@ -42,9 +41,7 @@ function App(props) {
     <div className="App">
       <Welcome />
       <PropertyList />
-      {isSignedIn ? <Fab color="secondary" aria-label="add" className={classes.fab}>
-        <AddIcon />
-      </Fab> : null}
+      {isSignedIn ? <AddProperty /> : null}
     </div>
   );
 }

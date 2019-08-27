@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
+import { Modal, Button } from 'react-bootstrap';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -33,12 +30,18 @@ export default function AddProperty() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
+    const [show, setShow] = useState(false);
 
+    const modalClose = () => setShow(false);
    
-
     const handleClick = () => {
         setOpen(prevOpen => !prevOpen);
     };
+
+    const openModel = () => {
+        setShow(true);
+        setOpen(prevOpen => !prevOpen);
+    }
 
     const handleOpen = () => {
         if (!hidden) {
@@ -71,7 +74,7 @@ export default function AddProperty() {
                     icon={actions[0].icon}
                     tooltipTitle={actions[0].name}
                     tooltipOpen
-                    onClick={handleClick}
+                    onClick={openModel}
                 />
                 <SpeedDialAction
                     key={actions[1].name}
@@ -88,6 +91,20 @@ export default function AddProperty() {
                     onClick={handleClick}
                 />
             </SpeedDial>
+            <Modal show={show} onHide={modalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={modalClose}>
+                        Close
+          </Button>
+                    <Button variant="primary" onClick={modalClose}>
+                        Save Changes
+          </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

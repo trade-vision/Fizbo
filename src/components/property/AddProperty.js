@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,6 +32,7 @@ export default function AddProperty() {
     const [open, setOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [show, setShow] = useState(false);
+    const [propertyImages, setPropertyPic] = useState([]);
 
     const modalClose = () => setShow(false);
    
@@ -52,6 +54,26 @@ export default function AddProperty() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const checkUploadResult = (resultEvent) => {
+        if (resultEvent.event === 'success') {
+            propertyImages.push(resultEvent.info.secure_url);
+        }
+    }
+
+    let widget = window.cloudinary.createUploadWidget({
+        cloudName: 'dxtgsafec',
+        uploadPreset: 'xpqy7emf',
+        multiple: true
+    }, (error, result) => checkUploadResult(result));
+
+    const showWidget = (widget) => {
+        widget.open();
+    }
+
+    useEffect(()=> {
+        console.log(propertyImages);
+    })
 
     return (
         <div className={classes.root}>
@@ -93,15 +115,32 @@ export default function AddProperty() {
             </SpeedDial>
             <Modal show={show} onHide={modalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Post your property</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                        <Form.Control type="text" placeholder="Address" />
+                        <br />
+                        <Form.Control type="text" placeholder="Zip Code" />
+                        <br />
+                        <Form.Control type="text" placeholder="Asking Price $" />
+                        <br />
+                        <Form.Control type="text" placeholder="ARV" />
+                        <br />
+                        <Form.Control type="text" placeholder="Repair Cost $" />
+                        <br />
+                        <Form.Control type="text" placeholder="sqr ft" />
+                        <br />
+                        <Form.Control type="text" placeholder="Description" />
+                        <br />
+                        <Button onClick={() => showWidget(widget)}>Upload</Button>
+                </Modal.Body>
+            
                 <Modal.Footer>
                     <Button variant="secondary" onClick={modalClose}>
                         Close
           </Button>
                     <Button variant="primary" onClick={modalClose}>
-                        Save Changes
+                        Post Property
           </Button>
                 </Modal.Footer>
             </Modal>

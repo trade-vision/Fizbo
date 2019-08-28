@@ -157,7 +157,8 @@ export default function SignUp(props) {
 
     let widget = window.cloudinary.createUploadWidget({
         cloudName: 'dxtgsafec',
-        uploadPreset: 'xpqy7emf'
+        uploadPreset: 'xpqy7emf', 
+        multiple: true
     }, (error, result) => checkUploadResult(result));
 
     const showWidget = (widget) => {

@@ -33,6 +33,7 @@ export default function AddProperty() {
     const [hidden, setHidden] = useState(false);
     const [show, setShow] = useState(false);
     const [propertyImages, setPropertyPic] = useState([]);
+    const [imageNumber, setImageNumber] = useState(0);
 
     const modalClose = () => setShow(false);
    
@@ -71,7 +72,11 @@ export default function AddProperty() {
         widget.open();
     }
 
+    const imageChecker = () => {
+        setImageNumber(propertyImages.length)
+    }
     useEffect(()=> {
+        setInterval(imageChecker, 3000);
         console.log(propertyImages);
     })
 
@@ -132,7 +137,7 @@ export default function AddProperty() {
                         <br />
                         <Form.Control type="text" placeholder="Description" />
                         <br />
-                        <Button onClick={() => showWidget(widget)}>Upload</Button>
+                    <Button onClick={() => showWidget(widget)}>Upload</Button><p>{imageNumber} images uploaded</p>
                 </Modal.Body>
             
                 <Modal.Footer>

@@ -7,6 +7,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import axios from 'axios';
 
 
 const useStyles = makeStyles(theme => ({
@@ -27,13 +28,22 @@ const actions = [
     { icon: <DeleteIcon />, name: 'Delete Property' },
 ];
 
-export default function AddProperty() {
+export default function AddProperty(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [show, setShow] = useState(false);
     const [propertyImages, setPropertyPic] = useState([]);
     const [imageNumber, setImageNumber] = useState(0);
+
+    const [address, setAddress] = useState('');
+    const [zipCode, setZip] = useState('');
+    const [askingPrice, setAskingPrice] = useState('');
+    const [arv, setArv] = useState('');
+    const [repairCost, setrepairCost] = useState('');
+    const [sqrFt, setSqrFt] = useState('');
+    const [comparableProp, setComparableProp] = useState('');
+    const [description, setDescription] = useState('');
 
     const modalClose = () => setShow(false);
    
@@ -75,9 +85,71 @@ export default function AddProperty() {
     const imageChecker = () => {
         setImageNumber(propertyImages.length)
     }
+
+    const handleAddress = (event) => {
+        const place = event.target.value;
+        setAddress(place);
+    }
+
+    const handleZip = (event) => {
+        const zip = event.target.value;
+        setZip(zip);
+    }
+
+    const handleAskingPrice = (event) => {
+        const price = event.target.value;
+        setAskingPrice(price);
+    }
+
+    const handleArv = (event) => {
+        const aRv = event.target.value;
+        setArv(aRv);
+    }
+
+    const handleRepairCost = (event) => {
+        const cost = event.target.value;
+        setrepairCost(cost);
+    }
+
+    const handleSqrFt = (event) => {
+        const demensions = event.target.value;
+        setSqrFt(demensions);
+    }
+
+    const handleCompareProp = (event) => {
+        const price = event.target.value;
+        if(price[0] === '$'){
+            setComparableProp(price.slice(1));
+        } else {
+            setComparableProp(price)
+        }
+
+    }
+
+    const handleDescription = (event) => {
+        const descriptionInfo = event.target.value;
+        setDescription(descriptionInfo);
+    }
+
+    const submitProperty = async () => {
+        const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id};
+        try {
+        let propReponse = await axios.post('/listings', propCredentials);
+        // console.log(propReponse.data.id);
+            let listingId = propReponse.data.id;
+            propertyImages.forEach(async (image) => {
+                let imagesResponse = await axios.post('/images', { url: image, listingId: listingId});
+                console.log(imagesResponse);
+            });
+        
+        }
+        catch {
+        console.log("error")
+        }
+    }
+
     useEffect(()=> {
         setInterval(imageChecker, 3000);
-        console.log(propertyImages);
     })
 
     return (
@@ -123,19 +195,21 @@ export default function AddProperty() {
                     <Modal.Title>Post your property</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                        <Form.Control type="text" placeholder="Address" />
+                        <Form.Control type="text" placeholder="Address" onChange={handleAddress}/>
                         <br />
-                        <Form.Control type="text" placeholder="Zip Code" />
+                        <Form.Control type="text" placeholder="Zip Code" onChange={handleZip}/>
                         <br />
-                        <Form.Control type="text" placeholder="Asking Price $" />
+                        <Form.Control type="text" placeholder="Asking Price $" onChange={handleAskingPrice}/>
                         <br />
-                        <Form.Control type="text" placeholder="ARV" />
+                        <Form.Control type="text" placeholder="ARV" onChange={handleArv}/>
                         <br />
-                        <Form.Control type="text" placeholder="Repair Cost $" />
+                        <Form.Control type="text" placeholder="Repair Cost $" onChange={handleRepairCost}/>
                         <br />
-                        <Form.Control type="text" placeholder="sqr ft" />
+                        <Form.Control type="text" placeholder="sqr ft" onChange={handleSqrFt}/>
                         <br />
-                        <Form.Control type="text" placeholder="Description" />
+                        <Form.Control type="text" placeholder="Comparable Prop $" onChange={handleCompareProp} />
+                        <br />
+                        <Form.Control type="text" placeholder="Description" onChange={handleDescription}/>
                         <br />
                     <Button onClick={() => showWidget(widget)}>Upload</Button><p>{imageNumber} images uploaded</p>
                 </Modal.Body>
@@ -144,7 +218,7 @@ export default function AddProperty() {
                     <Button variant="secondary" onClick={modalClose}>
                         Close
           </Button>
-                    <Button variant="primary" onClick={modalClose}>
+                    <Button variant="primary" onClick={submitProperty}>
                         Post Property
           </Button>
                 </Modal.Footer>

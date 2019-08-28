@@ -2,8 +2,8 @@ require('dotenv').config();
 const Sequelize = require('sequelize');
 const db = {};
 
-const sequelize = new Sequelize('postgres', process.env.DB_USER, process.env.DB_PASS, {
-  host: process.env.DB_HOST,
+const sequelize = new Sequelize('postgres', 'phzbo', 'phzbodevteam', {
+  host: 'aa6az037e6f2ob.cuemvm7aklsa.us-east-1.rds.amazonaws.com',
   dialect: 'postgres',
 });
 

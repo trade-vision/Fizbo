@@ -34,6 +34,7 @@ export default function AddProperty(props) {
     const [open, setOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [show, setShow] = useState(false);
+    // const [showSecond, setShowSecond] = useState('')
     const [propertyImages, setPropertyPic] = useState([]);
     const [imageNumber, setImageNumber] = useState(0);
 
@@ -49,6 +50,8 @@ export default function AddProperty(props) {
     const [isSuccessful, setisSuccessful] = useState(false);
 
     const modalClose = () => setShow(false);
+
+    const modal2Close = () => setisSuccessful(false);
    
     const handleClick = () => {
         setOpen(prevOpen => !prevOpen);
@@ -139,13 +142,12 @@ export default function AddProperty(props) {
         setSignedUp(true);
         try {
         let propReponse = await axios.post('/listings', propCredentials);
-        // console.log(propReponse.data.id);
             let listingId = propReponse.data.id;
             propertyImages.forEach(async (image) => {
                 let imagesResponse = await axios.post('/images', { url: image, listingId: listingId});
-                console.log(imagesResponse);
                 if(imagesResponse.status === 201){
                     setSignedUp(false);
+                    setShow(false);
                     setisSuccessful(true);
                 }
             });
@@ -230,16 +232,20 @@ export default function AddProperty(props) {
                         Post Property
           </Button>
                     <Spin spinning={signedUp} size="large"></Spin>
-                    {isSuccessful ? <Result
-                        status="success"
-                        title="Successfully Posted Property Up!"
-                        subTitle="Return Home to view properties in your area"
-                        extra={[
-                                <Button type="primary" key="console">
-                                    Go to your profile
-                                </Button>
-                        ]}
-                    /> : null}
+                </Modal.Footer>
+            </Modal>
+            <Modal show={isSuccessful} onHide={modalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Successfully Posted Your Property!</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <p>Go to your profile to view/share your new posted property</p>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={modal2Close}>Close</Button>
+                    <Button variant="primary">Go To Profile</Button>
                 </Modal.Footer>
             </Modal>
         </div>

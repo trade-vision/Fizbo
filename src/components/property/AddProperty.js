@@ -8,6 +8,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
+import { Spin, Upload, message, Icon, Result } from 'antd';
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +45,8 @@ export default function AddProperty(props) {
     const [sqrFt, setSqrFt] = useState('');
     const [comparableProp, setComparableProp] = useState('');
     const [description, setDescription] = useState('');
+    const [signedUp, setSignedUp] = useState(false);
+    const [isSuccessful, setisSuccessful] = useState(false);
 
     const modalClose = () => setShow(false);
    
@@ -133,6 +136,7 @@ export default function AddProperty(props) {
 
     const submitProperty = async () => {
         const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id};
+        setSignedUp(true);
         try {
         let propReponse = await axios.post('/listings', propCredentials);
         // console.log(propReponse.data.id);
@@ -140,6 +144,10 @@ export default function AddProperty(props) {
             propertyImages.forEach(async (image) => {
                 let imagesResponse = await axios.post('/images', { url: image, listingId: listingId});
                 console.log(imagesResponse);
+                if(imagesResponse.status === 201){
+                    setSignedUp(false);
+                    setisSuccessful(true);
+                }
             });
         
         }
@@ -221,6 +229,17 @@ export default function AddProperty(props) {
                     <Button variant="primary" onClick={submitProperty}>
                         Post Property
           </Button>
+                    <Spin spinning={signedUp} size="large"></Spin>
+                    {isSuccessful ? <Result
+                        status="success"
+                        title="Successfully Posted Property Up!"
+                        subTitle="Return Home to view properties in your area"
+                        extra={[
+                                <Button type="primary" key="console">
+                                    Go to your profile
+                                </Button>
+                        ]}
+                    /> : null}
                 </Modal.Footer>
             </Modal>
         </div>

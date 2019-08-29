@@ -40,7 +40,7 @@ function App(props) {
   return (
     <div className="App">
       <Welcome />
-      <PropertyList />
+      <PropertyList user={user}/>
       {isSignedIn ? <AddProperty user={user}/> : null}
     </div>
   );

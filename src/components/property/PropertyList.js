@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 // import Paper from '@material-ui/core/Paper';
@@ -18,10 +18,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SpacingGrid() {
-    const [spacing, setSpacing] = React.useState(2);
+export default function PropertyList(props) {
+    const [spacing, setSpacing] = useState(2);
     const classes = useStyles();
 
+    
 
     return (
         <Grid container className={classes.root} spacing={2}>

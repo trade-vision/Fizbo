@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
+import {Button} from 'react-bootstrap';
 import { withRouter } from "react-router";
+import PropertyList from '../property/PropertyList'
 
 
 import '../../css/App.css'
@@ -51,13 +53,9 @@ function Profile(props) {
     return (
         <div>
         <CardProfile loading={loading}>
-            <Meta
-                title="Profile"
-                description={userData.name}
-            />
             <BgUser>
                 <div className="avatar-user">
-                    <Avatar src={userData.profile_pic} size={150} />
+                    <Avatar src={userData.profile_pic} size={160} />
                 </div>
             </BgUser>
             <Row type="flex" gutter={18}>
@@ -77,11 +75,12 @@ function Profile(props) {
                         </div>
                     </div>
                 </Col>
-                <Col span={18}>
-                    <Description />
+                    <Col md={{ span: 3, offset: 15 }}>
+                        <Button className="editProfile">Edit Profile</Button>
                 </Col>
             </Row>
         </CardProfile>
+            <PropertyList className="card-profile"/>
         </div>
         );
     };

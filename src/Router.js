@@ -28,7 +28,7 @@ function Router() {
     useEffect(() => {
         // code to run on component mount
         handleUser();
-    })
+    }, [])
     
     return (
         <div className="App">
@@ -36,7 +36,7 @@ function Router() {
             <BrowserRouter>
                 <Nav user={user} />
                 <Switch>  
-                    <Route path="/" render={() => <App />} exact />
+                    <Route path="/" render={() => <App user={user}/>} exact />
                     <Route exact path="/signIn" render={() => <SignInView />} />
                     <Route exact path="/signUp" render={() => <SignUpView />} />
                     <Route exact path="/userProfile" render={() => <UserProfile />} />

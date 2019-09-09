@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
+const db = require('../../db/');
 
 module.exports = function (app) {
   // Add your custom middleware here. Remember that
@@ -8,13 +9,18 @@ module.exports = function (app) {
   
   app.get('/auth/google', passport.authenticate('google', { scope: ['email profile'] }));
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
+  app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+      res.redirect('/');
+    });
 
- 
+  app.get('/properties/:userId', (req, res) => {
+    db.Listings.findAll({ where: { userId: req.params.userId } }).
+      then((properties)=> { 
+        res.send(properties);
+      });
+  });
 };
 

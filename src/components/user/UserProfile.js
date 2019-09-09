@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import {Button} from 'react-bootstrap';
 import { withRouter } from "react-router";
-import PropertyList from '../property/PropertyList'
+import PropertyList from '../property/UserPropertyList'
+import axios from 'axios';
 
 
 import '../../css/App.css'
@@ -39,14 +40,37 @@ function Profile(props) {
     const [loading, setLoading] = useState(true);
     const [profilePic, setProfilePic] = useState('');
     const userData = props.history.location.state;
-    // console.log(props)
+    const [properties, setUserProps] = useState([]);
+    
+    const handleUserProperties = () => {
+        try {
+                axios.get(`/properties/${userData.id}`)
+                    .then((propResponse) => {
+                        let myProps = propResponse.data;
+                        setUserProps(myProps);
+                    //grabbing the images for each property
+                        // myProps.map(async (prop)=> {
+                        //     let images = await axios.get(`images/${prop.id}`);
+                        //     console.log(images);
+                        // })
+                    });
+                
+              
+                
+                
+        } catch {
+
+        }
+    }
     
 
-    useEffect(() => {
+    useEffect(() => { 
+        // console.log(props.properties);
+        handleUserProperties();
         setTimeout(() => {
             setLoading(false);  
         }, 1500);
-    });
+    }, []);
 
    
 
@@ -80,7 +104,7 @@ function Profile(props) {
                 </Col>
             </Row>
         </CardProfile>
-            <PropertyList className="card-profile"/>
+            <PropertyList userProps={properties} className="card-profile"/>
         </div>
         );
     };

@@ -10,7 +10,6 @@ function Router() {
 
     const [user, setUser] = useState(false);
     const [isSignedIn, setIsSignedIn] = useState(false)
-    const [properties, setUserProps] = useState([]);
 
     //Handles user's information and properties
     const handleUser = async () => {
@@ -19,20 +18,8 @@ function Router() {
             let userData = response.data;
             setUser(userData)
             setIsSignedIn(true);
-            if(isSignedIn){
-                let propResponse = await axios.get(`/properties/${user.id}`);
-                setUserProps(propResponse.data)
-            }
         } catch {
             console.log('gotta login bro');
-        }
-    }
-
-    const handleUserProperties = async () => {
-        try {
-            let response = await axios.get('/')
-        } catch {
-
         }
     }
 

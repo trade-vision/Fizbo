@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './css/App.css';
 import { withRouter } from "react-router";
 import Welcome from './components/Welcome.js'
-import PropertyList from './components/property/PropertyList.js'
+import PropertyList from './components/property/HomepageProps'
 import Nav from './components/Nav.js'
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';

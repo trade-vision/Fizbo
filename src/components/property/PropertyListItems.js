@@ -40,13 +40,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PropertyCard() {
+export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-
+    const propertyInfo = props.userProperties;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
+
+
 
     return (
         <Card className={classes.card}>

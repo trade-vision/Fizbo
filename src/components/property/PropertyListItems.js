@@ -48,18 +48,30 @@ export default function PropertyCard(props) {
         setExpanded(!expanded);
     }
 
-    const handleProperties = () => {
-        //iterate through array of images
-        //if the id of the proprty is equal to the property id of the image
-            //add the image to the property object
-    }
+    // propertyInfo.images = [];
+
+    // const handleProperties = () => {
+    //     //iterate through array of images
+    //     const images = props.images;
+    //     images.map((image) => {
+    //     //if the id of the proprty is equal to the property id of the image
+    //     if(image.propId === propertyInfo.id){
+    //         //add the image to the property object
+    //         // console.log(image);
+    //         propertyInfo.images.push(image)
+    //     }
+
+    //     });
+    // }
 
     useEffect(() => {
         // console.log(props.properties);
-        // console.log(props);
+        // handleProperties();
+        console.log(propertyInfo.images[0]);
     });
 
     return (
+        
         <Card className={classes.card}>
             <CardHeader
                 avatar={
@@ -75,11 +87,11 @@ export default function PropertyCard(props) {
                 title={propertyInfo.address}
                 subheader="September 14, 2016"
             />
-            <CardMedia
+            {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
-                // image={props.images[0]}
+                image={propertyInfo.images[0].url}
                 title="Paella dish"
-            />
+            /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
                     {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
@@ -113,6 +125,6 @@ export default function PropertyCard(props) {
           </Typography>
                 </CardContent>
             </Collapse>
-        </Card>
+        </Card> 
     );
 }

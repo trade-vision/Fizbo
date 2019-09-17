@@ -48,14 +48,16 @@ function Profile(props) {
                 axios.get(`/properties/${userData.id}`)
                     .then((propResponse) => {
                         let myProps = propResponse.data;
+                        myProps.forEach(prop => prop.images = []);
                         setUserProps(myProps);
+                        
                     // grabbing the images for each property
                         myProps.map(async (prop)=> {
                             let images = await axios.get(`images/${prop.id}`);
                             images.data.map((image) => {
                                 // console.log(image);
                                 image.propId = prop.id;
-                                propImages.push(image)
+                                prop.images.push(image);
                             });
                         })
                     });

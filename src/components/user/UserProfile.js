@@ -41,6 +41,7 @@ function Profile(props) {
     const [profilePic, setProfilePic] = useState('');
     const userData = props.history.location.state;
     const [properties, setUserProps] = useState([]);
+    const [propImages, setPropImages] = useState([]);
     
     const handleUserProperties = () => {
         try {
@@ -48,11 +49,15 @@ function Profile(props) {
                     .then((propResponse) => {
                         let myProps = propResponse.data;
                         setUserProps(myProps);
-                    //grabbing the images for each property
-                        // myProps.map(async (prop)=> {
-                        //     let images = await axios.get(`images/${prop.id}`);
-                        //     console.log(images);
-                        // })
+                    // grabbing the images for each property
+                        myProps.map(async (prop)=> {
+                            let images = await axios.get(`images/${prop.id}`);
+                            images.data.map((image) => {
+                                // console.log(image);
+                                image.propId = prop.id;
+                                propImages.push(image)
+                            });
+                        })
                     });
                 
               
@@ -104,7 +109,7 @@ function Profile(props) {
                 </Col>
             </Row>
         </CardProfile>
-            <PropertyList userProps={properties} className="card-profile"/>
+            <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile"/>
         </div>
         );
     };

@@ -22,5 +22,12 @@ module.exports = function (app) {
         res.send(properties);
       });
   });
+
+  app.get('/images/:propId', (req, res)=> {
+    db.Images.findAll({ where: { listingId: req.params.propId } }).
+      then((images) => {
+        res.send(images);
+      });
+  });
 };
 

@@ -28,11 +28,11 @@ export default function PropertyList(props) {
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={spacing}>
-                    {[0, 1, 2, 3, 4, 6].map(value => (
+                    {/* {[0, 1, 2, 3, 4, 6].map(value => (
                         <Grid key={value} item>
                             <PropertyCard className={classes.paper} />
                         </Grid>
-                    ))}
+                    ))} */}
                 </Grid>
             </Grid>
         </Grid>

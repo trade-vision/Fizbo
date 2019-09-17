@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -48,14 +48,23 @@ export default function PropertyCard(props) {
         setExpanded(!expanded);
     }
 
+    const handleProperties = () => {
+        //iterate through array of images
+        //if the id of the proprty is equal to the property id of the image
+            //add the image to the property object
+    }
 
+    useEffect(() => {
+        // console.log(props.properties);
+        // console.log(props);
+    });
 
     return (
         <Card className={classes.card}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
+                        {props.user.name[0]}
           </Avatar>
                 }
                 action={
@@ -63,17 +72,17 @@ export default function PropertyCard(props) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title="21621 HIGHWAY 23 Highway"
+                title={propertyInfo.address}
                 subheader="September 14, 2016"
             />
             <CardMedia
                 className={classes.media}
-                // image="/static/images/cards/paella.jpg"
+                // image={props.images[0]}
                 title="Paella dish"
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    3 beds |  1 baths |  1,475 sqft.
+                    {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
         </Typography>
             </CardContent>
             <CardActions disableSpacing>

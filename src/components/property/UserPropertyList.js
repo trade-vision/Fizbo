@@ -22,15 +22,16 @@ export default function PropertyList(props) {
     const [spacing, setSpacing] = useState(2);
     const classes = useStyles();
     const userProperties = props.userProps
+    const images = props.propImages;
     
 
     return (
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={spacing}>
-                    {userProperties.map(value => (
-                        <Grid key={value} item>
-                            <PropertyCard userProperties={userProperties} className={classes.paper} />
+                    {userProperties.map(property => (
+                        <Grid key={property} item>
+                            <PropertyCard user={props.user} userProperties={property} images={images} className={classes.paper} />
                         </Grid>
                     ))}
                 </Grid>

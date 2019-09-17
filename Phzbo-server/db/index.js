@@ -9,8 +9,8 @@ const sequelize = new Sequelize('postgres', 'phzbo', 'phzbodevteam', {
 
 const models = [
   'User',
-  'Listings'
-// 'Image'
+  'Listings',
+  'Images'
 ];
 
 models.forEach((model) => {

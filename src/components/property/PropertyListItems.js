@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -42,28 +42,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function PropertyCard(props) {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    let [currentPic, setCurrentPic] = useState(0);
+
     const propertyInfo = props.userProperties;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
 
-    // propertyInfo.images = [];
-
-    // const handleProperties = () => {
-    //     //iterate through array of images
-    //     const images = props.images;
-    //     images.map((image) => {
-    //     //if the id of the proprty is equal to the property id of the image
-    //     if(image.propId === propertyInfo.id){
-    //         //add the image to the property object
-    //         // console.log(image);
-    //         propertyInfo.images.push(image)
-    //     }
-
-    //     });
-    // }
-
+    const changePicture = () => {
+        setCurrentPic(currentPic += 1);
+    }
     useEffect(() => {
         // console.log(props.properties);
         // handleProperties();
@@ -89,8 +78,10 @@ export default function PropertyCard(props) {
             />
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
-                image={propertyInfo.images[0].url}
+                image={propertyInfo.images[(currentPic) % propertyInfo.images.length].url}
                 title="Paella dish"
+                //add click handler
+                onClick={changePicture}
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">

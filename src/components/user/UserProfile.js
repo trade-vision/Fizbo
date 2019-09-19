@@ -44,6 +44,10 @@ function Profile(props) {
     const [properties, setUserProps] = useState([]);
     const [propImages, setPropImages] = useState([]);
     
+    const [viewMapText, setViewMapText] = useState(['View on map', 'Hide Map']);
+    const [isMapShown, setIsMapShown] = useState(false);
+    let [numMapToggle, setNumMapToggle] = useState(0)
+    
     const handleUserProperties = () => {
         try {
                 axios.get(`/properties/${userData.id}`)
@@ -70,7 +74,17 @@ function Profile(props) {
 
         }
     }
+
+    const changePicture = () => {
+        setNumMapToggle(numMapToggle += 1);
+    }
     
+    const showMap = () => {
+        changePicture();
+        // setViewMapText();
+        console.log()
+        setIsMapShown(!isMapShown)
+    }
 
     useEffect(() => { 
         // console.log(props.properties);
@@ -113,7 +127,10 @@ function Profile(props) {
             </Row>
         </CardProfile>
             <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile"/>
-            <Map />
+            {isMapShown ? <Map /> : null}
+            <div>
+            <Button onClick={showMap}>{viewMapText[(numMapToggle) % viewMapText.length]}</Button>
+            </div>
         </div>
         );
     };

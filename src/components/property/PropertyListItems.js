@@ -54,9 +54,7 @@ export default function PropertyCard(props) {
         setCurrentPic(currentPic += 1);
     }
     useEffect(() => {
-        // console.log(props.properties);
-        // handleProperties();
-        console.log(propertyInfo.images[0]);
+       
     });
 
     return (

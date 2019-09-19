@@ -3,6 +3,7 @@ import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import {Button} from 'react-bootstrap';
 import { withRouter } from "react-router";
 import PropertyList from '../property/UserPropertyList'
+import Map from '../property/Map'
 import axios from 'axios';
 
 
@@ -112,6 +113,7 @@ function Profile(props) {
             </Row>
         </CardProfile>
             <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile"/>
+            <Map />
         </div>
         );
     };

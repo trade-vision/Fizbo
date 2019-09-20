@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -40,20 +40,30 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PropertyCard() {
+export default function PropertyCard(props) {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    let [currentPic, setCurrentPic] = useState(0);
 
+    const propertyInfo = props.userProperties;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
 
+    const changePicture = () => {
+        setCurrentPic(currentPic += 1);
+    }
+    useEffect(() => {
+       
+    });
+
     return (
+        
         <Card className={classes.card}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
+                        {props.user.name[0]}
           </Avatar>
                 }
                 action={
@@ -61,17 +71,19 @@ export default function PropertyCard() {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title="21621 HIGHWAY 23 Highway"
+                title={propertyInfo.address}
                 subheader="September 14, 2016"
             />
-            <CardMedia
+            {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
-                // image="/static/images/cards/paella.jpg"
+                image={propertyInfo.images[(currentPic) % propertyInfo.images.length].url}
                 title="Paella dish"
-            />
+                //add click handler
+                onClick={changePicture}
+            /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    3 beds |  1 baths |  1,475 sqft.
+                    {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
         </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -102,6 +114,6 @@ export default function PropertyCard() {
           </Typography>
                 </CardContent>
             </Collapse>
-        </Card>
+        </Card> 
     );
 }

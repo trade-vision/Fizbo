@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const cities = ['New Orleans', 'Baton Rouge', 'Westabnk', 'Kenner', 'Mandeville', 'Hammond']
+const cities = ['New Orleans', 'Baton Rouge', 'Westbank', 'Kenner', 'Mandeville', 'Hammond']
 
 export default function WelcomeHeader() {
 

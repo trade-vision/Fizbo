@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
+import {Button} from 'react-bootstrap';
 import { withRouter } from "react-router";
+import PropertyList from '../property/UserPropertyList'
+import Map from '../property/Map'
+import axios from 'axios';
 
 
 import '../../css/App.css'
@@ -37,27 +41,67 @@ function Profile(props) {
     const [loading, setLoading] = useState(true);
     const [profilePic, setProfilePic] = useState('');
     const userData = props.history.location.state;
-    // console.log(props)
+    const [properties, setUserProps] = useState([]);
+    const [propImages, setPropImages] = useState([]);
     
+    const [viewMapText, setViewMapText] = useState(['View on map', 'Hide Map']);
+    const [isMapShown, setIsMapShown] = useState(false);
+    let [numMapToggle, setNumMapToggle] = useState(0)
+    
+    const handleUserProperties = () => {
+        try {
+                axios.get(`/properties/${userData.id}`)
+                    .then((propResponse) => {
+                        let myProps = propResponse.data;
+                        myProps.forEach(prop => prop.images = []);
+                        setUserProps(myProps);
+                        
+                    // grabbing the images for each property
+                        myProps.map(async (prop)=> {
+                            let images = await axios.get(`images/${prop.id}`);
+                            images.data.map((image) => {
+                                // console.log(image);
+                                image.propId = prop.id;
+                                prop.images.push(image);
+                            });
+                        })
+                    });
+                
+              
+                
+                
+        } catch {
 
-    useEffect(() => {
+        }
+    }
+
+    const changePicture = () => {
+        setNumMapToggle(numMapToggle += 1);
+    }
+    
+    const showMap = () => {
+        changePicture();
+        // setViewMapText();
+        console.log()
+        setIsMapShown(!isMapShown)
+    }
+
+    useEffect(() => { 
+        // console.log(props.properties);
+        handleUserProperties();
         setTimeout(() => {
             setLoading(false);  
         }, 1500);
-    });
+    }, []);
 
    
 
     return (
         <div>
         <CardProfile loading={loading}>
-            <Meta
-                title="Profile"
-                description={userData.name}
-            />
             <BgUser>
                 <div className="avatar-user">
-                    <Avatar src={userData.profile_pic} size={150} />
+                    <Avatar src={userData.profile_pic} size={160} />
                 </div>
             </BgUser>
             <Row type="flex" gutter={18}>
@@ -77,11 +121,16 @@ function Profile(props) {
                         </div>
                     </div>
                 </Col>
-                <Col span={18}>
-                    <Description />
+                    <Col md={{ span: 3, offset: 15 }}>
+                        <Button className="editProfile">Edit Profile</Button>
                 </Col>
             </Row>
         </CardProfile>
+            <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile"/>
+            {isMapShown ? <Map /> : null}
+            <div>
+            <Button onClick={showMap}>{viewMapText[(numMapToggle) % viewMapText.length]}</Button>
+            </div>
         </div>
         );
     };

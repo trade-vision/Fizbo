@@ -53,6 +53,7 @@ function Profile(props) {
                 axios.get(`/properties/${userData.id}`)
                     .then((propResponse) => {
                         let myProps = propResponse.data;
+                        // console.log(myProps);
                         myProps.forEach(prop => prop.images = []);
                         setUserProps(myProps);
                         

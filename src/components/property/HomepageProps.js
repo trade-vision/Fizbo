@@ -23,6 +23,8 @@ export default function PropertyList(props) {
     const classes = useStyles();
     const userProperties = props.userProps
 
+    
+
 
     return (
         <Grid container className={classes.root} spacing={2}>

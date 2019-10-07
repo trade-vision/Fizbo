@@ -4,7 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue'
-
+import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 
 const theme = {
@@ -97,8 +97,10 @@ export default function WelcomeHeader() {
                 />
                 </p>
             </Jumbotron>
-            
+            <div>
+                <PropertyList />
+            </div>
         </React.Fragment>
-        
+       
     );
 }

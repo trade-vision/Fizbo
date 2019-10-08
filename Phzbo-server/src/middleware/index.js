@@ -34,7 +34,16 @@ module.exports = function (app) {
 
   //finds all the properties for a specific city and zip code
   app.get('/propertiesAll/:city', (req, res) => {
-    res.send(req.params.city);
+    let zip = req.params.city.split(',')[1];
+    let city = req.params.city.split(',')[0];
+    res.send(`${city}, ${zip}`);
+    db.Listings.findAll().
+      then((properties) => {
+        const allProps = properties.filter((property) => {
+          return property.address.split(' ')[property.address.split(' ').length - 1] === zip;
+        });
+        res.send(allProps);
+      });
   });
 };
 

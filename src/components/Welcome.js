@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Dropdown from 'react-bootstrap/Dropdown'
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +7,7 @@ import blue from '@material-ui/core/colors/blue'
 import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
 
 
 const theme = {
@@ -74,6 +75,20 @@ export default function WelcomeHeader() {
     }
 
     //function sends get request for properties based on zip code and city 
+    const filterProperties = () => {
+        if(zipCode.length === 5){
+            axios.get(`/propertiesAll/${city},${zipCode}`)
+                .then((properties)=>{
+                   let allProps = properties.data;
+                    console.log(allProps)
+                })
+        }
+    }
+
+    useEffect(() => {
+        // code to run on component mount
+        filterProperties();
+    })
 
     return (
         <React.Fragment>

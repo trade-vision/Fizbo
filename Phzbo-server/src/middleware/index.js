@@ -15,7 +15,8 @@ module.exports = function (app) {
     // Successful authentication, redirect home.
       res.redirect('/');
     });
-
+  
+  //finds all user's properties
   app.get('/properties/:userId', (req, res) => {
     db.Listings.findAll({ where: { userId: req.params.userId } }).
       then((properties)=> { 
@@ -23,11 +24,17 @@ module.exports = function (app) {
       });
   });
 
+  //finds all the images for a user's properties
   app.get('/images/:propId', (req, res)=> {
     db.Images.findAll({ where: { listingId: req.params.propId } }).
       then((images) => {
         res.send(images);
       });
+  });
+
+  //finds all the properties for a specific city and zip code
+  app.get('/propertiesAll/:city', (req, res) => {
+    res.send(req.params.city);
   });
 };
 

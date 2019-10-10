@@ -45,7 +45,7 @@ export default function PropertyCard(props) {
     const [expanded, setExpanded] = useState(false);
     let [currentPic, setCurrentPic] = useState(0);
 
-    // const propertyInfo = props.userProperties;
+    const propertyInfo = props.property;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
@@ -53,9 +53,7 @@ export default function PropertyCard(props) {
     const changePicture = () => {
         setCurrentPic(currentPic += 1);
     }
-    useEffect(() => {
-
-    });
+    
 
     return (
 
@@ -71,19 +69,19 @@ export default function PropertyCard(props) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                // title={propertyInfo.address}
+                title={propertyInfo.address}
                 subheader="September 14, 2016"
             />
-            {/* {propertyInfo.images[0] ? <CardMedia
+            {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
                 image={propertyInfo.images[(currentPic) % propertyInfo.images.length].url}
                 title="Paella dish"
                 //add click handler
                 onClick={changePicture}
-            /> : null} */}
+            /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {/* {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`} */}
+                    {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>

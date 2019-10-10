@@ -48,6 +48,7 @@ export default function WelcomeHeader() {
         city: 'New Orleans',
     });
     const [city, setCity] = React.useState(cities[0])
+    const [allProps, setAllProps] = useState([])
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -65,7 +66,7 @@ export default function WelcomeHeader() {
     const handleZip = event => {
         const zip = event.target.value;
         setZip(zip);
-        console.log(zipCode);
+        console.log(zipCode.length);
     }
 
     //function changes the state of the city
@@ -76,12 +77,25 @@ export default function WelcomeHeader() {
 
     //function sends get request for properties based on zip code and city 
     const filterProperties = () => {
-        if(zipCode.length === 5){
-            axios.get(`/propertiesAll/${city},${zipCode}`)
+        if(zipCode.length ===  5){
+            axios.get(`/propertiesAll/${zipCode}`)
                 .then((properties)=>{
                    let allProps = properties.data;
-                    console.log(allProps)
-                })
+                    allProps.forEach(prop => prop.images = []);
+                    
+
+                    // grabbing the images for each property
+                    // allProps.map(async (prop) => {
+                    //     let images = await axios.get(`images/${prop.id}`);
+                    //     images.data.map((image) => {
+                    //         // console.log(image);
+                    //         image.propId = prop.id;
+                    //         prop.images.push(image);
+                    //     });
+                    // })
+
+                    setAllProps(allProps);
+                });
         }
     }
 
@@ -136,7 +150,7 @@ export default function WelcomeHeader() {
                 </p>
             </Jumbotron>
             <div>
-                <PropertyList />
+                <PropertyList properties={allProps}/>
             </div>
         </React.Fragment>
        

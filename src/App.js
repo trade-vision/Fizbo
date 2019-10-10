@@ -34,7 +34,7 @@ function App(props) {
   useEffect(() => {
     // code to run on component mount
     handleUser();
-  });
+  }, []);
   
 
   return (

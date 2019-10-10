@@ -21,18 +21,18 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyList(props) {
     const [spacing, setSpacing] = useState(2);
     const classes = useStyles();
-    const userProperties = props.userProps
+    const allProps = props.properties
 
-    
+
 
 
     return (
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={spacing}>
-                    {[0, 1, 2, 3, 4, 6].map(value => (
-                        <Grid key={value} item>
-                            <PropertyCard className={classes.paper} />
+                    {allProps.map(property => (
+                        <Grid key={property} item>
+                            <PropertyCard property={property} className={classes.paper} />
                         </Grid>
                     ))}
                 </Grid>

@@ -49,6 +49,7 @@ export default function WelcomeHeader() {
     });
     const [city, setCity] = React.useState(cities[0])
     const [allProps, setAllProps] = useState([])
+    const [picsSent, setPicsSent] = useState(false)
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -85,24 +86,34 @@ export default function WelcomeHeader() {
                     
 
                     // grabbing the images for each property
-                    // allProps.map(async (prop) => {
-                    //     let images = await axios.get(`images/${prop.id}`);
-                    //     images.data.map((image) => {
-                    //         // console.log(image);
-                    //         image.propId = prop.id;
-                    //         prop.images.push(image);
-                    //     });
-                    // })
+                    allProps.map(async (prop) => {
+                        let images = await axios.get(`images/${prop.id}`);
+                        if (images.data.length > 0){
+                            images.data.map((image) => {
+                                image.propId = prop.id;
+                                prop.images.push(image);
+                            });
+                            setPicsSent(true)
+                        }   
+                    })
 
                     setAllProps(allProps);
                 });
         }
     }
 
+    const picAnaylzer = () => {
+        if(picsSent){
+            setZip(zipCode + ' ' + ' ');
+        }
+    }
+
     useEffect(() => {
         // code to run on component mount
+        
         filterProperties();
-    })
+        picAnaylzer();
+    }, [filterProperties])
 
     return (
         <React.Fragment>

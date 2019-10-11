@@ -7,8 +7,10 @@ import blue from '@material-ui/core/colors/blue'
 import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Grid from '@material-ui/core/Grid';
+import { Typography } from 'antd';
 import axios from 'axios';
 
+const { Title } = Typography;
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
@@ -47,9 +49,10 @@ export default function WelcomeHeader() {
     const [values, setValues] = React.useState({
         city: 'New Orleans',
     });
-    const [city, setCity] = React.useState(cities[0])
-    const [allProps, setAllProps] = useState([])
-    const [picsSent, setPicsSent] = useState(false)
+    const [city, setCity] = React.useState(cities[0]);
+    const [allProps, setAllProps] = useState([]);
+    const [propsSent, setPropsSent] = useState(false);
+    const [picsSent, setPicsSent] = useState(false);
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -81,6 +84,7 @@ export default function WelcomeHeader() {
         if(zipCode.length ===  5){
             axios.get(`/propertiesAll/${zipCode}`)
                 .then((properties)=>{
+                   setPropsSent(true);
                    let allProps = properties.data;
                     allProps.forEach(prop => prop.images = []);
                     
@@ -99,13 +103,15 @@ export default function WelcomeHeader() {
 
                     setAllProps(allProps);
                 });
+        } else if(zipCode.length < 5) {
+            setPropsSent(false);
         }
     }
 
     const picAnaylzer = () => {
         if(picsSent){
             setZip(zipCode + ' ' + ' ');
-        }
+        } 
     }
 
     useEffect(() => {
@@ -122,7 +128,7 @@ export default function WelcomeHeader() {
                 <h1 align="center">Welcome to  Phzbo!</h1>
                 <h6 align="center">The intermediary between real-estate wholesalers and property investors.</h6>
                 <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
-                <h6 align="center">    Put your city and zip code below to see properties near you!</h6>
+                <h6 align="center">    Put your zip code in below to see properties near you!</h6>
                 <p>
                     <Grid container justify="center" >
                     <TextField
@@ -138,7 +144,15 @@ export default function WelcomeHeader() {
                 </p>
             </Jumbotron>
             <div>
-                <PropertyList properties={allProps}/>
+              {
+                  propsSent ? 
+                    <PropertyList properties={allProps} /> : 
+                        <div style={{ marginTop: '100px' }}>
+                        <Grid container justify="center" >
+                            <Title level={2}>Search for properties using your zip code..</Title>
+                    </Grid>
+                    </div>
+                } 
             </div>
         </React.Fragment>
        

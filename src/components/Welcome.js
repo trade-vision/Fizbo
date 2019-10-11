@@ -124,29 +124,6 @@ export default function WelcomeHeader() {
                 <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
                 <h6 align="center">    Put your city and zip code below to see properties near you!</h6>
                 <p>
-                    <Dropdown
-                        classes={{
-                            input: classes.inputCenter
-                        }}
-                        align="center"
-                        label="Select"
-                        // className={classes.textField}
-                        onChange={handleChange('currency')}
-                        helperText="Please select your city"
-                        margin="dense"
-                        onSelect={cityChange}
-                    >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic" align={'center'} placeholder={"Choose your city"}>
-                            {city}
-  </Dropdown.Toggle>
-                        <Dropdown.Menu onSelect={cityChange}>
-                        {cities.map(city => (
-                            <Dropdown.Item key={city} value={city} eventKey={city}>
-                                {city}
-                            </Dropdown.Item>
-                        ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
                     <Grid container justify="center" >
                     <TextField
                         inputProps={{ style: { textAlign: 'center' } }}

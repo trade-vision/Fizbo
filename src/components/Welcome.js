@@ -125,7 +125,9 @@ export default function WelcomeHeader() {
         <React.Fragment>
             <CssBaseline />
             <Jumbotron>
-                <h1 align="center">Welcome to  Phzbo!</h1>
+                <Grid container justify="center" >
+                    <Title>Welcome to Phzbo</Title>
+                </Grid>
                 <h6 align="center">The intermediary between real-estate wholesalers and property investors.</h6>
                 <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
                 <h6 align="center">    Put your zip code in below to see properties near you!</h6>
@@ -149,7 +151,7 @@ export default function WelcomeHeader() {
                     <PropertyList properties={allProps} /> : 
                         <div style={{ marginTop: '100px' }}>
                         <Grid container justify="center" >
-                            <Title level={2}>Search for properties using your zip code..</Title>
+                            <Title level={3}>Search for properties using your zip code..</Title>
                     </Grid>
                     </div>
                 } 

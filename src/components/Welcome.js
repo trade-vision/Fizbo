@@ -70,7 +70,6 @@ export default function WelcomeHeader() {
     const handleZip = event => {
         const zip = event.target.value;
         setZip(zip);
-        console.log(zipCode.length);
     }
 
     //function changes the state of the city

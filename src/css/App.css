@@ -1,0 +1,133 @@
+
+
+body {
+  background: #ccc;
+}
+.content {
+  width: 600px;
+  margin: 0 auto;
+}
+.card-profile {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 2px 4px 10px #aaa;
+  padding: 20px;
+  position: relative;
+}
+.bg-user {
+  width: 100%;
+  height: 200px;
+  margin-top: 20px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(153, 255, 94, 0.6)), url("https://www.visittheusa.com/sites/default/files/styles/hero_m_1300x700/public/images/hero_media_image/2016-10/northshore%205.__72%20DPI.jpg?itok=tcpl3r4K") repeat-x center;
+  background-size: cover;
+  position: relative;
+}
+.bg-user .avatar-user {
+  position: absolute;
+  bottom: -40px;
+  left: 14px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  box-shadow: inset 2px 4px 10px #ddd;
+}
+.description {
+  text-align: justify;
+  margin-top: 20px;
+}
+.contact {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editProfile {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact .mail {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+.contact .mail i {
+  margin-right: 5px;
+  color: #d54b3d;
+}
+.contact .social {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+}
+.contact .social .ant-divider {
+  background: #aaa;
+  height: 16px;
+}
+.contact .social .facebook,
+.contact .social .instagram,
+.contact .social .linkedin,
+.contact .social .twitter {
+  cursor: pointer;
+}
+.contact .social .facebook {
+  color: #3b5998;
+}
+.contact .social .twitter {
+  color: #1c9deb;
+}
+.contact .social .instagram {
+  color: #bc328f;
+}
+.contact .social .linkedin {
+  color: #0177af;
+}
+.loading {
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+.loading .loader {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  border-top: 2px solid #1890ff;
+  -webkit-animation: loading 1s linear infinite;
+  /* Safari */
+  animation: loading 1s linear infinite;
+}
+/* Safari */
+@-webkit-keyframes loading {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.example-input .ant-input {
+  width: 200px;
+  margin: 0 8px 8px 0;
+}

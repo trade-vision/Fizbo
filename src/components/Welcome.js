@@ -1,11 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Dropdown from 'react-bootstrap/Dropdown'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue'
-
+import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
+import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
+
 
 const theme = {
     spacing: [0, 2, 3, 5, 8],
@@ -24,8 +27,8 @@ const useStyles = makeStyles(theme => ({
     textField: {
         align: "center",
         width: 300,
-        marginLeft: theme.spacing(83),
-        marginTop: theme.spacing(5),
+        // marginLeft: theme.spacing(83),
+        // marginTop: theme.spacing(5),
     },
     dense: {
         marginTop: 19,
@@ -35,17 +38,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const cities = ['New Orleans', 'Baton Rouge', 'Westabnk', 'Kenner', 'Mandeville', 'Hammond']
+const cities = ['New Orleans', 'Baton Rouge', 'Westbank', 'Kenner', 'Mandeville', 'Hammond']
 
 export default function WelcomeHeader() {
 
     const classes = useStyles();
+    const [zipCode, setZip] = React.useState('');
     const [values, setValues] = React.useState({
         city: 'New Orleans',
     });
+    const [city, setCity] = React.useState(cities[0])
+    const [allProps, setAllProps] = useState([])
+    const [picsSent, setPicsSent] = useState(false)
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
+        console.log(values);
     };
 
     const [index, setIndex] = useState(0);
@@ -55,6 +63,57 @@ export default function WelcomeHeader() {
         setIndex(selectedIndex);
         setDirection(e.direction);
     };
+
+    const handleZip = event => {
+        const zip = event.target.value;
+        setZip(zip);
+        console.log(zipCode.length);
+    }
+
+    //function changes the state of the city
+    const cityChange = event => {
+        const newCity = event;
+        setCity(newCity);
+    }
+
+    //function sends get request for properties based on zip code and city 
+    const filterProperties = () => {
+        if(zipCode.length ===  5){
+            axios.get(`/propertiesAll/${zipCode}`)
+                .then((properties)=>{
+                   let allProps = properties.data;
+                    allProps.forEach(prop => prop.images = []);
+                    
+
+                    // grabbing the images for each property
+                    allProps.map(async (prop) => {
+                        let images = await axios.get(`images/${prop.id}`);
+                        if (images.data.length > 0){
+                            images.data.map((image) => {
+                                image.propId = prop.id;
+                                prop.images.push(image);
+                            });
+                            setPicsSent(true)
+                        }   
+                    })
+
+                    setAllProps(allProps);
+                });
+        }
+    }
+
+    const picAnaylzer = () => {
+        if(picsSent){
+            setZip(zipCode + ' ' + ' ');
+        }
+    }
+
+    useEffect(() => {
+        // code to run on component mount
+        
+        filterProperties();
+        picAnaylzer();
+    }, [filterProperties])
 
     return (
         <React.Fragment>
@@ -72,33 +131,39 @@ export default function WelcomeHeader() {
                         align="center"
                         label="Select"
                         // className={classes.textField}
-                        // onChange={handleChange('currency')}
+                        onChange={handleChange('currency')}
                         helperText="Please select your city"
                         margin="dense"
+                        onSelect={cityChange}
                     >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic" align={'center'}>
-                        Choose your city
+                        <Dropdown.Toggle variant="success" id="dropdown-basic" align={'center'} placeholder={"Choose your city"}>
+                            {city}
   </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu onSelect={cityChange}>
                         {cities.map(city => (
-                            <Dropdown.Item key={city} value={city}>
+                            <Dropdown.Item key={city} value={city} eventKey={city}>
                                 {city}
                             </Dropdown.Item>
                         ))}
                         </Dropdown.Menu>
                     </Dropdown>
+                    <Grid container justify="center" >
                     <TextField
-                        inputProps={inputProps}
+                        inputProps={{ style: { textAlign: 'center' } }}
                         label="Enter zip code"
                         placeholder="Zip Code"
                         className={classes.textField}
                         margin="auto"
                         color={blue[400]}
+                        onChange={handleZip}
                 />
+                </Grid>
                 </p>
             </Jumbotron>
-            
+            <div>
+                <PropertyList properties={allProps}/>
+            </div>
         </React.Fragment>
-        
+       
     );
 }

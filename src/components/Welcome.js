@@ -174,27 +174,6 @@ export default function WelcomeHeader() {
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
-            {/* <Jumbotron>
-                <Grid container justify="center" >
-                    <Title>Welcome to Phzbo</Title>
-                </Grid>
-                <h6 align="center">The intermediary between real-estate wholesalers and property investors.</h6>
-                <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
-                <h6 align="center">    Put your zip code in below to see properties near you!</h6>
-                <p>
-                    <Grid container justify="center" >
-                    <TextField
-                        inputProps={{ style: { textAlign: 'center' } }}
-                        label="Enter zip code"
-                        placeholder="Zip Code"
-                        className={classes.textField}
-                        margin="auto"
-                        color={blue[400]}
-                        onChange={handleZip}
-                />
-                </Grid>
-                </p>
-            </Jumbotron> */}
             <Grid container justify="center" marginTop="50">
                 <TextField
                     inputProps={{ style: { textAlign: 'center' } }}

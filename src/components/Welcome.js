@@ -6,14 +6,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue'
 import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
+import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import { Typography } from 'antd';
 import axios from 'axios';
+import '../css/App.css'
 
 const { Title } = Typography;
 
 const theme = {
-    spacing: [0, 2, 3, 5, 8],
+    spacing: [0, 2, 3, 5, 6],
 }
 
 const inputProps = {
@@ -123,7 +125,56 @@ export default function WelcomeHeader() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Jumbotron>
+            <Carousel>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://i.ytimg.com/vi/0gjZrXyoaQY/maxresdefault.jpg"
+                        alt="First slide"
+                        height="600" 
+                        width="1200"
+                    />
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>                    
+                        </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://cdn.vox-cdn.com/thumbor/4rGH9tQpZ0rv_m86NM2swb8AX1k=/0x0:4000x2857/1200x675/filters:focal(1680x1109:2320x1749)/cdn.vox-cdn.com/uploads/chorus_image/image/59780613/EsplanadeAve_02_BayouEsplanadeTriangle_Gayarre.1526669317.jpg"
+                        alt="Third slide"
+                        height="600" 
+                        width="1200"
+                    />
+
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>  
+                    </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://latter-blum.com/Homes/Images/Listings/135274965/1/589f66eb835d7e3b75c8a696918bf3c6/Photo.jpg"
+                        alt="Third slide"
+                        height="600" 
+                        width="1200"
+                    />
+
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>  
+                    </Carousel.Caption>
+                </Carousel.Item>
+            </Carousel>
+            {/* <Jumbotron>
                 <Grid container justify="center" >
                     <Title>Welcome to Phzbo</Title>
                 </Grid>
@@ -143,7 +194,18 @@ export default function WelcomeHeader() {
                 />
                 </Grid>
                 </p>
-            </Jumbotron>
+            </Jumbotron> */}
+            <Grid container justify="center" marginTop="50">
+                <TextField
+                    inputProps={{ style: { textAlign: 'center' } }}
+                    label="Enter zip code"
+                    placeholder="Zip Code"
+                    className={classes.textField}
+                    margin="auto"
+                    color={blue[400]}
+                    onChange={handleZip}
+                />
+            </Grid>
             <div>
               {
                   propsSent ? 

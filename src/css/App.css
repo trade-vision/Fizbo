@@ -131,3 +131,15 @@ body {
   width: 200px;
   margin: 0 8px 8px 0;
 }
+
+h1.ant-typography {
+color: #fafafa;
+}
+
+.welcome {
+color: #fafafa;
+}
+
+.MuiGrid-justify-xs-center {
+    margin-top: 40px;
+}

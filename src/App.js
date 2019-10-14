@@ -2,25 +2,37 @@ import React, {useState, useEffect} from 'react';
 import './css/App.css';
 import { withRouter } from "react-router";
 import Welcome from './components/Welcome.js'
-import PropertyList from './components/property/HomepageProps'
-import Nav from './components/Nav.js'
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddProperty from './components/property/AddProperty'
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://localhost:8080/">
+        Phzbo
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 const useStyles = makeStyles(theme => ({
-  fab: {
-    // margin: theme.spacing(195),
-    // position: "fixed",
-    // marginTop: theme.spacing(100)
-    // color: theme.color("blue")
-  }
+  footer: {
+    marginTop: theme.spacing(30),
+    padding: theme.spacing(6, 0),
+  },
 }));
+
 
 
 function App(props) {
   const classes = useStyles();
-
   const [user, setUser] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -34,13 +46,26 @@ function App(props) {
   useEffect(() => {
     // code to run on component mount
     handleUser();
-  }, []);
+  }, [handleUser]);
   
 
   return (
     <div className="App">
       <Welcome />
       {isSignedIn ? <AddProperty user={user}/> : null}
+      {/* Footer */}
+      <footer className={classes.footer}>
+        <Container maxWidth="lg">
+          <Typography variant="h6" align="center" gutterBottom>
+            Phzbo®
+          </Typography>
+          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+            Your wholesale property destination.
+          </Typography>
+          <Copyright />
+        </Container>
+      </footer>
+      {/* End footer */}
     </div>
   );
 }

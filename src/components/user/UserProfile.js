@@ -4,6 +4,7 @@ import {Button} from 'react-bootstrap';
 import { withRouter } from "react-router";
 import PropertyList from '../property/UserPropertyList'
 import Map from '../property/Map'
+import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 
 
@@ -130,7 +131,9 @@ function Profile(props) {
             <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile"/>
             {isMapShown ? <Map /> : null}
             <div>
+                <Grid container justify="center" >
             <Button onClick={showMap}>{viewMapText[(numMapToggle) % viewMapText.length]}</Button>
+                </Grid>
             </div>
         </div>
         );

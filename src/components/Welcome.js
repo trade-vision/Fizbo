@@ -6,12 +6,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue'
 import PropertyList from './property/HomepageProps'
 import Jumbotron from 'react-bootstrap/Jumbotron'
+import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
+import { Typography } from 'antd';
 import axios from 'axios';
+import '../css/App.css'
 
+const { Title } = Typography;
 
 const theme = {
-    spacing: [0, 2, 3, 5, 8],
+    spacing: [0, 2, 3, 5, 6],
 }
 
 const inputProps = {
@@ -47,9 +51,10 @@ export default function WelcomeHeader() {
     const [values, setValues] = React.useState({
         city: 'New Orleans',
     });
-    const [city, setCity] = React.useState(cities[0])
-    const [allProps, setAllProps] = useState([])
-    const [picsSent, setPicsSent] = useState(false)
+    const [city, setCity] = React.useState(cities[0]);
+    const [allProps, setAllProps] = useState([]);
+    const [propsSent, setPropsSent] = useState(false);
+    const [picsSent, setPicsSent] = useState(false);
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -67,7 +72,6 @@ export default function WelcomeHeader() {
     const handleZip = event => {
         const zip = event.target.value;
         setZip(zip);
-        console.log(zipCode.length);
     }
 
     //function changes the state of the city
@@ -81,6 +85,7 @@ export default function WelcomeHeader() {
         if(zipCode.length ===  5){
             axios.get(`/propertiesAll/${zipCode}`)
                 .then((properties)=>{
+                   setPropsSent(true);
                    let allProps = properties.data;
                     allProps.forEach(prop => prop.images = []);
                     
@@ -99,13 +104,15 @@ export default function WelcomeHeader() {
 
                     setAllProps(allProps);
                 });
+        } else if(zipCode.length < 5) {
+            setPropsSent(false);
         }
     }
 
     const picAnaylzer = () => {
         if(picsSent){
             setZip(zipCode + ' ' + ' ');
-        }
+        } 
     }
 
     useEffect(() => {
@@ -118,50 +125,76 @@ export default function WelcomeHeader() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Jumbotron>
-                <h1 align="center">Welcome to  Phzbo!</h1>
-                <h6 align="center">The intermediary between real-estate wholesalers and property investors.</h6>
-                <h6 align="center">We have a variety of off market properties located all over Southeast Louisiana.</h6>
-                <h6 align="center">    Put your city and zip code below to see properties near you!</h6>
-                <p>
-                    <Dropdown
-                        classes={{
-                            input: classes.inputCenter
-                        }}
-                        align="center"
-                        label="Select"
-                        // className={classes.textField}
-                        onChange={handleChange('currency')}
-                        helperText="Please select your city"
-                        margin="dense"
-                        onSelect={cityChange}
-                    >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic" align={'center'} placeholder={"Choose your city"}>
-                            {city}
-  </Dropdown.Toggle>
-                        <Dropdown.Menu onSelect={cityChange}>
-                        {cities.map(city => (
-                            <Dropdown.Item key={city} value={city} eventKey={city}>
-                                {city}
-                            </Dropdown.Item>
-                        ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Grid container justify="center" >
-                    <TextField
-                        inputProps={{ style: { textAlign: 'center' } }}
-                        label="Enter zip code"
-                        placeholder="Zip Code"
-                        className={classes.textField}
-                        margin="auto"
-                        color={blue[400]}
-                        onChange={handleZip}
+            <Carousel>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://i.ytimg.com/vi/0gjZrXyoaQY/maxresdefault.jpg"
+                        alt="First slide"
+                        height="600" 
+                        width="1200"
+                    />
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>                    
+                        </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://cdn.vox-cdn.com/thumbor/4rGH9tQpZ0rv_m86NM2swb8AX1k=/0x0:4000x2857/1200x675/filters:focal(1680x1109:2320x1749)/cdn.vox-cdn.com/uploads/chorus_image/image/59780613/EsplanadeAve_02_BayouEsplanadeTriangle_Gayarre.1526669317.jpg"
+                        alt="Third slide"
+                        height="600" 
+                        width="1200"
+                    />
+
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>  
+                    </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="https://latter-blum.com/Homes/Images/Listings/135274965/1/589f66eb835d7e3b75c8a696918bf3c6/Photo.jpg"
+                        alt="Third slide"
+                        height="600" 
+                        width="1200"
+                    />
+
+                    <Carousel.Caption>
+                        <Title>Welcome to Phzbo</Title>
+                        <h6 align="center" className="welcome">The intermediary between real-estate wholesalers and property investors.</h6>
+                        <h6 align="center" className="welcome">We have a variety of off market properties located all over Southeast Louisiana.</h6>
+                        <h6 align="center" className="welcome">    Put your zip code in below to see properties near you!</h6>  
+                    </Carousel.Caption>
+                </Carousel.Item>
+            </Carousel>
+            <Grid container justify="center" marginTop="50">
+                <TextField
+                    inputProps={{ style: { textAlign: 'center' } }}
+                    label="Enter zip code"
+                    placeholder="Zip Code"
+                    className={classes.textField}
+                    margin="auto"
+                    color={blue[400]}
+                    onChange={handleZip}
                 />
-                </Grid>
-                </p>
-            </Jumbotron>
+            </Grid>
             <div>
-                <PropertyList properties={allProps}/>
+              {
+                  propsSent ? 
+                    <PropertyList properties={allProps} /> : 
+                        <div style={{ marginTop: '100px' }}>
+                        <Grid container justify="center" >
+                            <Title level={3}>Search for properties using your zip code..</Title>
+                    </Grid>
+                    </div>
+                } 
             </div>
         </React.Fragment>
        

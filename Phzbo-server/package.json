@@ -30,19 +30,23 @@
     "jest": "jest"
   },
   "dependencies": {
-    "@feathersjs/configuration": "^2.0.6",
-    "@feathersjs/errors": "^3.3.6",
-    "@feathersjs/express": "^1.3.1",
-    "@feathersjs/feathers": "^3.3.1",
-    "@feathersjs/socketio": "^3.2.9",
+    "@feathersjs/authentication-oauth": "^4.3.7",
+    "@feathersjs/configuration": "^4.3.7",
+    "@feathersjs/errors": "^4.3.7",
+    "@feathersjs/express": "^4.3.7",
+    "@feathersjs/feathers": "^4.3.7",
+    "@feathersjs/socketio": "^4.3.7",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
+    "feathers-cli": "^2.4.0",
     "feathers-sequelize": "^4.1.1",
+    "feathers-stripe": "^0.10.1",
     "helmet": "^3.20.0",
     "pg": "^7.12.1",
     "sequelize": "^4.44.2",
     "serve-favicon": "^2.5.0",
+    "stripe": "^7.10.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

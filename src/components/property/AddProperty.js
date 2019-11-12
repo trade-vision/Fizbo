@@ -9,6 +9,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import { Spin, Upload, message, Icon, Result } from 'antd';
+import StripeCheckout from 'react-stripe-checkout';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -48,6 +50,7 @@ export default function AddProperty(props) {
     const [description, setDescription] = useState('');
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
+    const [paymentToken, setPaymentToken] = useState(false);
 
     const modalClose = () => setShow(false);
 
@@ -139,8 +142,11 @@ export default function AddProperty(props) {
 
     const submitProperty = async () => {
         const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id};
-        setSignedUp(true);
+        
+        if (paymentToken) {
+            setSignedUp(true);
         try {
+      
         let propReponse = await axios.post('/listings', propCredentials);
             let listingId = propReponse.data.id;
             propertyImages.forEach(async (image) => {
@@ -156,6 +162,22 @@ export default function AddProperty(props) {
         catch {
         console.log("error")
         }
+    } else {
+        alert("You must pay the $50.00 fee for property post")
+    }
+    }
+
+    const onToken = (token) => {
+        axios.post('/createCharge', token)
+            .then((response) => {
+                if(response.status === 200){
+                    setPaymentToken(true);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Payment unsuccessful. Try again.")
+            })
     }
 
     useEffect(()=> {
@@ -225,6 +247,15 @@ export default function AddProperty(props) {
                 </Modal.Body>
             
                 <Modal.Footer>
+                    {paymentToken ? <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" /> : null}
+
+                    <StripeCheckout
+                        token={onToken}
+                        stripeKey="pk_test_PAC69Vxe0dk1tmPryhhTyg9Y00YvT524mw"
+                        amount={5000} // cents
+                        currency="USD"
+                    />
+
                     <Button variant="secondary" onClick={modalClose}>
                         Close
           </Button>
@@ -245,7 +276,6 @@ export default function AddProperty(props) {
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={modal2Close}>Close</Button>
-                    <Button variant="primary">Go To Profile</Button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -39,6 +39,7 @@
     "react-native-geolocation-service": "^3.0.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-stripe-checkout": "^2.6.3",
     "sequelize": "^5.13.0",
     "stripe": "^7.10.0",
     "typescript": "^3.6.4"

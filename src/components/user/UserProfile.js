@@ -6,8 +6,6 @@ import PropertyList from '../property/UserPropertyList'
 import Map from '../property/Map'
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-
-
 import '../../css/App.css'
 
 const { Meta } = Card;
@@ -67,11 +65,7 @@ function Profile(props) {
                                 prop.images.push(image);
                             });
                         })
-                    });
-                
-              
-                
-                
+                    });    
         } catch {
 
         }

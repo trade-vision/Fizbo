@@ -15,6 +15,10 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Modal, Button, Form } from 'react-bootstrap'
+import { Carousel } from 'antd';
+import '../../css/App.css';
+
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -43,22 +47,53 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
-    let [currentPic, setCurrentPic] = useState(0);
+    let [openPicModal, setOpenPicModal] = useState(false);
 
     const propertyInfo = props.userProperties;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
 
-    const changePicture = () => {
-        setCurrentPic(currentPic += 1);
+    
+
+    const openPicture = () => {
+        setOpenPicModal(true);
+    }
+
+    const closePicture = () => {
+        setOpenPicModal(!openPicModal);
     }
     useEffect(() => {
        
     });
 
     return (
-        
+        <div>
+            <Modal show={openPicModal} onHide={closePicture} width="1000px">
+                <Modal.Header closeButton>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <Carousel autoplay  >
+                        <div width="1000px">
+                            <h3>1</h3>
+                        </div>
+                        <div>
+                            <h3>2</h3>
+                        </div>
+                        <div>
+                            <h3>3</h3>
+                        </div>
+                        <div>
+                            <h3>4</h3>
+                        </div>
+                    </Carousel>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closePicture}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         <Card className={classes.card}>
             <CardHeader
                 avatar={
@@ -76,10 +111,10 @@ export default function PropertyCard(props) {
             />
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
-                image={propertyInfo.images[(currentPic) % propertyInfo.images.length].url}
+                image={propertyInfo.images[0].url}
                 title="Paella dish"
                 //add click handler
-                onClick={changePicture}
+                onClick={openPicture}
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
@@ -115,5 +150,6 @@ export default function PropertyCard(props) {
                 </CardContent>
             </Collapse>
         </Card> 
+        </div>
     );
 }

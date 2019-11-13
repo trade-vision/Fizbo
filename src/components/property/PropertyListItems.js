@@ -18,6 +18,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Modal, Button, Form } from 'react-bootstrap'
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
+import moment from 'moment'
 import '../../css/App.css';
 
 
@@ -116,7 +117,7 @@ export default function PropertyCard(props) {
                     </IconButton>
                 }
                 title={propertyInfo.address}
-                subheader="September 14, 2016"
+                    subheader={moment(propertyInfo.createdAt).fromNow()}
             />
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}

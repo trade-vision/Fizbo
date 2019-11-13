@@ -65,7 +65,7 @@ export default function PropertyCard(props) {
 
     const closePicture = () => {
         setOpenPicModal(!openPicModal);
-        setCurrentPic(currentPic += 1);
+        
     }
     useEffect(() => {
        

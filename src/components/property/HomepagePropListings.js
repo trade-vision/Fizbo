@@ -74,7 +74,7 @@ export default function PropertyCard(props) {
     return (
         <div>
             <Grid container justify="center" >
-                {openPicModal ? <Modal visible={openPicModal} footer={[
+                {openPicModal ? <Modal visible={openPicModal} onCancel={closePicture} footer={[
                     <Button key="back" onClick={closePicture} type="primary">
                         Return
                     </Button>

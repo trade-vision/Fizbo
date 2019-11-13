@@ -15,7 +15,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button } from 'antd'
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment'
@@ -75,11 +75,12 @@ export default function PropertyCard(props) {
     return (
         <div>
             <Grid container justify="center" >
-            <Modal show={openPicModal} onHide={closePicture} >
-                <Modal.Header closeButton>
-                </Modal.Header>
-
-                <Modal.Body>
+                <Modal visible={openPicModal} maskClosable={true} footer={[
+                    <Button key="back" onClick={closePicture} type="primary">
+                        Return
+                    </Button>    
+                ]}>
+                
                         <Carousel>
                     {
                     propertyInfo.images.map((pic)=> 
@@ -97,11 +98,6 @@ export default function PropertyCard(props) {
                     )
                     }
                         </Carousel>  
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={closePicture}>Close</Button>
-                </Modal.Footer>
             </Modal>
             </Grid>
         <Card className={classes.card}>
@@ -122,13 +118,13 @@ export default function PropertyCard(props) {
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
                 image={propertyInfo.images[0].url}
-                title="Paella dish"
+                title="Click to enlarge"
                 //add click handler
                 onClick={openPicture}
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
+                        {`${propertyInfo.sqr_feet} sqr ft.`}
         </Typography>
             </CardContent>
             <CardActions disableSpacing>

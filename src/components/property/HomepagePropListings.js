@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button } from 'antd'
 import moment from 'moment'
 import '../../css/App.css'
 
@@ -49,58 +49,56 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
-    let [openPicModal, setOpenPicModal] = useState(false);
+    const [openPicModal, setOpenPicModal] = useState(false);
     let [currentPic, setCurrentPic] = useState(0);
 
     const propertyInfo = props.property;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
+   
 
-    const changePicture = () => {
-        setCurrentPic(currentPic += 1);
-    }
-
-    const openPicture = () => {
+    const openPicture = (e) => {
         setOpenPicModal(true);
     }
 
-    const closePicture = () => {
+    const closePicture = (e) => {
         setOpenPicModal(!openPicModal);
 
     }
     
+    useEffect(() => {
+
+    });
 
     return (
         <div>
             <Grid container justify="center" >
-                <Modal show={openPicModal} onHide={closePicture} >
-                    <Modal.Header closeButton>
-                    </Modal.Header>
+                {openPicModal ? <Modal visible={openPicModal} footer={[
+                    <Button key="back" onClick={closePicture} type="primary">
+                        Return
+                    </Button>
+                ]}> 
 
-                    <Modal.Body>
-                        <Carousel>
-                            {
-                                propertyInfo.images.map((pic) =>
+                    <Carousel>
+                        {
+                            propertyInfo.images.map((pic) =>
 
-                                    <Carousel.Item>
-                                        <img
-                                            className="d-block w-100"
-                                            src={pic.url}
-                                            alt="First slide"
-                                            height="600"
-                                            width="1200"
-                                        />
-                                    </Carousel.Item>
+                                <Carousel.Item>
+                                    <img
+                                        className="d-block w-100"
+                                        src={pic.url}
+                                        alt="First slide"
+                                        height="600"
+                                        width="1200"
+                                    />
+                                </Carousel.Item>
 
-                                )
-                            }
-                        </Carousel>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={closePicture}>Close</Button>
-                    </Modal.Footer>
+                            )
+                        }
+                    </Carousel>
                 </Modal>
+                    : null}
             </Grid>
         <Card className={classes.card}>
             <CardHeader
@@ -120,9 +118,9 @@ export default function PropertyCard(props) {
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
                 image={propertyInfo.images[0].url}
-                title="Paella dish"
+                title="Click to enlarge"
                 //add click handler
-                    onClick={openPicture}
+                onClick={openPicture}
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">

@@ -16,7 +16,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Modal, Button, Form } from 'react-bootstrap'
-import { Carousel } from 'antd';
+import Carousel from 'react-bootstrap/Carousel'
+import Grid from '@material-ui/core/Grid';
 import '../../css/App.css';
 
 
@@ -48,6 +49,8 @@ export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     let [openPicModal, setOpenPicModal] = useState(false);
+    let [currentPic, setCurrentPic] = useState(0);
+    
 
     const propertyInfo = props.userProperties;
     function handleExpandClick() {
@@ -62,6 +65,7 @@ export default function PropertyCard(props) {
 
     const closePicture = () => {
         setOpenPicModal(!openPicModal);
+        setCurrentPic(currentPic += 1);
     }
     useEffect(() => {
        
@@ -69,31 +73,36 @@ export default function PropertyCard(props) {
 
     return (
         <div>
-            <Modal show={openPicModal} onHide={closePicture} width="1000px">
+            <Grid container justify="center" >
+            <Modal show={openPicModal} onHide={closePicture} >
                 <Modal.Header closeButton>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Carousel autoplay  >
-                        <div width="1000px">
-                            <h3>1</h3>
-                        </div>
-                        <div>
-                            <h3>2</h3>
-                        </div>
-                        <div>
-                            <h3>3</h3>
-                        </div>
-                        <div>
-                            <h3>4</h3>
-                        </div>
-                    </Carousel>
+                        <Carousel>
+                    {
+                    propertyInfo.images.map((pic)=> 
+                      
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src={pic.url}
+                                    alt="First slide"
+                                    height="600"
+                                    width="1200"
+                                />
+                            </Carousel.Item>
+                     
+                    )
+                    }
+                        </Carousel>  
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={closePicture}>Close</Button>
                 </Modal.Footer>
             </Modal>
+            </Grid>
         <Card className={classes.card}>
             <CardHeader
                 avatar={

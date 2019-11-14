@@ -10,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  // eslint-disable-next-line no-unused-vars
+  Images.associate = function (models) {
+    // Define associations here
+    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    Images.belongsTo(models.Listings);
+  };
 
   return Images;
 };

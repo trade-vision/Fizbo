@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
 
   // eslint-disable-next-line no-unused-vars
   
-
+  Listings.associate = (models) => {
+    Listings.belongsTo(models.User);
+    Listings.hasMany(models.Images);
+  };
   return Listings;
 };

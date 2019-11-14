@@ -36,11 +36,32 @@ module.exports = function (app) {
     let zip = req.params.zip;
     // res.send(`${city}, ${zip}`);
     db.Listings.findAll().
-      then((properties) => {
+      then( async (properties) => {
         const allProps = properties.filter((property) => {
           return property.address.split(' ')[property.address.split(' ').length - 1] === zip;
         });
-        res.send(allProps);
+
+       
+       
+        return allProps;
+      }).then(async (props)=> {
+        let user = props.map(async (prop) => {
+          let user = await db.User.findOne({ where: { id: prop.userId } });
+          return user;
+        });
+        // let user = await db.User.findOne({ where: { id: [...props].userId } });
+        Promise.all(user)
+          .then((users)=> {
+            props.map((prop)=> {
+              users.map((selectUser)=> {
+                if (prop.userId === selectUser.id){
+                  prop.user = selectUser;
+                }
+              });
+            });
+            res.send(props);
+          });
+        
       });
   });
 //-------------------------------------------------

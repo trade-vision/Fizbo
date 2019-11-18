@@ -19,7 +19,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import { Modal, Button, Spin } from 'antd'
 import moment from 'moment';
-import { Link, Redirect } from 'react-router-dom'; 
+import { NavLink, Redirect } from 'react-router-dom'; 
 import '../../css/App.css'
 
 
@@ -51,6 +51,7 @@ export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [openPicModal, setOpenPicModal] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     let propertyInfo = props.property;
     function handleExpandClick() {
@@ -66,6 +67,11 @@ export default function PropertyCard(props) {
     const closePicture = (e) => {
         setOpenPicModal(!openPicModal);
 
+    }
+
+    const goToFriendProfile = () => {
+        setRedirect(true);
+        console.log(redirect)
     }
     
     useEffect(() => {
@@ -104,15 +110,15 @@ export default function PropertyCard(props) {
         <Card className={classes.card}>
             {propertyInfo.user ? <CardHeader
                 avatar={
-                        <Link to={{
-                            pathname: `/profile/${propertyInfo.user.id}`,
+                        <NavLink to={{
+                            pathname: `${propertyInfo.user.name}`,
                             state: propertyInfo
                         }}
                         > 
-                        <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name} onClick>
+                            <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name} onClick={goToFriendProfile}>
                             {`${propertyInfo.user.name.split(' ')[0][0]}${propertyInfo.user.name.split(' ')[1][0]}`}
                     </Avatar>
-                    </Link>
+                        </NavLink>
                 }
                 action={
                     <IconButton aria-label="settings">

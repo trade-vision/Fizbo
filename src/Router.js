@@ -37,7 +37,7 @@ function Router() {
                 <Switch>  
                     <Route path="/" render={() => <App user={user}/>} exact />
                     <Route exact path="/myprofile" render={() => <UserProfile />} />
-                    <Route path="/profile/:id" render={() => <FriendsProfile />} />
+                    <Route exact path="/:user" component={FriendsProfile} /> 
                 </ Switch>
 
             </BrowserRouter>

@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
-import { Modal, Button } from 'antd'
+import { Modal, Button, Spin } from 'antd'
 import moment from 'moment'
 import '../../css/App.css'
 
@@ -101,10 +101,10 @@ export default function PropertyCard(props) {
                     : null}
             </Grid>
         <Card className={classes.card}>
-            <CardHeader
+            {propertyInfo.user ? <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                            {/* {propertyInfo.user.name[0]} */}
+                        <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name}>
+                            {`${propertyInfo.user.name.split(' ')[0][0]}${propertyInfo.user.name.split(' ')[1][0]}`}
                     </Avatar>
                 }
                 action={
@@ -114,7 +114,7 @@ export default function PropertyCard(props) {
                 }
                 title={propertyInfo.address}
                     subheader={moment(propertyInfo.createdAt).fromNow()}
-            />
+                /> : <Spin />}
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
                 image={propertyInfo.images[0].url}

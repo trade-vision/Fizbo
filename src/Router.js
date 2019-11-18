@@ -35,7 +35,7 @@ function Router() {
                 <Nav user={user} />
                 <Switch>  
                     <Route path="/" render={() => <App user={user}/>} exact />
-                    <Route exact path="/userProfile" render={() => <UserProfile />} />
+                    <Route exact path="/myprofile" render={() => <UserProfile />} />
                 </ Switch>
 
             </BrowserRouter>

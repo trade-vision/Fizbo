@@ -50,7 +50,6 @@ export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     let [openPicModal, setOpenPicModal] = useState(false);
-    let [currentPic, setCurrentPic] = useState(0);
     
 
     const propertyInfo = props.userProperties;

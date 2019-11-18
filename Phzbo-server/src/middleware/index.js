@@ -24,6 +24,16 @@ module.exports = function (app) {
 //-------------------------------------------------------------
 
 
+
+
+    // --------------------- Users -----------
+
+    app.get('/user/:propId', async (req, res)=> {
+      let listing = await db.Listings.findOne({ where: { id: req.params.propId } });
+      let user = await db.User.findOne({ where: { id: listing.userId } });
+      res.send(user);
+    });
+
   // --------------------- Properties -----------
   //finds all user's properties
   app.get('/properties/:userId', async (req, res) => {
@@ -43,27 +53,10 @@ module.exports = function (app) {
 
        
        
-        return allProps;
-      }).then(async (props)=> {
-        let user = props.map(async (prop) => {
-          let user = await db.User.findOne({ where: { id: prop.userId } });
-          return user;
-        });
-        // let user = await db.User.findOne({ where: { id: [...props].userId } });
-        Promise.all(user)
-          .then((users)=> {
-            props.map((prop)=> {
-              users.map((selectUser)=> {
-                if (prop.userId === selectUser.id){
-                  prop.user = selectUser;
-                }
-              });
-            });
-            res.send(props);
-          });
-        
-      });
-  });
+        res.send(allProps)
+      })
+
+    });
 //-------------------------------------------------
 
 
@@ -132,5 +125,5 @@ module.exports = function (app) {
      
    
  //-------------------------------------------------------------
-};
 
+}

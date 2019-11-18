@@ -50,9 +50,8 @@ export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [openPicModal, setOpenPicModal] = useState(false);
-    let [currentPic, setCurrentPic] = useState(0);
 
-    const propertyInfo = props.property;
+    let propertyInfo = props.property;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
@@ -60,6 +59,7 @@ export default function PropertyCard(props) {
 
     const openPicture = (e) => {
         setOpenPicModal(true);
+        console.log(propertyInfo);
     }
 
     const closePicture = (e) => {
@@ -68,8 +68,8 @@ export default function PropertyCard(props) {
     }
     
     useEffect(() => {
-
-    });
+        
+    }, []);
 
     return (
         <div>
@@ -104,7 +104,7 @@ export default function PropertyCard(props) {
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        {/* {props.user.name[0]} */}
+                            {/* {propertyInfo.user.name[0]} */}
                     </Avatar>
                 }
                 action={

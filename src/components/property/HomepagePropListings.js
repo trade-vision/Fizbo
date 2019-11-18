@@ -18,7 +18,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import { Modal, Button, Spin } from 'antd'
-import moment from 'moment'
+import moment from 'moment';
+import { Link, Redirect } from 'react-router-dom'; 
 import '../../css/App.css'
 
 
@@ -103,9 +104,15 @@ export default function PropertyCard(props) {
         <Card className={classes.card}>
             {propertyInfo.user ? <CardHeader
                 avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name}>
+                        <Link to={{
+                            pathname: `/profile/${propertyInfo.user.id}`,
+                            state: propertyInfo
+                        }}
+                        > 
+                        <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name} onClick>
                             {`${propertyInfo.user.name.split(' ')[0][0]}${propertyInfo.user.name.split(' ')[1][0]}`}
                     </Avatar>
+                    </Link>
                 }
                 action={
                     <IconButton aria-label="settings">

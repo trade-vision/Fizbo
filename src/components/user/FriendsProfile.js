@@ -117,9 +117,6 @@ function Profile(props) {
                             </div>
                         </div>
                     </Col>
-                    <Col md={{ span: 3, offset: 15 }}>
-                        <Button className="editProfile">Edit Profile</Button>
-                    </Col>
                 </Row>
             </CardProfile>
             <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile" />

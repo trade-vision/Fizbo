@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     name: { type: DataTypes.STRING, unique: false, allowNull: false },
@@ -10,10 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     password: { type: DataTypes.STRING, unique: false, allowNull: true },
   });
 
-  // User.associate = (models) => {
-  //     User.hasMany(models.Listing, { constraints: false });
-  // }; 
-
+  User.associate = function (models) {
+    // Define associations here
+    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    User.hasMany(models.Listings);
+  };
 
   return User;
 };

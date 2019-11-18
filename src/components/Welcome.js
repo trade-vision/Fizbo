@@ -55,6 +55,7 @@ export default function WelcomeHeader() {
     const [allProps, setAllProps] = useState([]);
     const [propsSent, setPropsSent] = useState(false);
     const [picsSent, setPicsSent] = useState(false);
+    const [userSent, setUserSent] = useState(false)
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
@@ -90,8 +91,18 @@ export default function WelcomeHeader() {
                     allProps.forEach(prop => prop.images = []);
                     
 
+                    //grabbing the user for each property
+                    
+                    // allProps.map(async (prop) => {
+                        
+                    //         setUserSent(true)
+                    //     // }
+                    // });
+
                     // grabbing the images for each property
                     allProps.map(async (prop) => {
+                        let user = await axios.get(`/user/${prop.id}`);
+                        prop.user = user.data;
                         let images = await axios.get(`images/${prop.id}`);
                         if (images.data.length > 0){
                             images.data.map((image) => {
@@ -101,7 +112,7 @@ export default function WelcomeHeader() {
                             setPicsSent(true)
                         }   
                     })
-
+                    
                     setAllProps(allProps);
                 });
         } else if(zipCode.length < 5) {

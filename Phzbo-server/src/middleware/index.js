@@ -24,13 +24,21 @@ module.exports = function (app) {
 //-------------------------------------------------------------
 
 
+
+
+    // --------------------- Users -----------
+
+    app.get('/user/:propId', async (req, res)=> {
+      let listing = await db.Listings.findOne({ where: { id: req.params.propId } });
+      let user = await db.User.findOne({ where: { id: listing.userId } });
+      res.send(user);
+    });
+
   // --------------------- Properties -----------
   //finds all user's properties
-  app.get('/properties/:userId', (req, res) => {
-    db.Listings.findAll({ where: { userId: req.params.userId } }).
-      then((properties)=> { 
-        res.send(properties);
-      });
+  app.get('/properties/:userId', async (req, res) => {
+    let properties = await db.Listings.findAll({ where: { userId: req.params.userId } });
+    res.send(properties);
   });
 
   //finds all the properties for a specific city and zip code
@@ -38,13 +46,17 @@ module.exports = function (app) {
     let zip = req.params.zip;
     // res.send(`${city}, ${zip}`);
     db.Listings.findAll().
-      then((properties) => {
+      then( async (properties) => {
         const allProps = properties.filter((property) => {
           return property.address.split(' ')[property.address.split(' ').length - 1] === zip;
         });
-        res.send(allProps);
-      });
-  });
+
+       
+       
+        res.send(allProps)
+      })
+
+    });
 //-------------------------------------------------
 
 
@@ -77,12 +89,7 @@ module.exports = function (app) {
     app.post('/createCharge', (req, res) => {
       // `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/cards/collecting/web#create-token
       stripe.charges.create(
-        {
-          amount: 2000,
-          currency: 'usd',
-          source: 'tok_amex',
-          description: 'Charge for jenny.rosen@example.com',
-        },
+        req.body.token, 
         function(err, charge) {
           // asynchronously called
           res.send(charge);
@@ -92,16 +99,11 @@ module.exports = function (app) {
     //CreatePaymentMethod 
     app.post('/paymentmethod', (req, res) => {
 
-        stripe.paymentMethods.create({
-          type: "card",
-          card: {
-            number: '4242424242424242',
-            exp_month: 12,
-            exp_year: 2020,
-            cvc: '123'
-          }
-        }, function(err, token) {
+        stripe.paymentMethods.create(req.body.token, function(err, token) {
           // asynchronously called
+          if(err){
+            console.log(err);
+          }
           res.send(token);
         });
     })
@@ -123,5 +125,5 @@ module.exports = function (app) {
      
    
  //-------------------------------------------------------------
-};
 
+}

@@ -15,6 +15,12 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Modal, Button } from 'antd'
+import Carousel from 'react-bootstrap/Carousel'
+import Grid from '@material-ui/core/Grid';
+import moment from 'moment'
+import '../../css/App.css';
+
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -43,22 +49,56 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
-    let [currentPic, setCurrentPic] = useState(0);
+    let [openPicModal, setOpenPicModal] = useState(false);
+    
 
     const propertyInfo = props.userProperties;
     function handleExpandClick() {
         setExpanded(!expanded);
     }
 
-    const changePicture = () => {
-        setCurrentPic(currentPic += 1);
+    
+
+    const openPicture = () => {
+        setOpenPicModal(true);
+    }
+
+    const closePicture = () => {
+        setOpenPicModal(!openPicModal);
+        
     }
     useEffect(() => {
        
     });
 
     return (
-        
+        <div>
+            <Grid container justify="center" >
+                <Modal visible={openPicModal} maskClosable={true} onCancel={closePicture} footer={[
+                    <Button key="back" onClick={closePicture} type="primary">
+                        Return
+                    </Button>    
+                ]}>
+                
+                        <Carousel>
+                    {
+                    propertyInfo.images.map((pic)=> 
+                      
+                            <Carousel.Item>
+                                <img
+                                    className="d-block w-100"
+                                    src={pic.url}
+                                    alt="First slide"
+                                    height="600"
+                                    width="1200"
+                                />
+                            </Carousel.Item>
+                     
+                    )
+                    }
+                        </Carousel>  
+            </Modal>
+            </Grid>
         <Card className={classes.card}>
             <CardHeader
                 avatar={
@@ -72,18 +112,18 @@ export default function PropertyCard(props) {
                     </IconButton>
                 }
                 title={propertyInfo.address}
-                subheader="September 14, 2016"
+                    subheader={moment(propertyInfo.createdAt).fromNow()}
             />
             {propertyInfo.images[0] ? <CardMedia
                 className={classes.media}
-                image={propertyInfo.images[(currentPic) % propertyInfo.images.length].url}
-                title="Paella dish"
+                image={propertyInfo.images[0].url}
+                title="Click to enlarge"
                 //add click handler
-                onClick={changePicture}
+                onClick={openPicture}
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {`3 beds |  1 baths |  ${propertyInfo.sqr_feet}`}
+                        {`${propertyInfo.sqr_feet} sqr ft.`}
         </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -115,5 +155,6 @@ export default function PropertyCard(props) {
                 </CardContent>
             </Collapse>
         </Card> 
+        </div>
     );
 }

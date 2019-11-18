@@ -143,3 +143,19 @@ color: #fafafa;
 .MuiGrid-justify-xs-center {
     margin-top: 40px;
 }
+
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 550px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+
+.pic-modal {
+  width: 1000px;
+}

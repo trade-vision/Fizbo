@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import App from './App.js';
 import UserProfile from './components/user/UserProfile.js'
+import FriendsProfile from './components/user/FriendsProfile.js'
 import Nav from './components/Nav'
 import axios from 'axios';
 
@@ -35,7 +36,8 @@ function Router() {
                 <Nav user={user} />
                 <Switch>  
                     <Route path="/" render={() => <App user={user}/>} exact />
-                    <Route exact path="/userProfile" render={() => <UserProfile />} />
+                    <Route exact path="/myprofile" render={() => <UserProfile />} />
+                    <Route exact path="/:user" component={FriendsProfile} /> 
                 </ Switch>
 
             </BrowserRouter>

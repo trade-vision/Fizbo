@@ -124,7 +124,7 @@ export default function MenuAppBar(props) {
                                 onClose={handleClose}
                             >
                                 <Link to={{
-                                    pathname: "/userProfile",
+                                    pathname: "/myprofile",
                                     state: props.user
                                 }}
                                 > 

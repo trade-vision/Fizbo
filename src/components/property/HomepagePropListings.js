@@ -141,8 +141,8 @@ export default function PropertyCard(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
+                    <IconButton aria-label="add to favorites" color="secondary">
+                        <FavoriteIcon color='secondary'/>
                 </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />

@@ -52,6 +52,8 @@ export default function PropertyCard(props) {
     const [expanded, setExpanded] = useState(false);
     const [openPicModal, setOpenPicModal] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    let [liked, setLiked] = useState(0)
+    const [color, setColor] = useState('disabled')
 
     let propertyInfo = props.property;
     function handleExpandClick() {
@@ -74,6 +76,20 @@ export default function PropertyCard(props) {
         console.log(redirect)
     }
     
+    const likeProperty = (e) => {
+        
+        setLiked(liked += 1);
+        if(liked === 1){
+            setColor('secondary')
+
+        } else if(liked === 2){
+            setColor('disabled')
+            setLiked(0)
+        } else {
+            setColor('disabled')
+        }
+    }
+
     useEffect(() => {
         
     }, []);
@@ -141,8 +157,8 @@ export default function PropertyCard(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites" color="secondary">
-                        <FavoriteIcon color='secondary'/>
+                    <IconButton aria-label="add to favorites" color="secondary" onClick={likeProperty}>
+                        <FavoriteIcon color={color} onSelect={likeProperty}/>
                 </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />

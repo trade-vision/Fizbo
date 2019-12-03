@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
-import {Button} from 'react-bootstrap';
+import {Button, Modal, Form} from 'react-bootstrap';
 import { withRouter } from "react-router";
 import PropertyList from '../property/UserPropertyList'
 import Map from '../property/Map'
@@ -42,6 +42,7 @@ function Profile(props) {
     const userData = props.history.location.state;
     const [properties, setUserProps] = useState([]);
     const [propImages, setPropImages] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     
     const [viewMapText, setViewMapText] = useState(['View on map', 'Hide Map']);
     const [isMapShown, setIsMapShown] = useState(false);
@@ -81,6 +82,77 @@ function Profile(props) {
         console.log()
         setIsMapShown(!isMapShown)
     }
+    const toggleModal = () => setIsOpen(!isOpen);
+
+    //---------- Edit Profile Functions ----------------
+
+    const [user, setUser] = useState();
+    const [email, setEmail] = useState();
+    const [number, setNumer] = useState();
+    const [company, setCompany] = useState();
+    const [facebook, setFb] = useState();
+    const [twitter, setTwitter] = useState();
+    const [insta, setInsta] = useState();
+    const [linkedIn, setLinkedin] = useState();
+
+    const handleUsername = (e) => {
+        const username =  e.target.value;
+        setUser(username);
+    }
+
+    const handleEmail = (e) => {
+        const email = e.target.value;
+        setEmail(email);
+    }
+
+    const handleNumber = (e) => {
+        const number = e.target.value;
+        setNumer(number);
+    }
+
+    const handleCompany = (e) => {
+        const company =  e.target.value
+        setCompany(company);
+    }
+
+    const handleFacebook = (e) => {
+        const fbProfile = e.target.value
+        setFb(fbProfile);
+    }
+
+    const handleTwitter = (e) => {
+        const twitter = e.target.value
+        setTwitter(twitter);
+    }
+
+    const handleInsta = (e) => {
+        const insta = e.target.value
+        setInsta(insta);
+    }
+
+    const handleLinkedin = (e) => {
+        const linkedIn = e.target.value
+        setLinkedin(linkedIn);
+    }
+
+    const editProfile = async () => {
+        let newEdits = {
+            name: user,
+            email: email,
+            phone_number: number,
+            company: company,
+            facebook_profile: facebook,
+            twitter_profile: twitter,
+            insta_profile: insta,
+            linkedIn_profile: linkedIn
+        }
+        
+        axios.put('/editProfile', newEdits)
+            .then((successEdit)=> {
+                console.log(successEdit.data)
+            }).catch(err => console.log(err));
+        setIsOpen(!isOpen);
+    }
 
     useEffect(() => { 
         // console.log(props.properties);
@@ -118,7 +190,36 @@ function Profile(props) {
                     </div>
                 </Col>
                     <Col md={{ span: 3, offset: 15 }}>
-                        <Button className="editProfile">Edit Profile</Button>
+                        <Button className="editProfile" onClick={toggleModal}>Edit Profile</Button>
+                        <Modal show={isOpen} onHide={toggleModal}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Edit Profile</Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <Form.Control type="text" autoComplete={userData.name} placeholder="Name" onChange={handleUsername} />
+                                <br />
+                                <Form.Control type="text" autoComplete={userData.email} placeholder="Email" onChange={handleEmail} />
+                                <br />
+                                <Form.Control type="text" autoComplete={userData.phone_number} placeholder="Phone #"onChange={handleNumber} />
+                                <br />
+                                <Form.Control type="text" autoComplete={userData.company} placeholder="Company" onChange={handleCompany} />
+                                <br />
+                                <Form.Control type="text" placeholder="Facebook link" onChange={handleFacebook} />
+                                <br />
+                                <Form.Control type="text" placeholder="twitter link" onChange={handleTwitter} />
+                                <br />
+                                <Form.Control type="text" placeholder="Instagram link" onChange={handleInsta} />
+                                <br />
+                                <Form.Control type="text" placeholder="Linkedin link" onChange={handleLinkedin} />
+                                <br />
+                            </Modal.Body>
+
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={editProfile}>Submit</Button>
+                                <Button variant="secondary" onClick={toggleModal}>Close</Button>
+                            </Modal.Footer>
+                        </Modal>
                 </Col>
             </Row>
         </CardProfile>

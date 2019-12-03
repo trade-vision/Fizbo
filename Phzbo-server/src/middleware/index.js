@@ -36,7 +36,8 @@ module.exports = function (app) {
 
   app.put('/editProfile', async (req, res) => {
     let myProfile = await db.User.findOne({ where: { id: req.session.passport.user.id } });
-    // myProfile.update(req.body.newEdits);
+    let updatedProfile = await myProfile.update(req.body);
+    res.send(updatedProfile);
   });
 
   // --------------------- Properties -----------

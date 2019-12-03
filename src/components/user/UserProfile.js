@@ -86,6 +86,7 @@ function Profile(props) {
 
     //---------- Edit Profile Functions ----------------
 
+    const [defaultUser, setDefaultUser] = useState(userData);
     const [user, setUser] = useState();
     const [email, setEmail] = useState();
     const [number, setNumer] = useState();
@@ -94,6 +95,7 @@ function Profile(props) {
     const [twitter, setTwitter] = useState();
     const [insta, setInsta] = useState();
     const [linkedIn, setLinkedin] = useState();
+
 
     const handleUsername = (e) => {
         const username =  e.target.value;
@@ -149,7 +151,8 @@ function Profile(props) {
         
         axios.put('/editProfile', newEdits)
             .then((successEdit)=> {
-                console.log(successEdit.data)
+                const newUserData = successEdit.data;
+                setDefaultUser(newUserData);
             }).catch(err => console.log(err));
         setIsOpen(!isOpen);
     }
@@ -169,15 +172,15 @@ function Profile(props) {
         <CardProfile loading={loading}>
             <BgUser>
                 <div className="avatar-user">
-                    <Avatar src={userData.profile_pic} size={160} />
+                        <Avatar src={defaultUser.profile_pic} size={160} />
                 </div>
             </BgUser>
             <Row type="flex" gutter={18}>
                 <Col span={6}>
                     <div className="contact">
-                        <strong>{userData.name}</strong>
-                        <small>{userData.company}</small>
-                        <div className="mail"><Icon type="google" />{userData.email}</div>
+                        <strong>{defaultUser.name}</strong>
+                        <small>{defaultUser.company}</small>
+                        <div className="mail"><Icon type="google" />{defaultUser.email}</div>
                         <div className="social">
                             <Icon className="facebook" type="facebook" />
                             <Divider type="left" />

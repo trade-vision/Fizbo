@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 const cities = ['New Orleans', 'Baton Rouge', 'Westbank', 'Kenner', 'Mandeville', 'Hammond']
 
-export default function WelcomeHeader() {
+export default function WelcomeHeader(props) {
 
     const classes = useStyles();
     const [zipCode, setZip] = React.useState('');
@@ -199,7 +199,7 @@ export default function WelcomeHeader() {
             <div>
               {
                   propsSent ? 
-                    <PropertyList properties={allProps} /> : 
+                    <PropertyList properties={allProps} user={props.user}/> : 
                         <div style={{ marginTop: '100px' }}>
                         <Grid container justify="center" >
                             <Title level={3}>Search for properties using your zip code..</Title>

@@ -32,7 +32,7 @@ export default function PropertyList(props) {
                 <Grid container justify="center" spacing={spacing}>
                     {allProps.map(property => (
                         <Grid key={property} item>
-                            <PropertyCard property={property} className={classes.paper} />
+                            <PropertyCard property={property} className={classes.paper} user={props.user}/>
                         </Grid>
                     ))}
                 </Grid>

@@ -77,24 +77,24 @@ function(accessToken, refreshToken, profile, cb) {
   // app.services.user.find({ email: profile.emails[0].value })
   // User.find({ where: { email: profile.emails[0].value } })
   db.User.findOne({ where: { email: profile.emails[0].value } })
-  .then((user)=> {
-    if(user){
-      return cb(null, user);
-    } else {
-      db.User.create({
-        name: profile.displayName,
-        email: profile.emails[0].value,
-        phone_number: "",
-        profile_pic: profile.photos[0].value,
-        company: "",
-        location: "",
-        password: ""
-      }).then((newUser)=> {
-        return cb(null, newUser);
-      }).catch((err) => {
-        console.log(err);
-      })
-    }
+    .then((user)=> {
+      if(user){
+        return cb(null, user);
+      } else {
+        db.User.create({
+          name: profile.displayName,
+          email: profile.emails[0].value,
+          phone_number: '',
+          profile_pic: profile.photos[0].value,
+          company: '',
+          location: '',
+          password: ''
+        }).then((newUser)=> {
+          return cb(null, newUser);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
     }).catch((err)=> {
       console.log(err);
     });

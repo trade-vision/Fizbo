@@ -21,18 +21,18 @@ module.exports = function (app) {
       res.redirect('/');
     });
   
-//-------------------------------------------------------------
+  //-------------------------------------------------------------
 
 
 
 
-    // --------------------- Users -----------
+  // --------------------- Users -----------
 
-    app.get('/user/:propId', async (req, res)=> {
-      let listing = await db.Listings.findOne({ where: { id: req.params.propId } });
-      let user = await db.User.findOne({ where: { id: listing.userId } });
-      res.send(user);
-    });
+  app.get('/user/:propId', async (req, res)=> {
+    let listing = await db.Listings.findOne({ where: { id: req.params.propId } });
+    let user = await db.User.findOne({ where: { id: listing.userId } });
+    res.send(user);
+  });
 
   // --------------------- Properties -----------
   //finds all user's properties
@@ -53,14 +53,14 @@ module.exports = function (app) {
 
        
        
-        res.send(allProps)
-      })
+        res.send(allProps);
+      });
 
-    });
-//-------------------------------------------------
+  });
+  //-------------------------------------------------
 
 
-// ------------------ Images ------------------
+  // ------------------ Images ------------------
   //finds all the images for a user's properties
   app.get('/images/:propId', (req, res)=> {
     db.Images.findAll({ where: { listingId: req.params.propId } }).
@@ -68,54 +68,97 @@ module.exports = function (app) {
         res.send(images);
       });
   });
-//-------------------------------------------------------------
+  //-------------------------------------------------------------
   
 
-// ------------- Payment ---------------
+  //------------------ Likes ----------------------------------
 
-    //Create Customer 
-    app.post('/createCustomer', (req, res)=> {
-      console.log(req.body);
-      stripe.customers.create({
-        description: 'Customer for ejeric2@example.com',
-        source: "visa" // obtained with Stripe.js
-      }, function(err, customer) {
-        // asynchronously called
-        res.send(customer);
+
+  app.get('/likes', (req, res) => {
+    db.Likes.findAll({
+      where: {
+        userId: req.session.passport.user.id
+      }
+    }).then((likes) => {
+      res.send(likes);
+    }).catch((err) => {
+      console.error(err);
+    })
+
+  });
+
+  app.post('/like/:propId', (req, res) => {
+    db.Likes.create({
+      userId: req.session.passport.user.id,
+      listingId: req.params.propId
+    }).then((like) => {
+      res.send(like);
+    })
+      .catch((err) => {
+        console.error(err);
       });
+  });
+
+  app.put('/unlike/:propId', (req, res) => {
+    db.Likes.destroy({ 
+      where: { listingId: req.params.propId, 
+        userId: req.session.passport.user.id} })
+      .then((like) => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
+
+  //-----------------------------------------------
+
+  // ------------- Payment ---------------
+
+  //Create Customer 
+  app.post('/createCustomer', (req, res)=> {
+    console.log(req.body);
+    stripe.customers.create({
+      description: 'Customer for ejeric2@example.com',
+      source: 'visa' // obtained with Stripe.js
+    }, function(err, customer) {
+      // asynchronously called
+      res.send(customer);
     });
+  });
 
-    //Create Charge 
-    app.post('/createCharge', (req, res) => {
-      // `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/cards/collecting/web#create-token
-      stripe.charges.create(
-        req.body.token, 
-        function(err, charge) {
-          // asynchronously called
-          res.send(charge);
-        });
-    })
-
-    //CreatePaymentMethod 
-    app.post('/paymentmethod', (req, res) => {
-
-        stripe.paymentMethods.create(req.body.token, function(err, token) {
-          // asynchronously called
-          if(err){
-            console.log(err);
-          }
-          res.send(token);
-        });
-    })
-
-    //attach customer to payment method 
-    app.post('/attach', (req, res) => {
-
-      stripe.paymentMethods.attach('pm_card_visa', {customer: 'cus_G10GOloYeaDWbx'}, function(err, paymentMethod) {
+  //Create Charge 
+  app.post('/createCharge', (req, res) => {
+    // `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/cards/collecting/web#create-token
+    stripe.charges.create(
+      req.body.token, 
+      function(err, charge) {
         // asynchronously called
-        res.send(paymentMethod);
+        res.send(charge);
       });
-  })
+  });
+
+  //CreatePaymentMethod 
+  app.post('/paymentmethod', (req, res) => {
+
+    stripe.paymentMethods.create(req.body.token, function(err, token) {
+      // asynchronously called
+      if(err){
+        console.log(err);
+      }
+      res.send(token);
+    });
+  });
+
+  //attach customer to payment method 
+  app.post('/attach', (req, res) => {
+
+    stripe.paymentMethods.attach('pm_card_visa', {customer: 'cus_G10GOloYeaDWbx'}, function(err, paymentMethod) {
+      // asynchronously called
+      res.send(paymentMethod);
+    });
+  });
 
 
 
@@ -124,6 +167,6 @@ module.exports = function (app) {
 
      
    
- //-------------------------------------------------------------
+  //-------------------------------------------------------------
 
-}
+};

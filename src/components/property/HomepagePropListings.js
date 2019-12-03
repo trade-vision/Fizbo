@@ -17,9 +17,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
-import { Modal, Button, Spin } from 'antd'
+import { Modal, Button, Spin, message } from 'antd'
 import moment from 'moment';
 import { NavLink, Redirect } from 'react-router-dom'; 
+import axios from 'axios';
 import '../../css/App.css'
 
 
@@ -52,6 +53,8 @@ export default function PropertyCard(props) {
     const [expanded, setExpanded] = useState(false);
     const [openPicModal, setOpenPicModal] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    let [liked, setLiked] = useState(0)
+    const [color, setColor] = useState('disabled')
 
     let propertyInfo = props.property;
     function handleExpandClick() {
@@ -74,8 +77,46 @@ export default function PropertyCard(props) {
         console.log(redirect)
     }
     
-    useEffect(() => {
+    const likeProperty = (e) => {
+    if(props.user){
+        setLiked(liked += 1);
         
+        if(liked === 1){
+            axios.post(`like/${propertyInfo.id}`)
+                .then((likeResponse) => {
+                    setColor('secondary')
+                    console.log(likeResponse);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            
+
+        } else if(liked === 2){
+            axios.put(`unlike/${propertyInfo.id}`)
+                .then((unlike)=> {
+                    setColor('disabled')
+                    setLiked(0)
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        } else {
+            setColor('disabled')
+        }
+    } else {
+            message.error('Must be logged in to use this feature.');
+        }
+    }
+
+    useEffect(() => {
+        if(props.user){
+            props.user.likes.forEach((like) => {
+                if (like.listingId === propertyInfo.id) {
+                    setColor('secondary');
+                }
+            })
+        }
     }, []);
 
     return (
@@ -141,8 +182,8 @@ export default function PropertyCard(props) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
+                    <IconButton aria-label="add to favorites" color="secondary" onClick={likeProperty}>
+                        <FavoriteIcon color={color} onSelect={likeProperty}/>
                 </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />

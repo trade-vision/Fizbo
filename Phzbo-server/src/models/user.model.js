@@ -25,7 +25,8 @@ module.exports = function (app) {
   user.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    user.hasMany(models.listings)
+    user.hasMany(models.listings);
+    user.hasMany(models.likes);
   };
 
   return user;

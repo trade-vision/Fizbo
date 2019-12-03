@@ -8,6 +8,7 @@ const sequelize = new Sequelize('postgres', 'phzbo', 'phzbodevteam', {
 });
 
 const models = [
+  'Likes',
   'User',
   'Listings',
   'Images'

@@ -8,6 +8,8 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import AddProperty from './components/property/AddProperty'
+import axios from 'axios';
+
 
 function Copyright() {
   return (
@@ -38,9 +40,15 @@ function App(props) {
 
   const handleUser = () => {
     if(props.user){
-      setUser(props.user);
       setIsSignedIn(true);
+      axios.get('/likes')
+        .then((likes) => {
+          props.user.likes = likes.data;
+          setUser(props.user);
+        })
+
     }
+    console.log(user);
   }
 
   useEffect(() => {
@@ -51,7 +59,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Welcome />
+      <Welcome user={user}/>
       {isSignedIn ? <AddProperty user={user}/> : null}
       {/* Footer */}
       <footer className={classes.footer}>

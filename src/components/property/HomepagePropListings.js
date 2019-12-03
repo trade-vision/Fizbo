@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import { Modal, Button, Spin } from 'antd'
 import moment from 'moment';
 import { NavLink, Redirect } from 'react-router-dom'; 
+import axios from 'axios';
 import '../../css/App.css'
 
 
@@ -77,21 +78,41 @@ export default function PropertyCard(props) {
     }
     
     const likeProperty = (e) => {
-        
         setLiked(liked += 1);
+        
         if(liked === 1){
-            setColor('secondary')
+            axios.post(`like/${propertyInfo.id}`)
+                .then((likeResponse) => {
+                    setColor('secondary')
+                    console.log(likeResponse);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            
 
         } else if(liked === 2){
-            setColor('disabled')
-            setLiked(0)
+            axios.put(`unlike/${propertyInfo.id}`)
+                .then((unlike)=> {
+                    setColor('disabled')
+                    setLiked(0)
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         } else {
             setColor('disabled')
         }
     }
 
     useEffect(() => {
-        
+        if(props.user){
+            props.user.likes.forEach((like) => {
+                if (like.listingId === propertyInfo.id) {
+                    setColor('secondary');
+                }
+            })
+        }
     }, []);
 
     return (

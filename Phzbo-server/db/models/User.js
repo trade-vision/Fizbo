@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     User.hasMany(models.Listings);
+    User.hasMany(models.Likes);
   };
 
   return User;

@@ -17,7 +17,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
-import { Modal, Button, Spin } from 'antd'
+import { Modal, Button, Spin, message } from 'antd'
 import moment from 'moment';
 import { NavLink, Redirect } from 'react-router-dom'; 
 import axios from 'axios';
@@ -78,6 +78,7 @@ export default function PropertyCard(props) {
     }
     
     const likeProperty = (e) => {
+    if(props.user){
         setLiked(liked += 1);
         
         if(liked === 1){
@@ -102,6 +103,9 @@ export default function PropertyCard(props) {
                 })
         } else {
             setColor('disabled')
+        }
+    } else {
+            message.error('Must be logged in to use this feature.');
         }
     }
 

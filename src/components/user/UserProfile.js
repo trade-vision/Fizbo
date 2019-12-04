@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import {Button, Modal, Form} from 'react-bootstrap';
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import PropertyList from '../property/UserPropertyList'
 import Map from '../property/Map'
 import Grid from '@material-ui/core/Grid';
@@ -180,9 +180,10 @@ function Profile(props) {
                     <div className="contact">
                         <strong>{defaultUser.name}</strong>
                         <small>{defaultUser.company}</small>
+                        <small>{defaultUser.phone_number}</small>
                         <div className="mail"><Icon type="google" />{defaultUser.email}</div>
                         <div className="social">
-                            <Icon className="facebook" type="facebook" />
+                                <Icon className="facebook" type="facebook" onClick={() => <Redirect to="www.facebook.com"/>}/>
                             <Divider type="left" />
                             <Icon className="twitter" type="twitter" />
                             <Divider type="left" />

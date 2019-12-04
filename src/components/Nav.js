@@ -11,8 +11,9 @@ import Menu from '@material-ui/core/Menu';
 import blue from '@material-ui/core/colors/blue'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import UserProfile from './user/UserProfile.js'
-import { Link, Redirect } from 'react-router-dom'; 
+import LikesList from './user/LikesList'
+import { Link, Redirect } from 'react-router-dom';
+import { Modal, Spin, message } from 'antd'; 
 import '../css/bootstrap-social.css'
 
 
@@ -52,6 +53,7 @@ export default function MenuAppBar(props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [isSignedIn, setIsSignedIn] = useState(false);
+    const [likesOpen, setLikesOpen] = useState(false);
     const open = Boolean(anchorEl);
 
     const handleUserPrivledges = () => {
@@ -70,6 +72,13 @@ export default function MenuAppBar(props) {
         setAnchorEl(null);
     }
 
+    const toggleLikes = () => {
+        if(props.user){
+            setLikesOpen(!likesOpen);
+        } else {
+            message.error('Must be logged in to see your likes.');
+        }
+    }
 
     useEffect(() => {
         // code to run on component mount
@@ -92,8 +101,8 @@ export default function MenuAppBar(props) {
                         <Button variant="h6" className={classes.root}>
                             Services
           </Button> 
-                        <Button variant="h6" className={classes.root}>
-                            Properties
+                        <Button variant="h6" className={classes.root} onClick={toggleLikes}>
+                            Likes
           </Button> 
                         <Button variant="h6" className={classes.root}>
                             Contact Us
@@ -141,6 +150,9 @@ export default function MenuAppBar(props) {
                             </div>}
                 </Toolbar>
             </AppBar>
+                <Modal visible={likesOpen} onCancel={toggleLikes} onOk={toggleLikes}>
+                <LikesList />
+            </Modal>
             </MuiThemeProvider>
         </div>
     );

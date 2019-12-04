@@ -17,6 +17,11 @@ function Router() {
         try {
             let response = await axios.get('/profile');
             let userData = response.data;
+            axios.get('/likes')
+                .then((likes) => {
+                    userData.likes = likes.data;
+
+                })
             setUser(userData)
             setIsSignedIn(true);
         } catch {

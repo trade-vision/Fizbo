@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     phone_number: { type: DataTypes.STRING, unique: false, allowNull: false },
     profile_pic: { type: DataTypes.STRING, unique: false, allowNull: false },
     company: { type: DataTypes.STRING, unique: false },
+    facebook_profile: { type: DataTypes.STRING, unique: true },
+    twitter_profile: { type: DataTypes.STRING, unique: true },
+    insta_profile: { type: DataTypes.STRING, unique: true },
+    linkedIn_profile: { type: DataTypes.STRING, unique: true },
     location: { type: DataTypes.STRING, unique: false, allowNull: true },
     password: { type: DataTypes.STRING, unique: false, allowNull: true },
   });

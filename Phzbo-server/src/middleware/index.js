@@ -34,6 +34,12 @@ module.exports = function (app) {
     res.send(user);
   });
 
+  app.put('/editProfile', async (req, res) => {
+    let myProfile = await db.User.findOne({ where: { id: req.session.passport.user.id } });
+    let updatedProfile = await myProfile.update(req.body);
+    res.send(updatedProfile);
+  });
+
   // --------------------- Properties -----------
   //finds all user's properties
   app.get('/properties/:userId', async (req, res) => {

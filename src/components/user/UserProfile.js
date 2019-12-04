@@ -203,8 +203,6 @@ function Profile(props) {
                             <Modal.Body>
                                 <Form.Control type="text" autoComplete={userData.name} placeholder="Name" onChange={handleUsername} />
                                 <br />
-                                <Form.Control type="text" autoComplete={userData.email} placeholder="Email" onChange={handleEmail} />
-                                <br />
                                 <Form.Control type="text" autoComplete={userData.phone_number} placeholder="Phone #"onChange={handleNumber} />
                                 <br />
                                 <Form.Control type="text" autoComplete={userData.company} placeholder="Company" onChange={handleCompany} />

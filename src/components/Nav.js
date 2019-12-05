@@ -151,7 +151,7 @@ export default function MenuAppBar(props) {
                 </Toolbar>
             </AppBar>
                 <Modal visible={likesOpen} onCancel={toggleLikes} onOk={toggleLikes}>
-                <LikesList />
+                <LikesList user={props.user}/>
             </Modal>
             </MuiThemeProvider>
         </div>

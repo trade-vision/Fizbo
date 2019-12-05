@@ -47,6 +47,11 @@ module.exports = function (app) {
     res.send(properties);
   });
 
+  app.get('/likedProperties/:propId', async (req, res) => {
+    let properties = await db.Listings.findOne({ where: { id: req.params.propId } });
+    res.send(properties);
+  });
+
   //finds all the properties for a specific city and zip code
   app.get('/propertiesAll/:zip', (req, res) => {
     let zip = req.params.zip;
@@ -89,7 +94,7 @@ module.exports = function (app) {
       res.send(likes);
     }).catch((err) => {
       console.error(err);
-    })
+    });
 
   });
 

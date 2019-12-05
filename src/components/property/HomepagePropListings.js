@@ -86,6 +86,7 @@ export default function PropertyCard(props) {
                 .then((likeResponse) => {
                     setColor('secondary')
                     console.log(likeResponse);
+                    props.user.likes.push(likeResponse.data);
                 })
                 .catch((err) => {
                     console.log(err);

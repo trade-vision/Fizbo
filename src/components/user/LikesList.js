@@ -6,9 +6,10 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import { Modal, Spin, message } from 'antd'; 
-import InfoIcon from '@material-ui/icons/Info';
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from 'axios';
 import { Button } from '@material-ui/core';
+import LikeTile from './LikeTile';
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,9 +23,16 @@ const useStyles = makeStyles(theme => ({
     gridList: {
         width: 500,
         height: 450,
+        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+        transform: 'translateZ(0)',
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
+            'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
     },
     icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
+        color: 'secondary',
     },
 }));
 
@@ -49,6 +57,7 @@ export default function TitlebarGridList(props) {
     const user =  props.user;
     const [properties, setProperties] = useState([]);
     const [propsSent, setPropsSent] = useState(false);
+    const [color, setColor] = useState('secondary')
     const classes = useStyles();
 
     const grabLikedProperties = () => {
@@ -65,6 +74,7 @@ export default function TitlebarGridList(props) {
                             propsData.data.images.push(image);
                         });
                     }
+                    
                     properties.push(propsData.data);
                     if (i === user.likes.length - 1 && propsData.data.images.length > 0) {
                         setPropsSent(true);
@@ -86,22 +96,18 @@ export default function TitlebarGridList(props) {
 
     return (
         <div className={classes.root}>
-            {propsSent ?  <GridList cellHeight={180} className={classes.gridList}>
+            {propsSent ? <GridList cellHeight={200} spacing={1} className={classes.gridList}>
                 <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                    <ListSubheader component="div">Your Likes</ListSubheader>
-                    <Button onClick={()=>{
-                        console.log(user.likes, properties);
-                    }}></Button>
+                    <ListSubheader component="div">Your Likes</ListSubheader>  
                 </GridListTile>
                 {properties.map(property => (
-                    <GridListTile key="https://i.etsystatic.com/10775770/r/il/c32cd1/830729388/il_1588xN.830729388_4b8n.jpg">
+                    <GridListTile key={property.images[0].url} cols={2} rows={2}>
                         <img src={property.images[0].url} alt={property.address} />
                         <GridListTileBar
                             title={property.address}
-                            subtitle={<span>by: {property.id}</span>}
                             actionIcon={
-                                <IconButton aria-label={`info about ${property.address}`} className={classes.icon}>
-                                    <InfoIcon onClick={update}/>
+                                <IconButton aria-label={`info about ${property.address}`} >
+                                    <FavoriteIcon onClick={update} color={color}/>
                                 </IconButton>
                             }
                         />

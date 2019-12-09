@@ -8,8 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Modal, Spin, message } from 'antd'; 
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from 'axios';
-import { Button } from '@material-ui/core';
-import LikeTile from './LikeTile';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -58,6 +57,7 @@ export default function TitlebarGridList(props) {
     const [properties, setProperties] = useState([]);
     const [propsSent, setPropsSent] = useState(false);
     const [color, setColor] = useState('secondary')
+    const [updating, setUpdating] = useState(false);
     const classes = useStyles();
 
     const grabLikedProperties = () => {
@@ -84,8 +84,18 @@ export default function TitlebarGridList(props) {
         console.log(properties);
     }
 
-    const update = () => {
-        console.log(properties);
+    const update = (propId) => {
+        setUpdating(true);
+        setProperties(properties.filter(prop => prop.id !== propId))
+        axios.put(`unlike/${propId}`)
+            .then((unlike) => {
+                setUpdating(false);
+                message.success('Property unliked')
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+       
     }
 
     useEffect(()=> {
@@ -100,19 +110,21 @@ export default function TitlebarGridList(props) {
                 <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                     <ListSubheader component="div">Your Likes</ListSubheader>  
                 </GridListTile>
-                {properties.map(property => (
+                {
+                    updating ? <Spin></Spin> : properties.map(property => (
                     <GridListTile key={property.images[0].url} cols={2} rows={2}>
                         <img src={property.images[0].url} alt={property.address} />
                         <GridListTileBar
                             title={property.address}
                             actionIcon={
                                 <IconButton aria-label={`info about ${property.address}`} >
-                                    <FavoriteIcon onClick={update} color={color}/>
+                                    <FavoriteIcon onClick={() => { update(property.id)}} color={color}/>
                                 </IconButton>
                             }
                         />
                     </GridListTile>
-                ))}
+                ))  
+                }
             </GridList> : <Spin></Spin> 
         }
         </div>

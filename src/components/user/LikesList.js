@@ -53,13 +53,29 @@ export default function TitlebarGridList(props) {
 
     const grabLikedProperties = () => {
         // console.log(user);
-        user.likes.map((like) => {
+        user.likes.map((like, i) => {
             axios.get(`/likedProperties/${like.listingId}`)
-                .then((propsData)=> {
+                .then(async (propsData) => {
+                    // console.log(propsData);
+                    propsData.data.images = [];
+                    let images = await axios.get(`images/${propsData.data.id}`);
+                    if (images.data.length > 0) {
+                        images.data.map((image) => {
+                            image.propId = propsData.data.id;
+                            propsData.data.images.push(image);
+                        });
+                    }
                     properties.push(propsData.data);
-                    setPropsSent(true);
+                    if (i === user.likes.length - 1 && propsData.data.images.length > 0) {
+                        setPropsSent(true);
+                    }
                 })
         });
+        console.log(properties);
+    }
+
+    const update = () => {
+        console.log(properties);
     }
 
     useEffect(()=> {
@@ -77,20 +93,20 @@ export default function TitlebarGridList(props) {
                         console.log(user.likes, properties);
                     }}></Button>
                 </GridListTile>
-                {/* {properties.map(property => (
-                    <GridListTile key={tile.img}>
-                        <img src={tile.img} alt={tile.title} />
+                {properties.map(property => (
+                    <GridListTile key="https://i.etsystatic.com/10775770/r/il/c32cd1/830729388/il_1588xN.830729388_4b8n.jpg">
+                        <img src={property.images[0].url} alt={property.address} />
                         <GridListTileBar
                             title={property.address}
-                            subtitle={<span>by: {tile.author}</span>}
+                            subtitle={<span>by: {property.id}</span>}
                             actionIcon={
-                                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                                    <InfoIcon />
+                                <IconButton aria-label={`info about ${property.address}`} className={classes.icon}>
+                                    <InfoIcon onClick={update}/>
                                 </IconButton>
                             }
                         />
                     </GridListTile>
-                ))} */}
+                ))}
             </GridList> : <Spin></Spin> 
         }
         </div>

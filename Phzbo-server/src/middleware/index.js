@@ -47,9 +47,13 @@ module.exports = function (app) {
     res.send(properties);
   });
 
-  app.get('/likedProperties/:propId', async (req, res) => {
-    let properties = await db.Listings.findOne({ where: { id: req.params.propId } });
-    res.send(properties);
+  app.get('/likedProperties/:propId', (req, res) => {
+    db.Listings.findOne({ where: { id: req.params.propId } })
+      .then((properties)=> {
+        res.send(properties);
+      });
+    // let properties = await db.Listings.findOne({ where: { id: req.params.propId } });
+    // res.send(properties);
   });
 
   //finds all the properties for a specific city and zip code

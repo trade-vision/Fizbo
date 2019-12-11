@@ -11,7 +11,8 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -50,6 +51,16 @@ export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     let [openPicModal, setOpenPicModal] = useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     
 
     const propertyInfo = props.userProperties;
@@ -107,10 +118,37 @@ export default function PropertyCard(props) {
           </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
+
+                    <div>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={handleClick}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={open}
+                            onClose={handleClose}
+                            PaperProps={{
+                                style: {
+                                    maxHeight: 48 * 4.5,
+                                    width: 200,
+                                },
+                            }}
+                        >
+                            {["Edit", "Delete"].map(option => (
+                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </div>
+                            }
                 title={propertyInfo.address}
                     subheader={moment(propertyInfo.createdAt).fromNow()}
             />
@@ -127,9 +165,6 @@ export default function PropertyCard(props) {
         </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>
@@ -141,8 +176,10 @@ export default function PropertyCard(props) {
                     aria-expanded={expanded}
                     aria-label="show more"
                 >
+
                     <ExpandMoreIcon />
                 </IconButton>
+                
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>

@@ -16,7 +16,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Modal, Button } from 'antd'
+import { Form, Modal } from 'react-bootstrap';
+import { Button } from 'antd'
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment'
@@ -50,17 +51,27 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
-    let [openPicModal, setOpenPicModal] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [openPicModal, setOpenPicModal] = useState(false);
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleEdit = (e) => {
+        let option = e.target.innerHTML;
+        if(option[0] === 'E'){
+            console.log('Edit');
+            setOpenEditModal(true);
+        } else if(option[0] === 'D'){
+            console.log('Delete');
+        }
         setAnchorEl(null);
     };
+
+    const closeEditModal = () => setOpenEditModal(false);
     
 
     const propertyInfo = props.userProperties;
@@ -78,6 +89,64 @@ export default function PropertyCard(props) {
         setOpenPicModal(!openPicModal);
         
     }
+
+    const [address, setAddress] = useState('');
+    const [zipCode, setZip] = useState('');
+    const [askingPrice, setAskingPrice] = useState('');
+    const [arv, setArv] = useState('');
+    const [repairCost, setrepairCost] = useState('');
+    const [sqrFt, setSqrFt] = useState('');
+    const [comparableProp, setComparableProp] = useState('');
+    const [description, setDescription] = useState('');
+    const [signedUp, setSignedUp] = useState(false);
+    const [isSuccessful, setisSuccessful] = useState(false);
+    const [paymentToken, setPaymentToken] = useState(false);
+
+    const handleAddress = (event) => {
+        const place = event.target.value;
+        setAddress(place);
+    }
+
+    const handleZip = (event) => {
+        const zip = event.target.value;
+        setZip(zip);
+    }
+
+    const handleAskingPrice = (event) => {
+        const price = event.target.value;
+        setAskingPrice(price);
+    }
+
+    const handleArv = (event) => {
+        const aRv = event.target.value;
+        setArv(aRv);
+    }
+
+    const handleRepairCost = (event) => {
+        const cost = event.target.value;
+        setrepairCost(cost);
+    }
+
+    const handleSqrFt = (event) => {
+        const demensions = event.target.value;
+        setSqrFt(demensions);
+    }
+
+    const handleCompareProp = (event) => {
+        const price = event.target.value;
+        if (price[0] === '$') {
+            setComparableProp(price.slice(1));
+        } else {
+            setComparableProp(price)
+        }
+
+    }
+
+    const handleDescription = (event) => {
+        const descriptionInfo = event.target.value;
+        setDescription(descriptionInfo);
+    }
+
     useEffect(() => {
        
     });
@@ -85,7 +154,7 @@ export default function PropertyCard(props) {
     return (
         <div>
             <Grid container justify="center" >
-                <Modal visible={openPicModal} maskClosable={true} onCancel={closePicture} footer={[
+                <Modal show={openPicModal} maskClosable={true} onHide={closePicture} footer={[
                     <Button key="back" onClick={closePicture} type="primary">
                         Return
                     </Button>    
@@ -133,7 +202,7 @@ export default function PropertyCard(props) {
                             anchorEl={anchorEl}
                             keepMounted
                             open={open}
-                            onClose={handleClose}
+                            onClose={handleEdit}
                             PaperProps={{
                                 style: {
                                     maxHeight: 48 * 4.5,
@@ -142,7 +211,7 @@ export default function PropertyCard(props) {
                             }}
                         >
                             {["Edit", "Delete"].map(option => (
-                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleEdit}>
                                     {option}
                                 </MenuItem>
                             ))}
@@ -192,6 +261,40 @@ export default function PropertyCard(props) {
                 </CardContent>
             </Collapse>
         </Card> 
+            <Modal show={openEditModal} onHide={closeEditModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit your property</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Control type="text" placeholder="Address" onChange={handleAddress} />
+                    <br />
+                    <Form.Control type="text" placeholder="Zip Code" onChange={handleZip} />
+                    <br />
+                    <Form.Control type="text" placeholder="Asking Price $" onChange={handleAskingPrice} />
+                    <br />
+                    <Form.Control type="text" placeholder="ARV" onChange={handleArv} />
+                    <br />
+                    <Form.Control type="text" placeholder="Repair Cost $" onChange={handleRepairCost} />
+                    <br />
+                    <Form.Control type="text" placeholder="sqr ft" onChange={handleSqrFt} />
+                    <br />
+                    <Form.Control type="text" placeholder="Comparable Prop $" onChange={handleCompareProp} />
+                    <br />
+                    <Form.Control type="text" placeholder="Description" onChange={handleDescription} />
+                    <br />
+                </Modal.Body>
+
+                <Modal.Footer>
+
+                    <Button variant="secondary" >
+                        Close
+          </Button>
+                    <Button variant="primary">
+                        Submit Changes
+          </Button>
+                   
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

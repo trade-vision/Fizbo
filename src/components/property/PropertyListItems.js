@@ -16,11 +16,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Form, Modal } from 'react-bootstrap';
-import { Button } from 'antd'
+import { Form } from 'react-bootstrap';
+import { Button, message, Modal } from 'antd'
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment'
+import axios from 'axios';
 import '../../css/App.css';
 
 
@@ -90,17 +91,24 @@ export default function PropertyCard(props) {
         
     }
 
-    const [address, setAddress] = useState('');
-    const [zipCode, setZip] = useState('');
-    const [askingPrice, setAskingPrice] = useState('');
-    const [arv, setArv] = useState('');
-    const [repairCost, setrepairCost] = useState('');
-    const [sqrFt, setSqrFt] = useState('');
-    const [comparableProp, setComparableProp] = useState('');
-    const [description, setDescription] = useState('');
+    
+
+    const [myProperty, setMyProperty] = useState(propertyInfo)
+    const [address, setAddress] = useState(splitAddress);
+    const [zipCode, setZip] = useState(`${propertyInfo.address[propertyInfo.address.length - 5]}${propertyInfo.address[propertyInfo.address.length - 4]}${propertyInfo.address[propertyInfo.address.length - 3]}${propertyInfo.address[propertyInfo.address.length - 2]}${propertyInfo.address[propertyInfo.address.length - 5]}`);
+    const [askingPrice, setAskingPrice] = useState(propertyInfo.asking_price);
+    const [arv, setArv] = useState(propertyInfo.arv);
+    const [repairCost, setrepairCost] = useState(propertyInfo.repair_cost);
+    const [sqrFt, setSqrFt] = useState(propertyInfo.sqr_feet);
+    const [comparableProp, setComparableProp] = useState(propertyInfo.comparable_prop);
+    const [description, setDescription] = useState(propertyInfo.description);
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
     const [paymentToken, setPaymentToken] = useState(false);
+
+    let splitAddress = myProperty.address.split('');
+    splitAddress.pop()
+    splitAddress = splitAddress.join('');
 
     const handleAddress = (event) => {
         const place = event.target.value;
@@ -147,6 +155,25 @@ export default function PropertyCard(props) {
         setDescription(descriptionInfo);
     }
 
+    const submitProperty = async () => {
+        
+        const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id };
+
+        axios.put(`/editproperty/${propertyInfo.id}`, propCredentials)
+        .then((update)=> {
+                setMyProperty(update.data);
+                setOpenEditModal(false);
+                message.success("Property successfully updated")
+            }).catch((err)=> {
+                console.log(err);
+                message.error("Something went wrong")
+            })
+                
+
+            
+    } 
+    
+
     useEffect(() => {
        
     });
@@ -154,7 +181,7 @@ export default function PropertyCard(props) {
     return (
         <div>
             <Grid container justify="center" >
-                <Modal show={openPicModal} maskClosable={true} onHide={closePicture} footer={[
+                <Modal visible={openPicModal} maskClosable={true} onCancel={closePicture} footer={[
                     <Button key="back" onClick={closePicture} type="primary">
                         Return
                     </Button>    
@@ -178,6 +205,26 @@ export default function PropertyCard(props) {
                     }
                         </Carousel>  
             </Modal>
+                <Modal visible={openEditModal} onCancel={closeEditModal} onOk={submitProperty} title="Edit your property">
+                   
+                    <Form.Control type="text" placeholder="Address" defaultValue={myProperty.address} onChange={handleAddress} />
+                        <br />
+                        <Form.Control type="text" placeholder="Zip Code" onChange={handleZip} />
+                        <br />
+                        <Form.Control type="text" placeholder="Asking Price $" onChange={handleAskingPrice} />
+                        <br />
+                        <Form.Control type="text" placeholder="ARV" onChange={handleArv} />
+                        <br />
+                        <Form.Control type="text" placeholder="Repair Cost $" onChange={handleRepairCost} />
+                        <br />
+                        <Form.Control type="text" placeholder="sqr ft" onChange={handleSqrFt} />
+                        <br />
+                        <Form.Control type="text" placeholder="Comparable Prop $" onChange={handleCompareProp} />
+                        <br />
+                        <Form.Control type="text" placeholder="Description" onChange={handleDescription} />
+                        <br />
+                 
+                </Modal>
             </Grid>
         <Card className={classes.card}>
             <CardHeader
@@ -218,7 +265,7 @@ export default function PropertyCard(props) {
                         </Menu>
                     </div>
                             }
-                title={propertyInfo.address}
+                    title={myProperty.address}
                     subheader={moment(propertyInfo.createdAt).fromNow()}
             />
             {propertyInfo.images[0] ? <CardMedia
@@ -230,8 +277,11 @@ export default function PropertyCard(props) {
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                        {`${propertyInfo.sqr_feet} sqr ft.`}
+                        {`${myProperty.sqr_feet} sqr ft.`}
         </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {`Asking Price: ${myProperty.asking_price}`}
+                    </Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="share">
@@ -261,40 +311,6 @@ export default function PropertyCard(props) {
                 </CardContent>
             </Collapse>
         </Card> 
-            <Modal show={openEditModal} onHide={closeEditModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit your property</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Control type="text" placeholder="Address" onChange={handleAddress} />
-                    <br />
-                    <Form.Control type="text" placeholder="Zip Code" onChange={handleZip} />
-                    <br />
-                    <Form.Control type="text" placeholder="Asking Price $" onChange={handleAskingPrice} />
-                    <br />
-                    <Form.Control type="text" placeholder="ARV" onChange={handleArv} />
-                    <br />
-                    <Form.Control type="text" placeholder="Repair Cost $" onChange={handleRepairCost} />
-                    <br />
-                    <Form.Control type="text" placeholder="sqr ft" onChange={handleSqrFt} />
-                    <br />
-                    <Form.Control type="text" placeholder="Comparable Prop $" onChange={handleCompareProp} />
-                    <br />
-                    <Form.Control type="text" placeholder="Description" onChange={handleDescription} />
-                    <br />
-                </Modal.Body>
-
-                <Modal.Footer>
-
-                    <Button variant="secondary" >
-                        Close
-          </Button>
-                    <Button variant="primary">
-                        Submit Changes
-          </Button>
-                   
-                </Modal.Footer>
-            </Modal>
         </div>
     );
 }

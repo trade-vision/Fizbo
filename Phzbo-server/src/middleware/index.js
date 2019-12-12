@@ -8,6 +8,8 @@ const stripe = require('stripe')('sk_test_tTbx7glLXWfiF9ZIqPzuq9Se006dSsEACD');
 module.exports = function (app) {
   // Add your custom middleware here. Remember that
   // in Express, the order matters.
+
+  
   
 
   // ------------------ Google Auth ------------------------
@@ -71,6 +73,12 @@ module.exports = function (app) {
         res.send(allProps);
       });
 
+  });
+
+  app.put('/editproperty/:propId', async (req, res)=> {
+    let myListing = await db.Listings.findOne({ where: { id: req.params.propId } });
+    let updatedProperty = await myListing.update(req.body);
+    res.send(updatedProperty).sendStatus(200);
   });
   //-------------------------------------------------
 

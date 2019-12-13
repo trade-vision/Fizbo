@@ -8,7 +8,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
-import { Spin, Upload, message, Icon, Result } from 'antd';
+import { Spin, Upload, message, Icon, Result, } from 'antd';
 import StripeCheckout from 'react-stripe-checkout';
 
 
@@ -163,7 +163,7 @@ export default function AddProperty(props) {
         console.log("error")
         }
     } else {
-        alert("You must pay the $50.00 fee for property post")
+        message.error("You must pay the $50.00 fee for property post")
     }
     }
 

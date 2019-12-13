@@ -54,6 +54,7 @@ export default function PropertyCard(props) {
     const [expanded, setExpanded] = useState(false);
     const [openPicModal, setOpenPicModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);  
     const [anchorEl, setAnchorEl] = useState(null);
     const [deleted, setDeleted] = useState(false);
     const open = Boolean(anchorEl);
@@ -65,20 +66,31 @@ export default function PropertyCard(props) {
     const handleEdit = (e) => {
         let option = e.target.innerHTML;
         if(option[0] === 'E'){
-            console.log('Edit');
             setOpenEditModal(true);
         } else if(option[0] === 'D'){
-            console.log('Delete');
-            axios.put(`/deleteprop/${propertyInfo.id}`)
-              .then((deleted) => {
-                setDeleted(true);
-              })
-              .catch((err) => console.log(err));
+          setOpenDeleteModal(true)
+            // console.log('Delete');
+            // axios.put(`/deleteprop/${propertyInfo.id}`)
+            //   .then((deleted) => {
+            //     setDeleted(true);
+            //   })
+            //   .catch((err) => console.log(err));
         }
         setAnchorEl(null);
     };
 
+    const handleDelete = () => {
+      axios.put(`/deleteprop/${propertyInfo.id}`)
+              .then((deleted) => {
+                setDeleted(true);
+                message.success('Property successfully deleted')
+              })
+              .catch((err) => console.log(err));
+    }
+
     const closeEditModal = () => setOpenEditModal(false);
+
+    const closeDeleteModal = () => setOpenDeleteModal(false);
     
 
     const propertyInfo = props.userProperties;
@@ -232,6 +244,12 @@ export default function PropertyCard(props) {
                         <br />
                  
                 </Modal>
+            <Modal visible={openDeleteModal} footer={null} title="Are you sure?">
+            <Typography>You will not be able to receive a refund for deleting your property post.</Typography>
+              <br />        
+              <Button onClick={handleDelete}>Yes, I'm sure</Button>
+              <Button onClick={closeDeleteModal}>Close</Button>
+            </Modal>
             </Grid>
         <Card className={classes.card}>
             <CardHeader

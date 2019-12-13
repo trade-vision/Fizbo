@@ -55,6 +55,7 @@ export default function PropertyCard(props) {
     const [openPicModal, setOpenPicModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [deleted, setDeleted] = useState(false);
     const open = Boolean(anchorEl);
 
     const handleClick = event => {
@@ -68,6 +69,11 @@ export default function PropertyCard(props) {
             setOpenEditModal(true);
         } else if(option[0] === 'D'){
             console.log('Delete');
+            axios.put(`/deleteprop/${propertyInfo.id}`)
+              .then((deleted) => {
+                setDeleted(true);
+              })
+              .catch((err) => console.log(err));
         }
         setAnchorEl(null);
     };
@@ -180,6 +186,7 @@ export default function PropertyCard(props) {
 
     return (
         <div>
+        {deleted ? null : <div>
             <Grid container justify="center" >
                 <Modal visible={openPicModal} maskClosable={true} onCancel={closePicture} footer={[
                     <Button key="back" onClick={closePicture} type="primary">
@@ -311,6 +318,7 @@ export default function PropertyCard(props) {
                 </CardContent>
             </Collapse>
         </Card> 
+        </div>}
         </div>
     );
 }

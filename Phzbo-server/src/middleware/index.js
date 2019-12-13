@@ -80,6 +80,22 @@ module.exports = function (app) {
     let updatedProperty = await myListing.update(req.body);
     res.send(updatedProperty).sendStatus(200);
   });
+
+
+  app.put('/deleteprop/:propId', (req, res) => {
+    db.Listings.destroy({
+      where: {
+        id: req.params.propId,
+      }
+    })
+      .then((like) => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
   //-------------------------------------------------
 
 

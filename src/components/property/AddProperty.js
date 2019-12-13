@@ -27,8 +27,6 @@ const useStyles = makeStyles(theme => ({
 
 const actions = [
     { icon: <AddIcon />, name: 'Post Property' },
-    { icon: <ShareIcon />, name: 'Share' },
-    { icon: <DeleteIcon />, name: 'Delete Property' },
 ];
 
 export default function AddProperty(props) {
@@ -51,6 +49,8 @@ export default function AddProperty(props) {
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
     const [paymentToken, setPaymentToken] = useState(false);
+    const [price, setPrice] = useState(5000);
+    // const [promoCode, setPromo] = ('')
 
     const modalClose = () => setShow(false);
 
@@ -140,6 +140,15 @@ export default function AddProperty(props) {
         setDescription(descriptionInfo);
     }
 
+    const handlePromo = (e) => {
+        const promo = e.target.value;
+        if(promo === 'PHZBO2020'){
+            setPrice(2000);
+        } else {
+            setPrice(5000);  
+        }
+    }
+
     const submitProperty = async () => {
         const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id};
         
@@ -207,20 +216,6 @@ export default function AddProperty(props) {
                     tooltipOpen
                     onClick={openModel}
                 />
-                <SpeedDialAction
-                    key={actions[1].name}
-                    icon={actions[1].icon}
-                    tooltipTitle={actions[1].name}
-                    tooltipOpen
-                    onClick={handleClick}
-                />
-                <SpeedDialAction
-                    key={actions[2].name}
-                    icon={actions[2].icon}
-                    tooltipTitle={actions[2].name}
-                    tooltipOpen
-                    onClick={handleClick}
-                />
             </SpeedDial>
             <Modal show={show} onHide={modalClose}>
                 <Modal.Header closeButton>
@@ -243,6 +238,8 @@ export default function AddProperty(props) {
                         <br />
                         <Form.Control type="text" placeholder="Description" onChange={handleDescription}/>
                         <br />
+                        <Form.Control type="text" placeholder="Promo Code" onChange={handlePromo} />
+                         <br />
                     <Button onClick={() => showWidget(widget)}>Upload</Button><p>{imageNumber} images uploaded</p>
                 </Modal.Body>
             
@@ -252,7 +249,7 @@ export default function AddProperty(props) {
                     <StripeCheckout
                         token={onToken}
                         stripeKey="pk_test_PAC69Vxe0dk1tmPryhhTyg9Y00YvT524mw"
-                        amount={5000} // cents
+                        amount={price} // cents
                         currency="USD"
                     />
 

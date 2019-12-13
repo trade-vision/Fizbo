@@ -244,7 +244,7 @@ export default function PropertyCard(props) {
                         <br />
                  
                 </Modal>
-            <Modal visible={openDeleteModal} footer={null} title="Are you sure?">
+            <Modal visible={openDeleteModal} footer={null} onCancel={closeDeleteModal} title="Are you sure?">
             <Typography>You will not be able to receive a refund for deleting your property post.</Typography>
               <br />        
               <Button onClick={handleDelete}>Yes, I'm sure</Button>

@@ -14,6 +14,7 @@ import { Button } from '@material-ui/core';
 import LikesList from './user/LikesList'
 import { Link, Redirect } from 'react-router-dom';
 import { Modal, Spin, message } from 'antd'; 
+import axios from 'axios';
 import '../css/bootstrap-social.css'
 
 
@@ -72,6 +73,7 @@ export default function MenuAppBar(props) {
         setAnchorEl(null);
     }
 
+    
     const toggleLikes = () => {
         if(props.user){
             setLikesOpen(!likesOpen);
@@ -139,7 +141,7 @@ export default function MenuAppBar(props) {
                                 > 
                                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                                 </Link>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={props.logOut}>Logout</MenuItem>
                             </Menu>
                         </div>
                         :

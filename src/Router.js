@@ -29,6 +29,16 @@ function Router() {
         }
     }
 
+    const handleLogout = () => {
+        axios.get('/logout')
+            .then((loggedOut) => {
+                setIsSignedIn(false);
+                setUser(null)
+                window.location.reload()
+            });
+    }
+
+
     useEffect(() => {
         // code to run on component mount
         handleUser();
@@ -38,7 +48,7 @@ function Router() {
         <div className="App">
             
             <BrowserRouter>
-                <Nav user={user} />
+                <Nav user={user} logOut={handleLogout}/>
                 <Switch>  
                     <Route path="/" render={() => <App user={user}/>} exact />
                     <Route exact path="/myprofile" component={UserProfile} />} />

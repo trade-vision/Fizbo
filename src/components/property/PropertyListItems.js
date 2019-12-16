@@ -123,6 +123,7 @@ export default function PropertyCard(props) {
     const [signedUp, setSignedUp] = useState(false);
     const [isSuccessful, setisSuccessful] = useState(false);
     const [paymentToken, setPaymentToken] = useState(false);
+    // const shownAddress = myProperty.address
 
     let splitAddress = myProperty.address.split('');
     splitAddress.pop()
@@ -226,7 +227,7 @@ export default function PropertyCard(props) {
             </Modal>
                 <Modal visible={openEditModal} onCancel={closeEditModal} onOk={submitProperty} title="Edit your property">
                    
-                    <Form.Control type="text" placeholder="Address" defaultValue={myProperty.address} onChange={handleAddress} />
+                        <Form.Control type="text" placeholder="Address" defaultValue={splitAddress} onChange={handleAddress} />
                         <br />
                         <Form.Control type="text" placeholder="Zip Code" onChange={handleZip} />
                         <br />

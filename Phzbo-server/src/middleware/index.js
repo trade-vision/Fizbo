@@ -42,6 +42,14 @@ module.exports = function (app) {
     res.send(updatedProfile);
   });
 
+
+  app.get('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+  });
+
   // --------------------- Properties -----------
   //finds all user's properties
   app.get('/properties/:userId', async (req, res) => {

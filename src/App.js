@@ -41,12 +41,7 @@ function App(props) {
   const handleUser = () => {
     if(props.user){
       setIsSignedIn(true);
-      axios.get('/likes')
-        .then((likes) => {
-          props.user.likes = likes.data;
-          setUser(props.user);
-        })
-
+      setUser(props.user);
     }
   }
 

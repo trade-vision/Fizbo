@@ -19,7 +19,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import { Modal, Button, Spin, message } from 'antd'
 import moment from 'moment';
-import { NavLink, Redirect } from 'react-router-dom'; 
+import { NavLink, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import '../../css/App.css'
 
@@ -60,7 +60,8 @@ export default function PropertyCard(props) {
     function handleExpandClick() {
         setExpanded(!expanded);
     }
-   
+
+    const comingSoon = () => message.warning('Feature Coming Soon');  
 
     const openPicture = (e) => {
         setOpenPicModal(true);
@@ -74,52 +75,53 @@ export default function PropertyCard(props) {
 
     const goToFriendProfile = () => {
         setRedirect(true);
- 
+        console.log(redirect)
     }
 
-    const comingSoon = () => message.warning('Feature Coming Soon');  
-    
     const likeProperty = (e) => {
-    if(props.user){
-        setLiked(liked += 1);
-        
-        if(liked === 1){
-            axios.post(`like/${propertyInfo.id}`)
-                .then((likeResponse) => {
-                    setColor('secondary')
-                    console.log(likeResponse);
-                    props.user.likes.push(likeResponse.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-            
+        if (props.user) {
+            setLiked(liked += 1);
 
-        } else if(liked === 2){
-            axios.put(`unlike/${propertyInfo.id}`)
-                .then((unlike)=> {
-                    setColor('disabled')
-                    setLiked(0)
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+            if (liked === 1) {
+                axios.post(`like/${propertyInfo.id}`)
+                    .then((likeResponse) => {
+                        setColor('secondary')
+                        console.log(likeResponse);
+                        props.user.likes.push(likeResponse.data);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
+
+            } else if (liked === 2) {
+                axios.put(`unlike/${propertyInfo.id}`)
+                    .then((unlike) => {
+                        setColor('disabled')
+                        setLiked(0)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            } else {
+                setColor('disabled')
+            }
         } else {
-            setColor('disabled')
-        }
-    } else {
             message.error('Must be logged in to use this feature.');
         }
     }
 
+    
+
     useEffect(() => {
-        if(props.user){
+        if (props.user) {
             props.user.likes.forEach((like) => {
                 if (like.listingId === propertyInfo.id) {
                     setColor('secondary');
                 }
             })
         }
+
     }, []);
 
     return (
@@ -129,7 +131,7 @@ export default function PropertyCard(props) {
                     <Button key="back" onClick={closePicture} type="primary">
                         Return
                     </Button>
-                ]}> 
+                ]}>
 
                     <Carousel>
                         {
@@ -151,78 +153,68 @@ export default function PropertyCard(props) {
                 </Modal>
                     : null}
             </Grid>
-        <Card className={classes.card}>
-            {propertyInfo.user ? <CardHeader
-                avatar={
-                        <NavLink to={{
-                            pathname: `${propertyInfo.user.name}`,
-                            state: {
-                                 propertyInfo: propertyInfo, user: props.user}
-                        }}
-                        > 
-                            <Avatar aria-label="recipe" className={classes.avatar} title={propertyInfo.user.name} onClick={goToFriendProfile}>
-                            {`${propertyInfo.user.name.split(' ')[0][0]}${propertyInfo.user.name.split(' ')[1][0]}`}
-                    </Avatar>
-                        </NavLink>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={propertyInfo.address}
+            <Card className={classes.card}>
+                {props.friend ? <CardHeader
+                    avatar={
+                            <Avatar aria-label="recipe" className={classes.avatar} title={props.friend.name} onClick={goToFriendProfile}>
+                                {`${props.friend.name.split(' ')[0][0]}${props.friend.name.split(' ')[1][0]}`}
+                            </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                    title={propertyInfo.address}
                     subheader={moment(propertyInfo.createdAt).fromNow()}
                 /> : <Spin />}
-            {propertyInfo.images[0] ? <CardMedia
-                className={classes.media}
-                image={propertyInfo.images[0].url}
-                title="Click to enlarge"
-                //add click handler
-                onClick={openPicture}
-            /> : null}
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    {`${propertyInfo.sqr_feet} sqr ft.`}
-                </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {`Asking Price: ${propertyInfo.asking_price}`}
-                    </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites" color="secondary" onClick={likeProperty}>
-                        <FavoriteIcon color={color} onSelect={likeProperty}/>
-                </IconButton>
-                <IconButton aria-label="share">
-                        <ShareIcon onClick={comingSoon} />
-                </IconButton>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                {propertyInfo.images[0] ? <CardMedia
+                    className={classes.media}
+                    image={propertyInfo.images[0].url}
+                    title="Click to enlarge"
+                    //add click handler
+                    onClick={openPicture}
+                /> : null}
                 <CardContent>
-                    <Typography>
-                    {`ARV: ${propertyInfo.arv}`}
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {`${propertyInfo.sqr_feet} sqr ft.`}
                     </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites" color="secondary" onClick={likeProperty}>
+                        <FavoriteIcon color={color} onSelect={likeProperty} />
+                    </IconButton>
+                    <IconButton aria-label="share">
+                        <ShareIcon onClick={comingSoon} />
+                    </IconButton>
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded
+                        })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <Typography>
+                            {`ARV: ${propertyInfo.arv}`}
+                        </Typography>
                         <Typography>
                             {`Repair Cost: ${propertyInfo.repair_cost}`}
                         </Typography>
                         <Typography>
                             {`Comparable Prop. Value: ${propertyInfo.comparable_prop}`}
                         </Typography>
-                    <Typography paragraph>
-                    {`Description: ${propertyInfo.description}`}
-                    </Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
+                        <Typography paragraph>
+                            {`Description: ${propertyInfo.description}`}
+                        </Typography>
+                    </CardContent>
+                </Collapse>
+            </Card>
         </div>
     );
 }

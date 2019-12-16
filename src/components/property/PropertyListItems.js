@@ -11,14 +11,17 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Modal, Button } from 'antd'
+import { Form } from 'react-bootstrap';
+import { Button, message, Modal } from 'antd'
 import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment'
+import axios from 'axios';
 import '../../css/App.css';
 
 
@@ -49,7 +52,45 @@ const useStyles = makeStyles(theme => ({
 export default function PropertyCard(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
-    let [openPicModal, setOpenPicModal] = useState(false);
+    const [openPicModal, setOpenPicModal] = useState(false);
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [deleted, setDeleted] = useState(false);
+    const open = Boolean(anchorEl);
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleEdit = (e) => {
+        let option = e.target.innerHTML;
+        if(option[0] === 'E'){
+            setOpenEditModal(true);
+        } else if(option[0] === 'D'){
+          setOpenDeleteModal(true)
+            // console.log('Delete');
+            // axios.put(`/deleteprop/${propertyInfo.id}`)
+            //   .then((deleted) => {
+            //     setDeleted(true);
+            //   })
+            //   .catch((err) => console.log(err));
+        }
+        setAnchorEl(null);
+    };
+
+    const handleDelete = () => {
+      axios.put(`/deleteprop/${propertyInfo.id}`)
+              .then((deleted) => {
+                setDeleted(true);
+                message.success('Property successfully deleted')
+              })
+              .catch((err) => console.log(err));
+    }
+
+    const closeEditModal = () => setOpenEditModal(false);
+
+    const closeDeleteModal = () => setOpenDeleteModal(false);
     
 
     const propertyInfo = props.userProperties;
@@ -67,12 +108,98 @@ export default function PropertyCard(props) {
         setOpenPicModal(!openPicModal);
         
     }
+
+    const comingSoon = () => message.warning('Feature Coming Soon');  
+
+    const [myProperty, setMyProperty] = useState(propertyInfo)
+    const [address, setAddress] = useState(splitAddress);
+    const [zipCode, setZip] = useState(`${propertyInfo.address[propertyInfo.address.length - 5]}${propertyInfo.address[propertyInfo.address.length - 4]}${propertyInfo.address[propertyInfo.address.length - 3]}${propertyInfo.address[propertyInfo.address.length - 2]}${propertyInfo.address[propertyInfo.address.length - 5]}`);
+    const [askingPrice, setAskingPrice] = useState(propertyInfo.asking_price);
+    const [arv, setArv] = useState(propertyInfo.arv);
+    const [repairCost, setrepairCost] = useState(propertyInfo.repair_cost);
+    const [sqrFt, setSqrFt] = useState(propertyInfo.sqr_feet);
+    const [comparableProp, setComparableProp] = useState(propertyInfo.comparable_prop);
+    const [description, setDescription] = useState(propertyInfo.description);
+    const [signedUp, setSignedUp] = useState(false);
+    const [isSuccessful, setisSuccessful] = useState(false);
+    const [paymentToken, setPaymentToken] = useState(false);
+    // const shownAddress = myProperty.address
+
+    let splitAddress = myProperty.address.split('');
+    splitAddress.pop()
+    splitAddress = splitAddress.join('');
+
+    const handleAddress = (event) => {
+        const place = event.target.value;
+        setAddress(place);
+    }
+
+    const handleZip = (event) => {
+        const zip = event.target.value;
+        setZip(zip);
+    }
+
+    const handleAskingPrice = (event) => {
+        const price = event.target.value;
+        setAskingPrice(price);
+    }
+
+    const handleArv = (event) => {
+        const aRv = event.target.value;
+        setArv(aRv);
+    }
+
+    const handleRepairCost = (event) => {
+        const cost = event.target.value;
+        setrepairCost(cost);
+    }
+
+    const handleSqrFt = (event) => {
+        const demensions = event.target.value;
+        setSqrFt(demensions);
+    }
+
+    const handleCompareProp = (event) => {
+        const price = event.target.value;
+        if (price[0] === '$') {
+            setComparableProp(price.slice(1));
+        } else {
+            setComparableProp(price)
+        }
+
+    }
+
+    const handleDescription = (event) => {
+        const descriptionInfo = event.target.value;
+        setDescription(descriptionInfo);
+    }
+
+    const submitProperty = async () => {
+        
+        const propCredentials = { address: `${address} ${zipCode}`, asking_price: askingPrice, arv: arv, repair_cost: repairCost, sqr_feet: sqrFt, comparable_prop: parseInt(comparableProp), description: description, userId: props.user.id };
+
+        axios.put(`/editproperty/${propertyInfo.id}`, propCredentials)
+        .then((update)=> {
+                setMyProperty(update.data);
+                setOpenEditModal(false);
+                message.success("Property successfully updated")
+            }).catch((err)=> {
+                console.log(err);
+                message.error("Something went wrong")
+            })
+                
+
+            
+    } 
+    
+
     useEffect(() => {
        
     });
 
     return (
         <div>
+        {deleted ? null : <div>
             <Grid container justify="center" >
                 <Modal visible={openPicModal} maskClosable={true} onCancel={closePicture} footer={[
                     <Button key="back" onClick={closePicture} type="primary">
@@ -98,6 +225,32 @@ export default function PropertyCard(props) {
                     }
                         </Carousel>  
             </Modal>
+                <Modal visible={openEditModal} onCancel={closeEditModal} onOk={submitProperty} title="Edit your property">
+                   
+                        <Form.Control type="text" placeholder="Address" defaultValue={splitAddress} onChange={handleAddress} />
+                        <br />
+                        <Form.Control type="text" placeholder="Zip Code" onChange={handleZip} />
+                        <br />
+                        <Form.Control type="text" placeholder="Asking Price $" onChange={handleAskingPrice} />
+                        <br />
+                        <Form.Control type="text" placeholder="ARV" onChange={handleArv} />
+                        <br />
+                        <Form.Control type="text" placeholder="Repair Cost $" onChange={handleRepairCost} />
+                        <br />
+                        <Form.Control type="text" placeholder="sqr ft" onChange={handleSqrFt} />
+                        <br />
+                        <Form.Control type="text" placeholder="Comparable Prop $" onChange={handleCompareProp} />
+                        <br />
+                        <Form.Control type="text" placeholder="Description" onChange={handleDescription} />
+                        <br />
+                 
+                </Modal>
+            <Modal visible={openDeleteModal} footer={null} onCancel={closeDeleteModal} title="Are you sure?">
+            <Typography>You will not be able to receive a refund for deleting your property post.</Typography>
+              <br />        
+              <Button onClick={handleDelete}>Yes, I'm sure</Button>
+              <Button onClick={closeDeleteModal}>Close</Button>
+            </Modal>
             </Grid>
         <Card className={classes.card}>
             <CardHeader
@@ -107,11 +260,38 @@ export default function PropertyCard(props) {
           </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={propertyInfo.address}
+
+                    <div>
+                        <IconButton
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={handleClick}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={open}
+                            onClose={handleEdit}
+                            PaperProps={{
+                                style: {
+                                    maxHeight: 48 * 4.5,
+                                    width: 200,
+                                },
+                            }}
+                        >
+                            {["Edit", "Delete"].map(option => (
+                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleEdit}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </div>
+                            }
+                    title={myProperty.address}
                     subheader={moment(propertyInfo.createdAt).fromNow()}
             />
             {propertyInfo.images[0] ? <CardMedia
@@ -123,15 +303,15 @@ export default function PropertyCard(props) {
             /> : null}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                        {`${propertyInfo.sqr_feet} sqr ft.`}
+                        {`${myProperty.sqr_feet} sqr ft.`}
         </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {`Asking Price: ${myProperty.asking_price}`}
+                    </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
                 <IconButton aria-label="share">
-                    <ShareIcon />
+                    <ShareIcon onClick={comingSoon}/>
                 </IconButton>
                 <IconButton
                     className={clsx(classes.expand, {
@@ -141,20 +321,29 @@ export default function PropertyCard(props) {
                     aria-expanded={expanded}
                     aria-label="show more"
                 >
+
                     <ExpandMoreIcon />
                 </IconButton>
+                
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>
-                        Beautiful property
-       </Typography>
-                    <Typography paragraph>
-                        Owned by: Somebody
-          </Typography>
-                </CardContent>
+                        <CardContent>
+                            <Typography>
+                                {`ARV: ${myProperty.arv}`}
+                            </Typography>
+                            <Typography>
+                                {`Repair Cost: ${myProperty.repair_cost}`}
+                            </Typography>
+                            <Typography>
+                                {`Comparable Prop. Value: ${myProperty.comparable_prop}`}
+                            </Typography>
+                            <Typography paragraph>
+                                {`Description: ${myProperty.description}`}
+                            </Typography>
+                        </CardContent>
             </Collapse>
         </Card> 
+        </div>}
         </div>
     );
 }

@@ -8,6 +8,8 @@ const stripe = require('stripe')('sk_test_tTbx7glLXWfiF9ZIqPzuq9Se006dSsEACD');
 module.exports = function (app) {
   // Add your custom middleware here. Remember that
   // in Express, the order matters.
+
+  
   
 
   // ------------------ Google Auth ------------------------
@@ -40,11 +42,28 @@ module.exports = function (app) {
     res.send(updatedProfile);
   });
 
+
+  app.get('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+  });
+
   // --------------------- Properties -----------
   //finds all user's properties
   app.get('/properties/:userId', async (req, res) => {
     let properties = await db.Listings.findAll({ where: { userId: req.params.userId } });
     res.send(properties);
+  });
+
+  app.get('/likedProperties/:propId', (req, res) => {
+    db.Listings.findOne({ where: { id: req.params.propId } })
+      .then((properties)=> {
+        res.send(properties);
+      });
+    // let properties = await db.Listings.findOne({ where: { id: req.params.propId } });
+    // res.send(properties);
   });
 
   //finds all the properties for a specific city and zip code
@@ -63,6 +82,28 @@ module.exports = function (app) {
       });
 
   });
+
+  app.put('/editproperty/:propId', async (req, res)=> {
+    let myListing = await db.Listings.findOne({ where: { id: req.params.propId } });
+    let updatedProperty = await myListing.update(req.body);
+    res.send(updatedProperty).sendStatus(200);
+  });
+
+
+  app.put('/deleteprop/:propId', (req, res) => {
+    db.Listings.destroy({
+      where: {
+        id: req.params.propId,
+      }
+    })
+      .then((like) => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
   //-------------------------------------------------
 
 
@@ -89,7 +130,7 @@ module.exports = function (app) {
       res.send(likes);
     }).catch((err) => {
       console.error(err);
-    })
+    });
 
   });
 

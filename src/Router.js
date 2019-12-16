@@ -17,12 +17,27 @@ function Router() {
         try {
             let response = await axios.get('/profile');
             let userData = response.data;
+            axios.get('/likes')
+                .then((likes) => {
+                    userData.likes = likes.data;
+
+                })
             setUser(userData)
             setIsSignedIn(true);
         } catch {
             console.log('gotta login bro');
         }
     }
+
+    const handleLogout = () => {
+        axios.get('/logout')
+            .then((loggedOut) => {
+                setIsSignedIn(false);
+                setUser(null)
+                window.location.reload()
+            });
+    }
+
 
     useEffect(() => {
         // code to run on component mount
@@ -33,10 +48,10 @@ function Router() {
         <div className="App">
             
             <BrowserRouter>
-                <Nav user={user} />
+                <Nav user={user} logOut={handleLogout}/>
                 <Switch>  
                     <Route path="/" render={() => <App user={user}/>} exact />
-                    <Route exact path="/myprofile" render={() => <UserProfile />} />
+                    <Route exact path="/myprofile" component={UserProfile} />} />
                     <Route exact path="/:user" component={FriendsProfile} /> 
                 </ Switch>
 

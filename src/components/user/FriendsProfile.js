@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Row, Col, Icon, Divider } from 'antd';
 import { Button } from 'react-bootstrap';
 import { withRouter } from "react-router";
-import PropertyList from '../property/UserPropertyList'
+import PropertyList from '../property/FriendsPropList'
 import Map from '../property/Map'
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
@@ -39,7 +39,7 @@ const Description = () => (
 function Profile(props) {
     const [loading, setLoading] = useState(true);
     const [profilePic, setProfilePic] = useState('');
-    const userData = props.history.location.state.user;
+    const friend = props.history.location.state.propertyInfo.user;
     const [properties, setUserProps] = useState([]);
     const [propImages, setPropImages] = useState([]);
 
@@ -49,7 +49,7 @@ function Profile(props) {
 
     const handleUserProperties = () => {
         try {
-            axios.get(`/properties/${userData.id}`)
+            axios.get(`/properties/${friend.id}`)
                 .then((propResponse) => {
                     let myProps = propResponse.data;
                     // console.log(myProps);
@@ -97,15 +97,15 @@ function Profile(props) {
             <CardProfile loading={loading}>
                 <BgUser>
                     <div className="avatar-user">
-                        <Avatar src={userData.profile_pic} size={160} />
+                        <Avatar src={friend.profile_pic} size={160} />
                     </div>
                 </BgUser>
                 <Row type="flex" gutter={18}>
                     <Col span={6}>
                         <div className="contact">
-                            <strong>{userData.name}</strong>
-                            <small>{userData.company}</small>
-                            <div className="mail"><Icon type="google" />{userData.email}</div>
+                            <strong>{friend.name}</strong>
+                            <small>{friend.company}</small>
+                            <div className="mail"><Icon type="google" />{friend.email}</div>
                             <div className="social">
                                 <Icon className="facebook" type="facebook" />
                                 <Divider type="left" />
@@ -119,7 +119,7 @@ function Profile(props) {
                     </Col>
                 </Row>
             </CardProfile>
-            <PropertyList user={userData} userProps={properties} propImages={propImages} className="card-profile" />
+            <PropertyList friend={friend} user={props.history.location.state.user} properties={properties} propImages={propImages} className="card-profile" />
             {isMapShown ? <Map /> : null}
             <div>
                 <Grid container justify="center" >

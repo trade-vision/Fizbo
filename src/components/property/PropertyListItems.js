@@ -109,7 +109,7 @@ export default function PropertyCard(props) {
         
     }
 
-    
+    const comingSoon = () => message.warning('Feature Coming Soon');  
 
     const [myProperty, setMyProperty] = useState(propertyInfo)
     const [address, setAddress] = useState(splitAddress);
@@ -311,7 +311,7 @@ export default function PropertyCard(props) {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="share">
-                    <ShareIcon />
+                    <ShareIcon onClick={comingSoon}/>
                 </IconButton>
                 <IconButton
                     className={clsx(classes.expand, {
@@ -327,14 +327,20 @@ export default function PropertyCard(props) {
                 
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>
-                        Beautiful property
-       </Typography>
-                    <Typography paragraph>
-                        Owned by: Somebody
-          </Typography>
-                </CardContent>
+                        <CardContent>
+                            <Typography>
+                                {`ARV: ${myProperty.arv}`}
+                            </Typography>
+                            <Typography>
+                                {`Repair Cost: ${myProperty.repair_cost}`}
+                            </Typography>
+                            <Typography>
+                                {`Comparable Prop. Value: ${myProperty.comparable_prop}`}
+                            </Typography>
+                            <Typography paragraph>
+                                {`Description: ${myProperty.description}`}
+                            </Typography>
+                        </CardContent>
             </Collapse>
         </Card> 
         </div>}

@@ -76,6 +76,8 @@ export default function PropertyCard(props) {
         setRedirect(true);
  
     }
+
+    const comingSoon = () => message.warning('Feature Coming Soon');  
     
     const likeProperty = (e) => {
     if(props.user){
@@ -182,13 +184,16 @@ export default function PropertyCard(props) {
                 <Typography variant="body2" color="textSecondary" component="p">
                     {`${propertyInfo.sqr_feet} sqr ft.`}
                 </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {`Asking Price: ${propertyInfo.asking_price}`}
+                    </Typography>
             </CardContent>
             <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites" color="secondary" onClick={likeProperty}>
                         <FavoriteIcon color={color} onSelect={likeProperty}/>
                 </IconButton>
                 <IconButton aria-label="share">
-                    <ShareIcon />
+                        <ShareIcon onClick={comingSoon} />
                 </IconButton>
                 <IconButton
                     className={clsx(classes.expand, {
@@ -203,12 +208,18 @@ export default function PropertyCard(props) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
+                    <Typography>
+                    {`ARV: ${propertyInfo.arv}`}
+                    </Typography>
+                        <Typography>
+                            {`Repair Cost: ${propertyInfo.repair_cost}`}
+                        </Typography>
+                        <Typography>
+                            {`Comparable Prop. Value: ${propertyInfo.comparable_prop}`}
+                        </Typography>
                     <Typography paragraph>
-                        Beautiful property
-       </Typography>
-                    <Typography paragraph>
-                        Owned by: Somebody
-          </Typography>
+                    {`Description: ${propertyInfo.description}`}
+                    </Typography>
                 </CardContent>
             </Collapse>
         </Card>

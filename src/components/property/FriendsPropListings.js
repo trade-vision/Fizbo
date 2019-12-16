@@ -61,6 +61,7 @@ export default function PropertyCard(props) {
         setExpanded(!expanded);
     }
 
+    const comingSoon = () => message.warning('Feature Coming Soon');  
 
     const openPicture = (e) => {
         setOpenPicModal(true);
@@ -109,6 +110,8 @@ export default function PropertyCard(props) {
             message.error('Must be logged in to use this feature.');
         }
     }
+
+    
 
     useEffect(() => {
         if (props.user) {
@@ -182,7 +185,7 @@ export default function PropertyCard(props) {
                         <FavoriteIcon color={color} onSelect={likeProperty} />
                     </IconButton>
                     <IconButton aria-label="share">
-                        <ShareIcon />
+                        <ShareIcon onClick={comingSoon} />
                     </IconButton>
                     <IconButton
                         className={clsx(classes.expand, {
@@ -197,12 +200,18 @@ export default function PropertyCard(props) {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
+                        <Typography>
+                            {`ARV: ${propertyInfo.arv}`}
+                        </Typography>
+                        <Typography>
+                            {`Repair Cost: ${propertyInfo.repair_cost}`}
+                        </Typography>
+                        <Typography>
+                            {`Comparable Prop. Value: ${propertyInfo.comparable_prop}`}
+                        </Typography>
                         <Typography paragraph>
-                            Beautiful property
-       </Typography>
-                        <Typography paragraph>
-                            Owned by: Somebody
-          </Typography>
+                            {`Description: ${propertyInfo.description}`}
+                        </Typography>
                     </CardContent>
                 </Collapse>
             </Card>

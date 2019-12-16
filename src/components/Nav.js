@@ -73,7 +73,8 @@ export default function MenuAppBar(props) {
         setAnchorEl(null);
     }
 
-    
+    const comingSoon = () => message.warning('Feature Coming Soon');  
+
     const toggleLikes = () => {
         if(props.user){
             setLikesOpen(!likesOpen);
@@ -100,13 +101,13 @@ export default function MenuAppBar(props) {
                         Phzbo
           </Typography>
                         </Link>
-                        <Button variant="h6" className={classes.root}>
+                        <Button variant="h6" className={classes.root} onClick={comingSoon}>
                             Services
           </Button> 
                         <Button variant="h6" className={classes.root} onClick={toggleLikes}>
                             Likes
           </Button> 
-                        <Button variant="h6" className={classes.root}>
+                        <Button variant="h6" className={classes.root} onClick={comingSoon}>
                             Contact Us
           </Button> 
                         {isSignedIn ? <div>

@@ -87,7 +87,7 @@ export default function PropertyCard(props) {
             axios.post(`like/${propertyInfo.id}`)
                 .then((likeResponse) => {
                     setColor('secondary')
-                    console.log(likeResponse);
+                    // console.log(likeResponse);
                     props.user.likes.push(likeResponse.data);
                 })
                 .catch((err) => {

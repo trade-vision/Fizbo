@@ -19,7 +19,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Grid from '@material-ui/core/Grid';
 import { Modal, Button, Spin, message } from 'antd'
 import moment from 'moment';
-import { NavLink, Redirect } from 'react-router-dom'; 
+import { NavLink } from 'react-router-dom'; 
 import axios from 'axios';
 import '../../css/App.css'
 
@@ -81,13 +81,12 @@ export default function PropertyCard(props) {
     
     const likeProperty = (e) => {
     if(props.user){
-        setLiked(liked += 1);
+        setLiked(liked += 1); 
         
         if(liked === 1){
             axios.post(`like/${propertyInfo.id}`)
                 .then((likeResponse) => {
                     setColor('secondary')
-                    // console.log(likeResponse);
                     props.user.likes.push(likeResponse.data);
                 })
                 .catch((err) => {

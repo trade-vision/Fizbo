@@ -12,6 +12,6 @@ build:
 release:
   command:
     - ./deployment-tasks.sh
-  image: worker
+  image: phzbo
 run:
   web: bundle exec puma -C config/puma.rb

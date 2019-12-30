@@ -6,7 +6,7 @@ setup:
     S3_BUCKET: phzbo
 build:
   docker:
-    web: Dockerfile
+    web: Phzbo-server/Dockerfile
   config: 
     FOO: bar
 release:

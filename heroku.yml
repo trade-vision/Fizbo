@@ -15,4 +15,3 @@ release:
   image: worker
 run:
   web: bundle exec puma -C config/puma.rb
-  worker: python myworker.py

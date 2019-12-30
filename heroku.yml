@@ -1,0 +1,23 @@
+etup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+  config:
+    S3_BUCKET: my-example-bucket
+build:
+  docker:
+    web: Phzbo-server/Dockerfile
+    worker: worker/Dockerfile
+  config:
+    FOO: bar
+release:
+  command:
+    - ./deployment-tasks.sh
+  image: worker
+run:
+  web: bundle exec puma -C config/puma.rb
+  worker: python myworker.py
+  asset-syncer:
+    command:
+      - python asset-syncer.py
+    image: worker

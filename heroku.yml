@@ -7,7 +7,6 @@ setup:
 build:
   docker:
     web: Phzbo-server/Dockerfile
-    worker: worker/Dockerfile
   config:
     FOO: bar
 release:

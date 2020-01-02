@@ -46,7 +46,7 @@
     "typescript": "^3.6.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cd Phzbo-server/; npm run dev",
     "dev": "cd Phzbo-server/; npm run dev",
     "build": "react-scripts build",
     "test": "react-scripts test",

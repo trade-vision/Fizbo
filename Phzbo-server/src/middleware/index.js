@@ -2,15 +2,20 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 const db = require('../../db/');
+const path = require('path');
 const stripe = require('stripe')('sk_test_tTbx7glLXWfiF9ZIqPzuq9Se006dSsEACD');
 
 
 module.exports = function (app) {
   // Add your custom middleware here. Remember that
   // in Express, the order matters.
+  if (process.env.NODE_ENV === 'production') {
 
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../../build'));
+  })
   
-  
+}
 
   // ------------------ Google Auth ------------------------
   

@@ -6,12 +6,12 @@ setup:
     S3_BUCKET: phzbo
 build:
   docker:
-    web: Phzbo-server/Dockerfile
+    web: Dockerfile
   config: 
     FOO: bar
 release:
   command:
     - ./deployment-tasks.sh
-  image: phzbo
+  image: web
 run:
   web: bundle exec puma -C config/puma.rb

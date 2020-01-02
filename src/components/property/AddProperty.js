@@ -143,7 +143,7 @@ export default function AddProperty(props) {
     const handlePromo = (e) => {
         const promo = e.target.value;
         if(promo === 'PHZBO2020'){
-            setPrice(2000);
+            setPrice(0);
         } else {
             setPrice(5000);  
         }
